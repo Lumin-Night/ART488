@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController3D : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
+    [SerializeField] private float depthCompensation;
 
     private Vector3 moveDirection;
     private float moveX;
@@ -20,8 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpHeight;
     private CharacterController controller;
     private Vector3 velocity;
-
-
+    private bool isSlow;
+    [SerializeField] private float slowMultiplier = 0.65f;
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -40,24 +41,22 @@ public class PlayerController : MonoBehaviour
         }
 
         Movement();
-        if (isGrounded)
+        if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            if (Input.GetButtonDown("Jump"))
-            {
                 velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
-            }
         }
 
-        moveDirection *= moveSpeed;
+        float multiplier = (isSlow) ? slowMultiplier : 1;
+        //moveDirection *= (moveSpeed * multiplier);
+        moveDirection = new Vector3(moveDirection.x * moveSpeed, 0, moveDirection.z * (moveSpeed * multiplier));
 
         controller.Move(moveDirection * Time.deltaTime);
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
-
     private void Movement()
     {
-        moveZ = Input.GetAxis("Vertical");
+        moveZ = Input.GetAxis("Vertical") * depthCompensation;
         moveX = Input.GetAxis("Horizontal");
 
         moveDirection = new Vector3(moveX, 0, moveZ);
@@ -74,4 +73,14 @@ public class PlayerController : MonoBehaviour
             moveSpeed = 0;
         }
     }
+
+    public void SetSlow()
+    {
+        isSlow = true;
+    }
+    public void ClearSlow()
+    {
+        isSlow = false;
+    }
+
 }
