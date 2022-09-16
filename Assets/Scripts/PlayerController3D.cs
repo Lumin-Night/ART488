@@ -11,7 +11,7 @@ public class PlayerController3D : MonoBehaviour
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float depthCompensation;
-    private Vector3 moveDirection;
+    [SerializeField] private Vector3 moveDirection;
     private float moveX;
     private float moveZ;
     private Vector3 velocity;
@@ -32,6 +32,7 @@ public class PlayerController3D : MonoBehaviour
 
     //Falling Off
     [SerializeField] private Vector3 currentPosition;
+    [SerializeField] private Vector3 lastPosition;
     [SerializeField] private string KillZoneLayerName = "KillZone";
     private int killZone;
 
@@ -56,20 +57,11 @@ public class PlayerController3D : MonoBehaviour
             velocity.y = -2f;
             jumps = 2;
             currentPosition = this.transform.position;
+            lastPosition = currentPosition - (moveDirection / 4);
         }
 
-        Movement();
+        Movement();        
         
-
-        if (Input.GetButtonDown("Jump") && jumps > 0)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
-            jumps--;
-            dashCount = 1;
-        }
-               
-        
-
         if(isSlow == true)
         {
             if(multiplier >= .1)
@@ -83,6 +75,15 @@ public class PlayerController3D : MonoBehaviour
         controller.Move(moveDirection * Time.deltaTime);
         velocity.y += gravity * Time.deltaTime;  
         controller.Move(velocity * Time.deltaTime);
+
+        if (Input.GetButtonDown("Jump") && jumps > 0)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+            jumps--;
+            dashCount = 1;
+            
+        }
+
         AirDash();
     }
     private void Movement()
@@ -130,7 +131,7 @@ public class PlayerController3D : MonoBehaviour
         if(other.gameObject.layer == killZone)
         {
             controller.enabled = false;
-            transform.position = currentPosition;
+            transform.position = lastPosition;
             controller.enabled = true;
            
         }
