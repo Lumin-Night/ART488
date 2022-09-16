@@ -28,8 +28,11 @@ public class PlayerController3D : MonoBehaviour
     [SerializeField] private float gravity;
     [SerializeField] private float jumps = 2;
     [SerializeField] private float dashCount = 1;
-    [SerializeField] private float dashSpeed = 2;
-
+    [SerializeField] private float dashSpeed;
+    [SerializeField] private bool isAirDashing;
+    [SerializeField] private float airDashTime;
+    [SerializeField] private float deceleration = 5;
+ 
     //Falling Off
     [SerializeField] private Vector3 currentPosition;
     [SerializeField] private Vector3 lastPosition;
@@ -120,12 +123,22 @@ public class PlayerController3D : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded == false && dashCount > 0)
         {
-            controller.Move(moveDirection * Time.deltaTime * dashSpeed);
+            dashSpeed = 2;
+            isAirDashing = true;
             dashCount--;
-            Debug.Log("dash");
+
         }
+        else if (isAirDashing)
+        {
+            Debug.Log("dash");
+            dashSpeed -= deceleration * Time.deltaTime;
+            controller.Move(moveDirection * dashSpeed);
+            if (dashSpeed <= 0) isAirDashing = false;
+        }
+        
     }
 
+    //Falloff Respawn
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.layer == killZone)
