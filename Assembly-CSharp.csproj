@@ -60,6 +60,7 @@
     <Compile Include="Assets\Scripts\PlayerController3D.cs" />
     <Compile Include="Assets\Scripts\SafeZoneChecker.cs" />
     <Compile Include="Assets\Scripts\Collect.cs" />
+    <Compile Include="Assets\Scripts\DoFAdjust.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
