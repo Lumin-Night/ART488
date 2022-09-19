@@ -15,6 +15,7 @@ public class PlayerController3D : MonoBehaviour
     private float moveX;
     private float moveZ;
     private Vector3 velocity;
+    private float jumpForce;
 
     //Boundary Detection
     private bool isSlow;
@@ -31,8 +32,15 @@ public class PlayerController3D : MonoBehaviour
     [SerializeField] private float dashSpeed;
     [SerializeField] private bool isAirDashing;
     [SerializeField] private float airDashTime;
-    [SerializeField] private float deceleration = 50;
- 
+    [SerializeField] private float deceleration = 25;
+    [SerializeField] private bool isJumping;
+
+    //WallJump
+    [SerializeField] private string WallJumpLayerName = "WallJump";
+    private int wallJump;
+    [SerializeField] private bool isWallJumping;
+
+
     //Falling Off
     [SerializeField] private Vector3 currentPosition;
     [SerializeField] private Vector3 lastPosition;
@@ -49,6 +57,9 @@ public class PlayerController3D : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         killZone = LayerMask.NameToLayer(KillZoneLayerName);
+        wallJump = LayerMask.NameToLayer(WallJumpLayerName);
+
+
     }
     private void Update()
     {
@@ -61,8 +72,11 @@ public class PlayerController3D : MonoBehaviour
         {
             velocity.y = -2f;
             jumps = 2;
+            gravity = -20;
             currentPosition = this.transform.position;
             lastPosition = currentPosition - (moveDirection / 4);
+            jumpHeight = 1.5f;
+            isJumping = false;
         }
 
         Movement();        
@@ -86,10 +100,19 @@ public class PlayerController3D : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
             jumps--;
             dashCount = 1;
-            
+            isJumping = true;
         }
 
         AirDash();
+
+        if (isWallJumping && !isJumping)
+        {
+            gravity = -5;            
+        }
+        else if(isJumping)
+        {
+            gravity = -20;
+        }
     }
     private void Movement()
     {
@@ -98,11 +121,11 @@ public class PlayerController3D : MonoBehaviour
         moveX = Input.GetAxis("Horizontal");
 
         moveDirection = new Vector3(moveX, 0, moveZ);
-        if (moveDirection != Vector3.zero && !Input.GetKey(KeyCode.LeftShift))
+        if (moveDirection != Vector3.zero && !Input.GetButton("Sprint"))
         {
             moveSpeed = walkSpeed;
         }
-        else if (moveDirection != Vector3.zero && Input.GetKey(KeyCode.LeftShift) && isGrounded)
+        else if (moveDirection != Vector3.zero && Input.GetButton("Sprint") && isGrounded)
         {
             moveSpeed = runSpeed;
         }
@@ -123,7 +146,7 @@ public class PlayerController3D : MonoBehaviour
     }
     public void AirDash()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded == false && dashCount > 0)
+        if (Input.GetButtonDown("Sprint") && isGrounded == false && dashCount > 0)
         {
             dashSpeed = 5;
             isAirDashing = true;
@@ -132,13 +155,14 @@ public class PlayerController3D : MonoBehaviour
         }
         else if (isAirDashing)
         {
-            Debug.Log("dash");
             dashSpeed -= deceleration * Time.deltaTime;
             controller.Move(moveDirection * (dashSpeed*Time.deltaTime));
             if (dashSpeed <= 0) isAirDashing = false;
         }
         
     }
+
+    
 
     //Falloff Respawn
     private void OnTriggerEnter(Collider other)
@@ -148,7 +172,31 @@ public class PlayerController3D : MonoBehaviour
             controller.enabled = false;
             transform.position = lastPosition;
             controller.enabled = true;
-        }           
+        }   
+        
+        if (other.gameObject.layer == wallJump)
+        {
+            isJumping = false;
+            isWallJumping = true;
+            velocity.y = 0;
+            if(jumps <= 1)
+            {
+                jumps++;
+            }
+            dashCount = 1;
+            jumpHeight *= 5;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == wallJump)
+        {
+            gravity = -20;
+            jumpHeight = 1.5f;
+            isWallJumping = false;
+        }
+
     }
 
     public void Collect()
