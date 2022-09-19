@@ -83,7 +83,7 @@ public class PlayerController3D : MonoBehaviour
         
         if(isSlow == true)
         {
-            if(multiplier >= .1)
+            if(multiplier >= .3)
             {
                 multiplier -= .03f;
             }
