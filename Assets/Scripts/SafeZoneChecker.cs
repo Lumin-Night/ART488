@@ -16,7 +16,6 @@ public class SafeZoneChecker : MonoBehaviour
     {
         SafeZoneCounter = 0;
         SafeZone = LayerMask.NameToLayer(SafeZoneLayerName);
-        HeaderLight = GetComponent<Light>();
 
     }
     private void OnTriggerExit(Collider other)
