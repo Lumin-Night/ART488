@@ -125,7 +125,7 @@ public class PlayerController3D : MonoBehaviour
         {
             moveSpeed = walkSpeed;
         }
-        else if (moveDirection != Vector3.zero && Input.GetButton("Sprint") && isGrounded)
+        else if (moveDirection != Vector3.zero && Input.GetButton("Sprint") && Input.GetButton("Sprint"))
         {
             moveSpeed = runSpeed;
         }
@@ -179,12 +179,12 @@ public class PlayerController3D : MonoBehaviour
             isJumping = false;
             isWallJumping = true;
             velocity.y = 0;
-            if(jumps <= 1)
+            dashCount = 1;
+            jumpHeight *= 5;
+            if (jumps < 1)
             {
                 jumps++;
             }
-            dashCount = 1;
-            jumpHeight *= 5;
         }
     }
 
@@ -195,6 +195,10 @@ public class PlayerController3D : MonoBehaviour
             gravity = -20;
             jumpHeight = 1.5f;
             isWallJumping = false;
+            if (jumps < 1)
+            {
+                jumps++;
+            }
         }
 
     }
