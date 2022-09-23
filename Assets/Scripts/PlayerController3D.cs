@@ -12,10 +12,11 @@ public class PlayerController3D : MonoBehaviour
     [SerializeField] private float runSpeed;
     [SerializeField] private float depthCompensation;
     [SerializeField] private Vector3 moveDirection;
-    private float moveX;
-    private float moveZ;
+    [SerializeField] private float moveX;
+    [SerializeField] private float moveZ;
     private Vector3 velocity;
     private float jumpForce;
+    public Animator characterAnimatior;
 
     //Boundary Detection
     private bool isSlow;
@@ -61,12 +62,16 @@ public class PlayerController3D : MonoBehaviour
         controller = GetComponent<CharacterController>();
         killZone = LayerMask.NameToLayer(KillZoneLayerName);
         wallJump = LayerMask.NameToLayer(WallJumpLayerName);
-
-
     }
     private void Update()
     {
         Move();
+        uiAnimations.SetInteger("Jumps", jumps);
+        uiAnimations.SetInteger("DashSpent", dashCount);
+
+        characterAnimatior.SetFloat("MotionX", Input.GetAxis("Horizontal"));
+        characterAnimatior.SetFloat("MotionY", Input.GetAxis("Vertical"));
+
     }
     private void Move()
     {
@@ -82,6 +87,7 @@ public class PlayerController3D : MonoBehaviour
             isJumping = false;
             wallJumper = 0;
             wallJumped = 1;
+
         }
 
         Movement();        
@@ -106,7 +112,6 @@ public class PlayerController3D : MonoBehaviour
             jumps--;
             dashCount = 1;
             isJumping = true;
-            uiAnimations.SetInteger("JumpCounter", jumps);
         }
 
         AirDash();
@@ -157,7 +162,7 @@ public class PlayerController3D : MonoBehaviour
             dashSpeed = 5;
             isAirDashing = true;
             dashCount--;
-            
+      
         }
         else if (isAirDashing)
         {
