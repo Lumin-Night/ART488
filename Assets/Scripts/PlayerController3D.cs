@@ -27,13 +27,15 @@ public class PlayerController3D : MonoBehaviour
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private float gravity;
-    [SerializeField] private float jumps = 2;
-    [SerializeField] private float dashCount = 1;
+    [SerializeField] private int jumps = 2;
+    [SerializeField] private int dashCount = 1;
     [SerializeField] private float dashSpeed;
     [SerializeField] private bool isAirDashing;
     [SerializeField] private float airDashTime;
     [SerializeField] private float deceleration = 25;
     [SerializeField] private bool isJumping;
+    [SerializeField] private int wallJumper;
+    [SerializeField] private int wallJumped;
 
     //WallJump
     [SerializeField] private string WallJumpLayerName = "WallJump";
@@ -49,9 +51,10 @@ public class PlayerController3D : MonoBehaviour
     [SerializeField] private float respawnTime;
     [SerializeField] private bool respawning;
 
-    //Collect
+    //UI
     public int Collected;
     public TMP_Text CollectibleText;
+    public Animator uiAnimations;
 
     private void Start()
     {
@@ -77,6 +80,8 @@ public class PlayerController3D : MonoBehaviour
             lastPosition = currentPosition - (moveDirection / 4);
             jumpHeight = 1.5f;
             isJumping = false;
+            wallJumper = 0;
+            wallJumped = 1;
         }
 
         Movement();        
@@ -101,6 +106,7 @@ public class PlayerController3D : MonoBehaviour
             jumps--;
             dashCount = 1;
             isJumping = true;
+            uiAnimations.SetInteger("JumpCounter", jumps);
         }
 
         AirDash();
@@ -151,7 +157,7 @@ public class PlayerController3D : MonoBehaviour
             dashSpeed = 5;
             isAirDashing = true;
             dashCount--;
-
+            
         }
         else if (isAirDashing)
         {
@@ -172,17 +178,23 @@ public class PlayerController3D : MonoBehaviour
             controller.enabled = false;
             transform.position = lastPosition;
             controller.enabled = true;
-        }   
-        
+        }
+
         if (other.gameObject.layer == wallJump)
         {
-            isJumping = false;
-            isWallJumping = true;
-            velocity.y = 0;
-            dashCount = 1;
-            jumpHeight *= 5;
-            if (jumps < 1)
+            wallJumper = other.GetInstanceID();
+                isJumping = false;
+                isWallJumping = true;
+                velocity.y = 0;
+                dashCount = 1;
+                jumpHeight *= 5;
+                if (wallJumper != wallJumped)
+                {
+                    jumps++;
+                }
+            else
             {
+                jumpHeight *= .12f;
                 jumps++;
             }
         }
@@ -195,10 +207,7 @@ public class PlayerController3D : MonoBehaviour
             gravity = -20;
             jumpHeight = 1.5f;
             isWallJumping = false;
-            if (jumps < 1)
-            {
-                jumps++;
-            }
+            wallJumped = wallJumper;
         }
 
     }
