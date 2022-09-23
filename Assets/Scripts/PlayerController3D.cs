@@ -17,6 +17,11 @@ public class PlayerController3D : MonoBehaviour
     private Vector3 velocity;
     private float jumpForce;
     public Animator characterAnimatior;
+    [SerializeField] private bool isFacingLeft;
+    [SerializeField] private bool isFacingRight;
+    [SerializeField] private bool isFacingUp;
+    [SerializeField] private bool isWalking;
+    [SerializeField] private bool isRunning;
 
     //Boundary Detection
     private bool isSlow;
@@ -68,9 +73,7 @@ public class PlayerController3D : MonoBehaviour
         Move();
         uiAnimations.SetInteger("Jumps", jumps);
         uiAnimations.SetInteger("DashSpent", dashCount);
-
-        characterAnimatior.SetFloat("MotionX", Input.GetAxis("Horizontal"));
-        characterAnimatior.SetFloat("MotionY", Input.GetAxis("Vertical"));
+        MovementAnimation();
 
     }
     private void Move()
@@ -172,10 +175,8 @@ public class PlayerController3D : MonoBehaviour
         }
         
     }
-
     
-
-    //Falloff Respawn
+    //Falloff Respawn and Wall Jump
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == killZone)
@@ -221,6 +222,39 @@ public class PlayerController3D : MonoBehaviour
     {
         Collected++;
         CollectibleText.text = Collected.ToString();
+    }
+
+    public void MovementAnimation()
+    {
+        if(Input.GetAxisRaw("Horizontal") <= -.2)
+        {
+            isFacingLeft = true;
+            isFacingRight = false;
+        }
+
+        if (Input.GetAxisRaw("Horizontal") >= .2)
+        {
+            isFacingRight = true;
+            isFacingLeft = false;
+        }
+        if (Input.GetAxisRaw("Vertical") <= -.1 && Input.GetAxisRaw("Horizontal") < .2 && Input.GetAxisRaw("Horizontal") > -.2)
+        {
+            isFacingUp = false;
+            isFacingLeft = false;
+            isFacingRight = false;
+        }
+        else if (Input.GetAxisRaw("Vertical") >= .1 && Input.GetAxisRaw("Horizontal") < .2 && Input.GetAxisRaw("Horizontal") > -.2)
+        {
+            isFacingUp = true;
+        }
+        characterAnimatior.SetBool("isFacingLeft", isFacingLeft);
+        characterAnimatior.SetBool("isFacingRight", isFacingRight);
+        characterAnimatior.SetBool("isFacingUp", isFacingUp);
+        characterAnimatior.SetBool("isWalking", isWalking);
+        characterAnimatior.SetBool("isRunning", Input.GetButton("Sprint"));
+        characterAnimatior.SetBool("isJumping", isJumping);
+        characterAnimatior.SetBool("isDashing", isAirDashing);
+        characterAnimatior.SetFloat("movementX", moveSpeed);
     }
 
 }
