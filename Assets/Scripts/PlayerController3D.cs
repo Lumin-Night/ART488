@@ -230,12 +230,14 @@ public class PlayerController3D : MonoBehaviour
         {
             isFacingLeft = true;
             isFacingRight = false;
+            isWalking = true;
         }
 
         if (Input.GetAxisRaw("Horizontal") >= .2)
         {
             isFacingRight = true;
             isFacingLeft = false;
+            isWalking = true;
         }
         if (Input.GetAxisRaw("Vertical") <= -.1 && Input.GetAxisRaw("Horizontal") < .2 && Input.GetAxisRaw("Horizontal") > -.2)
         {
@@ -246,6 +248,10 @@ public class PlayerController3D : MonoBehaviour
         else if (Input.GetAxisRaw("Vertical") >= .1 && Input.GetAxisRaw("Horizontal") < .2 && Input.GetAxisRaw("Horizontal") > -.2)
         {
             isFacingUp = true;
+        }
+        if(moveSpeed == 0.0f)
+        {
+            isWalking = false;
         }
         characterAnimatior.SetBool("isFacingLeft", isFacingLeft);
         characterAnimatior.SetBool("isFacingRight", isFacingRight);
