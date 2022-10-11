@@ -23,11 +23,11 @@ Material:
   - _STOCHASTICMODE_DELIOT_HEITZ
   - _TPS_ANIMATEDTOGGLE_ON
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2005
   stringTagMap:
-    RenderType: Transparent
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -552,7 +552,7 @@ Material:
     - _AddBlendOpAlpha: 0
     - _AddDstBlend: 1
     - _AddDstBlendAlpha: 1
-    - _AddSrcBlend: 1
+    - _AddSrcBlend: 0
     - _AddSrcBlendAlpha: 1
     - _Add_Antipodean_Rim2Light: 0
     - _Add_Antipodean_RimLight: 0
@@ -577,8 +577,8 @@ Material:
     - _AlphaFresnelSharpness: 0.5
     - _AlphaFresnelWidth: 0.5
     - _AlphaMipScale: 0.25
-    - _AlphaMod: -0.45
-    - _AlphaPremultiply: 0
+    - _AlphaMod: -0.798
+    - _AlphaPremultiply: 1
     - _AlphaSharpenedA2C: 0
     - _AlphaTextureStochastic: 0
     - _AlphaTextureUV: 0
@@ -1656,7 +1656,7 @@ Material:
     - _SphericalDissolveClamp: 0
     - _SphericalDissolveInvert: 0
     - _SphericalDissolveRadius: 1.5
-    - _SrcBlend: 4
+    - _SrcBlend: 10
     - _SrcBlendAlpha: 1
     - _SssBumpBlur: 0.7
     - _SssScale: 1
@@ -2006,14 +2006,14 @@ Material:
     - m_start_alphaBlending: 0
     - m_start_audioLink: 0
     - m_start_backFace: 0
-    - m_start_blending: 0
+    - m_start_blending: 1
     - m_start_brdf: 0
     - m_start_clearCoat: 0
     - m_start_depthFX: 0
     - m_start_depthRimLightOptions: 0
     - m_start_dissolve: 0
     - m_start_dissolveHueShift: 0
-    - m_start_emission1Options: 1
+    - m_start_emission1Options: 0
     - m_start_emission2Options: 0
     - m_start_emission3Options: 0
     - m_start_emissionOptions: 0
@@ -2030,7 +2030,7 @@ Material:
     - m_start_postprocess: 0
     - m_start_reflectionRim: 0
     - m_start_rim2LightOptions: 1
-    - m_start_rimLightOptions: 0
+    - m_start_rimLightOptions: 1
     - m_start_stylizedSpec: 0
     - m_start_subsurfaceScattering: 0
     - m_start_tps_penetrator: 0
@@ -2299,12 +2299,12 @@ Material:
     - _Rim2LightColor: {r: 0.745283, g: 0.26857165, b: 0.10194911, a: 1}
     - _Rim2MaskPan: {r: 0, g: 0, b: 0, a: 0}
     - _Rim2ShadowAlpha: {r: 0, g: 0, b: 0, a: 1}
-    - _Rim2TexPan: {r: 5, g: -4, b: 0, a: 0}
+    - _Rim2TexPan: {r: 20, g: -10, b: 0, a: 0}
     - _RimEnviroMaskPan: {r: 0, g: 0, b: 0, a: 0}
     - _RimLightColor: {r: 1, g: 0.3296597, b: 0.13679248, a: 1}
     - _RimMaskPan: {r: 0, g: 0, b: 0, a: 0}
     - _RimShadowAlpha: {r: 0, g: 0, b: 0, a: 1}
-    - _RimTexPan: {r: 5, g: -5, b: 0, a: 0}
+    - _RimTexPan: {r: 5, g: -10, b: 0, a: 0}
     - _SDFForward: {r: 0, g: 0, b: 1, a: 0}
     - _SDFLeft: {r: -1, g: 0, b: 0, a: 0}
     - _SDFShadingTexturePan: {r: 0, g: 0, b: 0, a: 0}
