@@ -262,6 +262,7 @@ public class PlayerController3D : MonoBehaviour
         characterAnimatior.SetBool("isDashing", isAirDashing);
         characterAnimatior.SetFloat("movementX", moveSpeed);
         characterAnimatior.SetFloat("MoveX", Mathf.Abs(moveX));
+        characterAnimatior.SetBool("isWallJumping", isWallJumping);
     }
 
 }

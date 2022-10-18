@@ -113,6 +113,7 @@
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Includes\CGI_PoiSpawnInVert.cginc" />
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Patreon\Fur\Pro\Includes\CGI_PoiGeomFur.cginc" />
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Patreon\Fur\Pro\Includes\CGI_PoiMainTex.cginc" />
+    <None Include="Assets\Imports\Mabel\OptimizedShaders\Mabel\Poiyomi Pro.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Pro\Includes\CGI_PoiData.cginc" />
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Patreon\Fur\Pro\Includes\CGI_PoiVert.cginc" />
@@ -126,6 +127,7 @@
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Patreon\LocalParticles\Shaders\Includes\PoiOutlineFrag.cginc" />
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Patreon\Fur\Pro\Includes\CGI_PoiHologram.cginc" />
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Patreon\VoxelCubed\Includes\PoiDragNDropLighting.cginc" />
+    <None Include="Assets\Imports\Fire\OptimizedShaders\Fire\Poiyomi.shader" />
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Patreon\Fur\Pro\Includes\CGI_PoiPathing.cginc" />
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Patreon\Fur\Pro\Includes\CGI_PoiEmission.cginc" />
     <None Include="Assets\_PoiyomiShaders\Shaders\7.3\Patreon\VoxelCubed\Includes\PoiTextureBlending.cginc" />
