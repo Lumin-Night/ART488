@@ -1,11 +1,11 @@
+using Poiyomi.ModularShaderSystem.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
-using Poiyomi.ModularShaderSystem.UI;
 
 namespace Poiyomi.ModularShaderSystem.Debug
 {
@@ -18,12 +18,12 @@ namespace Poiyomi.ModularShaderSystem.Debug
         {
             TabName = "Function Timeline";
             TabContainer = new VisualElement();
-            
+
             var styleSheet = Resources.Load<StyleSheet>(MSSConstants.RESOURCES_FOLDER + "/MSSUIElements/FunctionTimelineStyle");
             TabContainer.styleSheets.Add(styleSheet);
             TabContainer.style.flexGrow = 1;
         }
-        
+
         public void UpdateTab(ModularShader shader)
         {
             TabContainer.Clear();
@@ -38,16 +38,16 @@ namespace Poiyomi.ModularShaderSystem.Debug
         public TimelineRow Row { get; set; }
         public int Size { get; }
         public int Offset { get; }
-        
+
         private TimelineRoot _root;
-        
+
         public FunctionItem(TimelineRoot root, ShaderFunction function, int size, int offset)
         {
             _root = root;
             Function = function;
             Size = size;
             Offset = offset;
-            
+
             style.left = Offset;
             style.width = Size;
 
@@ -57,7 +57,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
             queue.AddToClassList("function-header-queue");
             Add(label);
             Add(queue);
-            
+
             RegisterCallback<MouseUpEvent>(evt =>
             {
                 if (evt.button != 0) return;
@@ -69,13 +69,13 @@ namespace Poiyomi.ModularShaderSystem.Debug
     internal class TimelineRow : VisualElement
     {
         public ShaderModule Module { get; }
-        
+
         public List<FunctionItem> Functions { get; set; }
 
         private VisualElement _title;
         public VisualElement _content;
         public List<VisualElement> _contentChilden;
-        
+
         public TimelineRow(ShaderModule module)
         {
             Module = module;
@@ -87,9 +87,9 @@ namespace Poiyomi.ModularShaderSystem.Debug
             _content = new VisualElement();
             _title.AddToClassList("timeline-title");
             _content.AddToClassList("timeline-content");
-            
+
             _title.Add(new Label(Module.Name));
-            
+
             Add(_content);
             Add(_title);
         }
@@ -103,7 +103,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
         {
             _content.Clear();
             _contentChilden.Clear();
-            
+
             for (int index = Functions.Count - 1; index >= 0; index--)
             {
                 FunctionItem function = Functions[index];
@@ -153,7 +153,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
         {
             get => _selectedFunction;
             set
-            { 
+            {
                 _selectedFunction = value;
                 ResetSelectedClass();
                 OnSelectedFunctionChanged?.Invoke(_selectedFunction);
@@ -164,7 +164,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
 
         public Action<FunctionItem> OnSelectedFunctionChanged { get; set; }
         public Action OnTimelineFirstDispatch { get; set; }
-        
+
         private readonly Dictionary<ShaderFunction, ShaderModule> _moduleByFunction;
         private FunctionItem _selectedFunction;
 
@@ -186,14 +186,14 @@ namespace Poiyomi.ModularShaderSystem.Debug
                 row.SetContentSize(offset + 30);
                 row.ApplyFunctionsToTimeline();
             }
-            
+
             RegisterCallback<GeometryChangedEvent>(GeometryChangedCallback);
         }
-        
+
         private void GeometryChangedCallback(GeometryChangedEvent evt)
         {
             UnregisterCallback<GeometryChangedEvent>(GeometryChangedCallback);
-            
+
             foreach (TimelineRow row in Rows)
             {
                 row.SetRowsHeight();
@@ -201,7 +201,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
 
             OnTimelineFirstDispatch?.Invoke();
         }
-        
+
         private int CreateFunctionHierarchy(List<ShaderFunction> functions, ShaderFunction function, int offset)
         {
             int size = 0;
@@ -225,15 +225,15 @@ namespace Poiyomi.ModularShaderSystem.Debug
 
             return size;
         }
-        
+
         public float GetScrollAdjustment()
         {
             float factor = 1.1f;
             if (Rows.Count <= 0) return factor;
-            
+
             var width = Rows[0]._content.style.width.value.value;
             var screenWidth = Rows[0]._content.resolvedStyle.width;
-            factor =  screenWidth / width;
+            factor = screenWidth / width;
 
             return factor;
         }
@@ -244,8 +244,8 @@ namespace Poiyomi.ModularShaderSystem.Debug
             {
                 var width = row._content.style.width.value.value;
                 var screenWidth = row._content.resolvedStyle.width;
-                if(width > screenWidth)
-                    row._content.style.left = -((width- screenWidth) * f);
+                if (width > screenWidth)
+                    row._content.style.left = -((width - screenWidth) * f);
             }
         }
 
@@ -260,17 +260,17 @@ namespace Poiyomi.ModularShaderSystem.Debug
             }
         }
     }
-    
+
     internal class VariablesViewer : VisualElement
     {
         public Action<Variable> OnVariableSelected { get; set; }
-        
+
         private List<VariableField> _variables;
 
         public VariablesViewer(ModularShader shader)
         {
             var variables = shader.BaseModules.Concat(shader.AdditionalModules).SelectMany(x => x.Functions).SelectMany(x => x.UsedVariables).Distinct().OrderBy(x => x.Type).ThenBy(x => x.Name);
-            
+
             var title = new Label("Variables List");
             title.AddToClassList("area-title");
             var content = new ScrollView(ScrollViewMode.Vertical);
@@ -297,7 +297,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
                     OnVariableSelected?.Invoke(element.Variable);
                 });
             }
-            
+
             Add(title);
             Add(content);
         }
@@ -314,7 +314,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
                 _appendAfter.Value = _selectedItem?.AppendAfter;
                 _name.Value = _selectedItem?.Name;
                 _queue.Value = "" + _selectedItem?.Queue;
-                
+
                 _variables.Clear();
                 _variablesFoldout.Clear();
                 _variableKeywordsFoldout.Clear();
@@ -324,13 +324,13 @@ namespace Poiyomi.ModularShaderSystem.Debug
                     OnVariableSelected?.Invoke(null);
                     return;
                 }
-                
+
                 foreach (Variable variable in _selectedItem.UsedVariables)
                 {
                     var element = new VariableField(variable);
                     _variables.Add(element);
                     _variablesFoldout.Add(element);
-                    
+
                     element.RegisterCallback<MouseUpEvent>(evt =>
                     {
                         if (evt.button != 0) return;
@@ -344,19 +344,19 @@ namespace Poiyomi.ModularShaderSystem.Debug
                     });
                 }
 
-                
+
                 foreach (string keyword in _selectedItem.VariableKeywords)
                     _variableKeywordsFoldout.Add(new Label(keyword));
-                if(_variableKeywordsFoldout.childCount == 0)
+                if (_variableKeywordsFoldout.childCount == 0)
                     _variableKeywordsFoldout.Add(new Label("None"));
-                
+
                 foreach (string keyword in _selectedItem.CodeKeywords)
                     _codeKeywordsFoldout.Add(new Label(keyword));
-                if(_codeKeywordsFoldout.childCount == 0)
+                if (_codeKeywordsFoldout.childCount == 0)
                     _codeKeywordsFoldout.Add(new Label("None"));
             }
         }
-        
+
         public Action<Variable> OnVariableSelected { get; set; }
 
         private LabelField _appendAfter;
@@ -382,13 +382,13 @@ namespace Poiyomi.ModularShaderSystem.Debug
             _variablesFoldout = new Foldout();
             _variablesFoldout.text = "Variables";
             _variables = new List<VariableField>();
-            
+
             _variableKeywordsFoldout = new Foldout();
             _variableKeywordsFoldout.text = "Variable Keywords";
-            
+
             _codeKeywordsFoldout = new Foldout();
             _codeKeywordsFoldout.text = "Code Keywords";
-            
+
             Add(title);
             Add(content);
             content.Add(_name);
@@ -412,10 +412,10 @@ namespace Poiyomi.ModularShaderSystem.Debug
                 {
                     _name.Value = null;
                     _id.Value = null;
-                    _description.Value =null;
+                    _description.Value = null;
                     _author.Value = null;
                     _version.Value = null;
-                    if(_content.Contains(_selectButton)) _content.Remove(_selectButton);
+                    if (_content.Contains(_selectButton)) _content.Remove(_selectButton);
                     return;
                 }
                 _name.Value = _selectedItem.Name;
@@ -423,8 +423,8 @@ namespace Poiyomi.ModularShaderSystem.Debug
                 _description.Value = _selectedItem.Description;
                 _author.Value = _selectedItem.Author;
                 _version.Value = _selectedItem.Version;
-                
-                if(!_content.Contains(_selectButton)) _content.Add(_selectButton);
+
+                if (!_content.Contains(_selectButton)) _content.Add(_selectButton);
             }
         }
 
@@ -444,7 +444,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
             var content = new ScrollView(ScrollViewMode.Vertical);
             _content = content;
             _content.AddToClassList("area-content");
-            
+
             _name = new LabelField("Name", "");
             _id = new LabelField("Id", "");
             _author = new LabelField("Author", "");
@@ -454,14 +454,14 @@ namespace Poiyomi.ModularShaderSystem.Debug
             _selectButton = new Button(() =>
             {
                 if (_selectedItem == null) return;
-                Selection.SetActiveObjectWithContext(_selectedItem,_selectedItem);
+                Selection.SetActiveObjectWithContext(_selectedItem, _selectedItem);
             });
 
             _selectButton.text = "Select module in inspector";
-            
+
             Add(title);
             Add(_content);
-            
+
             _content.Add(_name);
             _content.Add(_id);
             _content.Add(_author);
@@ -488,10 +488,10 @@ namespace Poiyomi.ModularShaderSystem.Debug
         public FunctionTemplateViewer()
         {
             _viewer = new CodeViewElement();
-            
+
             var title = new Label("Function code template");
             title.AddToClassList("area-title");
-            
+
             Add(title);
             Add(_viewer);
         }
@@ -511,7 +511,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
             var variablesViewer = new VariablesViewer(shader);
             var functionViewer = new FunctionViewer();
             var moduleViewer = new ModuleViewer();
-            
+
             left.style.flexShrink = 0;
             left.style.width = new StyleLength(Length.Percent(70));
             right.style.width = new StyleLength(Length.Percent(30));
@@ -520,12 +520,12 @@ namespace Poiyomi.ModularShaderSystem.Debug
             style.flexDirection = FlexDirection.Row;
             Add(left);
             Add(right);
-            
-            var scroller = new Scroller(0,1,f =>
-            {
-                _popup.value.Scroll(f);
-            }, SliderDirection.Horizontal);
-            
+
+            var scroller = new Scroller(0, 1, f =>
+              {
+                  _popup.value.Scroll(f);
+              }, SliderDirection.Horizontal);
+
             _roots = new List<TimelineRoot>();
             var functions = new List<ShaderFunction>();
             Dictionary<ShaderFunction, ShaderModule> moduleByFunction = new Dictionary<ShaderFunction, ShaderModule>();
@@ -560,30 +560,30 @@ namespace Poiyomi.ModularShaderSystem.Debug
                         foreach (FunctionItem f in root.Functions)
                         {
                             bool toHighlight = f.Function.UsedVariables.Any(x => x == variable);
-                            
-                            if(toHighlight && !f.ClassListContains("contains-variable-global"))
+
+                            if (toHighlight && !f.ClassListContains("contains-variable-global"))
                                 f.AddToClassList("contains-variable-global");
-                            if(!toHighlight && f.ClassListContains("contains-variable-global"))
+                            if (!toHighlight && f.ClassListContains("contains-variable-global"))
                                 f.RemoveFromClassList("contains-variable-global");
                         }
                     };
-                    
+
                     functionViewer.OnVariableSelected = variable =>
                     {
                         foreach (FunctionItem f in root.Functions)
                         {
                             bool toHighlight = f.Function.UsedVariables.Any(x => x == variable);
-                            
-                            if(toHighlight && !f.ClassListContains("contains-variable"))
+
+                            if (toHighlight && !f.ClassListContains("contains-variable"))
                                 f.AddToClassList("contains-variable");
-                            if(!toHighlight && f.ClassListContains("contains-variable"))
+                            if (!toHighlight && f.ClassListContains("contains-variable"))
                                 f.RemoveFromClassList("contains-variable");
                         }
                     };
-                    
+
                     foreach (FunctionItem f in root.Functions)
                     {
-                        if(f.ClassListContains("contains-variable"))
+                        if (f.ClassListContains("contains-variable"))
                             f.RemoveFromClassList("contains-variable");
                     }
                 };
@@ -602,20 +602,20 @@ namespace Poiyomi.ModularShaderSystem.Debug
                 return;
             }
             timelineContent.Add(_roots[0]);
-            
+
             variablesViewer.OnVariableSelected = variable =>
             {
                 foreach (FunctionItem f in _roots[0].Functions)
                 {
                     bool toHighlight = f.Function.UsedVariables.Any(x => x == variable);
-                            
-                    if(toHighlight && !f.ClassListContains("contains-variable-global"))
+
+                    if (toHighlight && !f.ClassListContains("contains-variable-global"))
                         f.AddToClassList("contains-variable-global");
-                    if(!toHighlight && f.ClassListContains("contains-variable-global"))
+                    if (!toHighlight && f.ClassListContains("contains-variable-global"))
                         f.RemoveFromClassList("contains-variable-global");
                 }
             };
-            
+
             var timelineScroll = new ScrollView(ScrollViewMode.Vertical);
             timelineScroll.AddToClassList("timeline");
             timelineScroll.style.flexGrow = 1;
@@ -633,11 +633,11 @@ namespace Poiyomi.ModularShaderSystem.Debug
                 scroller.value = 0;
                 evt.newValue.Scroll(0);
             });
-            
+
             scroller.Adjust(_popup.value.GetScrollAdjustment());
 
             timelineScroll.Add(timelineContent);
-            
+
             left.Add(_popup);
             left.Add(timelineScroll);
             left.Add(scroller);

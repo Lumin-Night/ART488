@@ -11,7 +11,7 @@ namespace Poiyomi.ModularShaderSystem
     public class TemplateAsset : ScriptableObject
     {
         public string Template;
-        
+
         public string[] Keywords;
 
         public TemplateAsset(string template)
@@ -28,10 +28,10 @@ namespace Poiyomi.ModularShaderSystem
             object obj = getActiveFolderPath.Invoke(null, new object[0]);
             string pathToCurrentFolder = obj.ToString();
             string uniquePath = AssetDatabase.GenerateUniqueAssetPath($"{pathToCurrentFolder}/Template.{MSSConstants.TEMPLATE_EXTENSION}");
-            
-            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, ScriptableObject.CreateInstance<DoCreateNewAsset>(), uniquePath, null, (string) null);
+
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, ScriptableObject.CreateInstance<DoCreateNewAsset>(), uniquePath, null, (string)null);
         }
-        
+
         internal class DoCreateNewAsset : EndNameEditAction
         {
             public override void Action(int instanceId, string pathName, string resourceFile)
@@ -42,7 +42,7 @@ namespace Poiyomi.ModularShaderSystem
                 Selection.activeObject = o;
             }
 
-            public override void Cancelled(int instanceId, string pathName, string resourceFile) => Selection.activeObject = (Object) null;
+            public override void Cancelled(int instanceId, string pathName, string resourceFile) => Selection.activeObject = (Object)null;
         }
     }
 }

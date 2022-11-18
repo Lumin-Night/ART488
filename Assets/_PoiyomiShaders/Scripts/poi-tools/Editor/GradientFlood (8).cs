@@ -96,7 +96,7 @@ namespace DreadScripts
         private void OnGUI()
         {
             scroll = EditorGUILayout.BeginScrollView(scroll);
-            GUIStyle centeredTitle = new GUIStyle("boldlabel") {alignment = TextAnchor.MiddleCenter, fontSize = 16};
+            GUIStyle centeredTitle = new GUIStyle("boldlabel") { alignment = TextAnchor.MiddleCenter, fontSize = 16 };
             using (new GUILayout.VerticalScope("helpbox"))
             {
                 GUILayout.Label("Texture", centeredTitle);
@@ -104,7 +104,7 @@ namespace DreadScripts
                 {
                     GUILayout.FlexibleSpace();
                     EditorGUIUtility.labelWidth = 1;
-                    pathTexture = (Texture2D) EditorGUILayout.ObjectField(string.Empty, pathTexture, typeof(Texture2D), false, GUILayout.Width(80), GUILayout.Height(80));
+                    pathTexture = (Texture2D)EditorGUILayout.ObjectField(string.Empty, pathTexture, typeof(Texture2D), false, GUILayout.Width(80), GUILayout.Height(80));
                     EditorGUIUtility.labelWidth = 0;
 
                     GUILayout.FlexibleSpace();
@@ -137,19 +137,19 @@ namespace DreadScripts
 
                         EditorGUI.BeginChangeCheck();
 
-                        rangeLowerBound = EditorGUILayout.DelayedIntField((int) rangeLowerBound, GUI.skin.label, GUILayout.Width(28));
+                        rangeLowerBound = EditorGUILayout.DelayedIntField((int)rangeLowerBound, GUI.skin.label, GUILayout.Width(28));
                         EditorGUILayout.MinMaxSlider(ref rangeLowerBound, ref rangeUpperBound, 0, 255);
 
-                        rangeUpperBound = EditorGUILayout.DelayedIntField((int) rangeUpperBound, GUI.skin.label, GUILayout.Width(28));
+                        rangeUpperBound = EditorGUILayout.DelayedIntField((int)rangeUpperBound, GUI.skin.label, GUILayout.Width(28));
 
                         if (EditorGUI.EndChangeCheck())
                         {
-                            rangeUpperBound = Mathf.Clamp((int) rangeUpperBound, 0, 255);
+                            rangeUpperBound = Mathf.Clamp((int)rangeUpperBound, 0, 255);
                             rangeLowerBound = Mathf.Max(0, Mathf.Min(rangeUpperBound, rangeLowerBound));
                         }
                     }
                 }
-                
+
 
                 using (new GUILayout.HorizontalScope("box"))
                 {
@@ -181,7 +181,7 @@ namespace DreadScripts
                 using (new EditorGUI.DisabledScope(!pathTexture))
                     if (GUILayout.Button("Fill"))
                         GenerateFilledTexture(pathTexture);
-                
+
             }
             Credit();
 
@@ -307,13 +307,13 @@ namespace DreadScripts
                                 step.coordinates.RemoveAt(j);
                         }
 
-                        
+
                     }
                     if (GUILayout.Button("+", "toolbarbutton")) step.coordinates.Add(new Vector2Int());
 
                     EditorGUI.indentLevel--;
                 }
-                Skip:;
+            Skip:;
 
             }
         }
@@ -371,7 +371,7 @@ namespace DreadScripts
                 nextPixel.isFilled = true;
             }
 
-            
+
 
             while (pixelsToExpand.Any())
             {
@@ -419,12 +419,12 @@ namespace DreadScripts
                     {
                         if (f <= 1) ogColors[i] = new Color(f % 1, 0, 0, 0);
 
-                        else if (f <= 2) ogColors[i] = new Color(1, f%1, 0, 0);
+                        else if (f <= 2) ogColors[i] = new Color(1, f % 1, 0, 0);
 
-                            else if (f <= 3) ogColors[i] = new Color(1, 1, f % 1, 0);
+                        else if (f <= 3) ogColors[i] = new Color(1, 1, f % 1, 0);
 
                         else ogColors[i] = new Color(1, 1, 1, f % 1);
-                        
+
                     }
                 }
             }

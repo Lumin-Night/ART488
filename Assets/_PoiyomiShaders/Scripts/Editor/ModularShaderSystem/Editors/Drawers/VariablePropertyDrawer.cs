@@ -1,7 +1,7 @@
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
 
 namespace Poiyomi.ModularShaderSystem.UI
 {
@@ -22,16 +22,16 @@ namespace Poiyomi.ModularShaderSystem.UI
             foldout.value = property.isExpanded;
             foldout.Add(template);
             _root.Add(foldout);
-            
+
             var nameField = template.Q<TextField>("Name");
             nameField.RegisterValueChangedCallback(evt => foldout.text = evt.newValue);
             var typeField = template.Q<EnumField>("Type");
             var customTypeField = template.Q<VisualElement>("CustomType");
 
             typeField.Init((VariableType)property.FindPropertyRelative("Type").intValue);
-            
+
             customTypeField.style.display = ((VariableType)typeField.value) == VariableType.Custom ? DisplayStyle.Flex : DisplayStyle.None;
-            
+
             typeField.RegisterValueChangedCallback(e =>
             {
                 customTypeField.style.display = ((VariableType)e.newValue) == VariableType.Custom ? DisplayStyle.Flex : DisplayStyle.None;

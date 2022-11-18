@@ -2,11 +2,8 @@
 // Copyright (C) 2019 Thryrallo
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -41,7 +38,7 @@ namespace Thry
         private int updatedVersion = 0;
 
         private bool is_init = false;
-        
+
         public static ButtonData thry_message = null;
 
         //---------------------Stuff checkers and fixers-------------------
@@ -56,7 +53,7 @@ namespace Thry
             List<Type> subclasses = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(type => type.IsSubclassOf(typeof(ModuleSettings))).ToList();
             moduleSettings = new ModuleSettings[subclasses.Count];
             int i = 0;
-            foreach(Type classtype in subclasses)
+            foreach (Type classtype in subclasses)
             {
                 moduleSettings[i++] = (ModuleSettings)Activator.CreateInstance(classtype);
             }
@@ -70,7 +67,7 @@ namespace Thry
         //------------------Main GUI
         void OnGUI()
         {
-            if (!is_init || moduleSettings==null) InitVariables();
+            if (!is_init || moduleSettings == null) InitVariables();
             GUILayout.Label("ShaderUI v" + Config.Singleton.verion);
 
             GUINotification();
@@ -79,7 +76,7 @@ namespace Thry
             LocaleDropdown();
             GUIEditor();
             DrawHorizontalLine();
-            foreach(ModuleSettings s in moduleSettings)
+            foreach (ModuleSettings s in moduleSettings)
             {
                 s.Draw();
                 DrawHorizontalLine();
@@ -108,27 +105,27 @@ namespace Thry
 
         private void GUIMessage()
         {
-            if(thry_message!=null)
+            if (thry_message != null)
             {
                 bool doDrawLine = false;
-                if(thry_message.text.Length > 0)
+                if (thry_message.text.Length > 0)
                 {
                     doDrawLine = true;
-                    GUILayout.Label(new GUIContent(thry_message.text,thry_message.hover), thry_message.center_position?Styles.richtext_center: Styles.richtext);
+                    GUILayout.Label(new GUIContent(thry_message.text, thry_message.hover), thry_message.center_position ? Styles.richtext_center : Styles.richtext);
                     Rect r = GUILayoutUtility.GetLastRect();
                     if (Event.current.type == EventType.MouseDown && r.Contains(Event.current.mousePosition))
                         thry_message.action.Perform(ShaderEditor.Active?.Materials);
                 }
-                if(thry_message.texture != null)
+                if (thry_message.texture != null)
                 {
                     doDrawLine = true;
-                    if(thry_message.center_position) GUILayout.Label(new GUIContent(thry_message.texture.loaded_texture, thry_message.hover), EditorStyles.centeredGreyMiniLabel, GUILayout.MaxHeight(thry_message.texture.height));
+                    if (thry_message.center_position) GUILayout.Label(new GUIContent(thry_message.texture.loaded_texture, thry_message.hover), EditorStyles.centeredGreyMiniLabel, GUILayout.MaxHeight(thry_message.texture.height));
                     else GUILayout.Label(new GUIContent(thry_message.texture.loaded_texture, thry_message.hover), GUILayout.MaxHeight(thry_message.texture.height));
                     Rect r = GUILayoutUtility.GetLastRect();
                     if (Event.current.type == EventType.MouseDown && r.Contains(Event.current.mousePosition))
                         thry_message.action.Perform(ShaderEditor.Active?.Materials);
                 }
-                if(doDrawLine)
+                if (doDrawLine)
                     DrawHorizontalLine();
             }
         }
@@ -153,7 +150,7 @@ namespace Thry
                 Toggle("autoSetAnchorOverride");
                 Dropdown("humanBoneAnchor");
                 Text("anchorOverrideObjectName");
-                
+
                 EditorGUI.indentLevel -= 2;
             }
         }
@@ -185,7 +182,7 @@ namespace Thry
             {
                 EditorGUILayout.SelectableLabel(Locale.editor.Get("my_data_header"), EditorStyles.boldLabel);
                 Rect last = GUILayoutUtility.GetLastRect();
-                
+
                 Rect data_rect = new Rect(0, last.height, Screen.width, Screen.height - last.height);
                 scroll = EditorGUILayout.BeginScrollView(scroll, GUILayout.Width(data_rect.width), GUILayout.Height(data_rect.height));
                 GUILayout.TextArea(text);
@@ -197,7 +194,8 @@ namespace Thry
         {
             if (ModuleHandler.GetFirstPartyModules() == null)
                 return;
-            if (ModuleHandler.GetFirstPartyModules().Count > 0) {
+            if (ModuleHandler.GetFirstPartyModules().Count > 0)
+            {
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label(Locale.editor.Get("header_modules"), EditorStyles.boldLabel);
                 if (GUILayout.Button("Reload"))
@@ -236,7 +234,8 @@ namespace Thry
             EditorGUI.BeginDisabledGroup(!module.available_requirement_fullfilled);
             EditorGUI.BeginChangeCheck();
             bool install = GUI.Toggle(rect, is_installed, "");
-            if(EditorGUI.EndChangeCheck()){
+            if (EditorGUI.EndChangeCheck())
+            {
                 ModuleHandler.InstallRemoveModule(module, install);
             }
             if (module.update_available)
@@ -245,7 +244,7 @@ namespace Thry
                 rect.width = 55;
                 GUIStyle style = new GUIStyle(EditorStyles.miniButton);
                 style.fixedHeight = 17;
-                if (GUI.Button(rect, "Update",style))
+                if (GUI.Button(rect, "Update", style))
                     ModuleHandler.UpdateModule(module);
             }
             //add update notification
@@ -287,7 +286,7 @@ namespace Thry
             Text(configField, Locale.editor.Get(configField), Locale.editor.Get(configField + "_tooltip"), createHorizontal);
         }
 
-        private static void Text(string configField, string[] content, bool createHorizontal=true)
+        private static void Text(string configField, string[] content, bool createHorizontal = true)
         {
             Text(configField, content[0], content[1], createHorizontal);
         }
@@ -343,7 +342,7 @@ namespace Thry
 
         private static void Dropdown(string configField)
         {
-            Dropdown(configField, Locale.editor.Get(configField),Locale.editor.Get(configField+"_tooltip"));
+            Dropdown(configField, Locale.editor.Get(configField), Locale.editor.Get(configField + "_tooltip"));
         }
 
         private static void Dropdown(string configField, string[] content)
@@ -362,9 +361,9 @@ namespace Thry
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(57);
                 GUILayout.Label(new GUIContent(label, hover), GUILayout.ExpandWidth(false));
-                value = EditorGUILayout.EnumPopup(value,GUILayout.ExpandWidth(false));
+                value = EditorGUILayout.EnumPopup(value, GUILayout.ExpandWidth(false));
                 EditorGUILayout.EndHorizontal();
-                if(EditorGUI.EndChangeCheck())
+                if (EditorGUI.EndChangeCheck())
                 {
                     field.SetValue(config, value);
                     config.Save();
@@ -379,10 +378,10 @@ namespace Thry
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label(new GUIContent(Locale.editor.Get("locale"), Locale.editor.Get("locale_tooltip")), GUILayout.ExpandWidth(false));
             Locale.editor.selected_locale_index = EditorGUILayout.Popup(Locale.editor.selected_locale_index, Locale.editor.available_locales, GUILayout.ExpandWidth(false));
-            if(Locale.editor.Get("translator").Length>0)
-                GUILayout.Label(Locale.editor.Get("translation") +": "+Locale.editor.Get("translator"), GUILayout.ExpandWidth(false));
+            if (Locale.editor.Get("translator").Length > 0)
+                GUILayout.Label(Locale.editor.Get("translation") + ": " + Locale.editor.Get("translator"), GUILayout.ExpandWidth(false));
             EditorGUILayout.EndHorizontal();
-            if(EditorGUI.EndChangeCheck())
+            if (EditorGUI.EndChangeCheck())
             {
                 Config.Singleton.locale = Locale.editor.available_locales[Locale.editor.selected_locale_index];
                 Config.Singleton.Save();
@@ -392,18 +391,18 @@ namespace Thry
 
         private static bool Toggle(bool val, string text, GUIStyle label_style = null)
         {
-            return Toggle(val, text, "",label_style);
+            return Toggle(val, text, "", label_style);
         }
 
-        private static bool Toggle(bool val, string text, string tooltip, GUIStyle label_style=null)
+        private static bool Toggle(bool val, string text, string tooltip, GUIStyle label_style = null)
         {
             GUILayout.BeginHorizontal();
             GUILayout.Space(35);
             val = GUILayout.Toggle(val, new GUIContent("", tooltip), GUILayout.ExpandWidth(false));
-            if(label_style==null)
+            if (label_style == null)
                 GUILayout.Label(new GUIContent(text, tooltip));
             else
-                GUILayout.Label(new GUIContent(text, tooltip),label_style);
+                GUILayout.Label(new GUIContent(text, tooltip), label_style);
             GUILayout.EndHorizontal();
             return val;
         }

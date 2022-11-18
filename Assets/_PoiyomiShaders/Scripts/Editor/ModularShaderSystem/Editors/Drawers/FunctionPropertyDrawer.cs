@@ -13,16 +13,16 @@ namespace Poiyomi.ModularShaderSystem.UI
         {
             _root = new VisualElement();
 
-            var visualTree =  Resources.Load<VisualTreeAsset>(MSSConstants.RESOURCES_FOLDER + "/MSSUIElements/FunctionPropertyDrawer");
+            var visualTree = Resources.Load<VisualTreeAsset>(MSSConstants.RESOURCES_FOLDER + "/MSSUIElements/FunctionPropertyDrawer");
             VisualElement template = visualTree.CloneTree();
             var foldout = new Foldout();
             foldout.text = property.displayName;
             foldout.RegisterValueChangedCallback((e) => property.isExpanded = e.newValue);
             foldout.value = property.isExpanded;
-            
+
             var nameField = template.Q<TextField>("Name");
             nameField.RegisterValueChangedCallback(evt => foldout.text = evt.newValue);
-            
+
             foldout.Add(template);
             _root.Add(foldout);
 

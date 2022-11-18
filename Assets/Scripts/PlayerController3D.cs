@@ -17,11 +17,14 @@ public class PlayerController3D : MonoBehaviour
     private Vector3 velocity;
     private float jumpForce;
     public Animator characterAnimatior;
-    [SerializeField] private bool isFacingLeft;
-    [SerializeField] private bool isFacingRight;
-    [SerializeField] private bool isFacingUp;
-    [SerializeField] private bool isWalking;
-    [SerializeField] private bool isRunning;
+    //[SerializeField] private bool isFacingLeft;
+    //[SerializeField] private bool isFacingRight;
+    //[SerializeField] private bool isFacingUp;
+    //[SerializeField] private bool isWalking;
+    //[SerializeField] private bool isRunning;
+    [SerializeField] private LayerMask MovePlatform;
+
+
 
     //Boundary Detection
     private bool isSlow;
@@ -215,7 +218,6 @@ public class PlayerController3D : MonoBehaviour
             isWallJumping = false;
             wallJumped = wallJumper;
         }
-
     }
 
     public void Collect()
@@ -225,6 +227,16 @@ public class PlayerController3D : MonoBehaviour
     }
 
     public void MovementAnimation()
+    {
+        characterAnimatior.SetFloat("movementX", moveDirection.x);
+        characterAnimatior.SetFloat("movementZ", moveDirection.z);
+        characterAnimatior.SetBool("isWallJumping", isWallJumping);
+        characterAnimatior.SetBool("isJumping", isJumping);
+        characterAnimatior.SetBool("isDashing", isAirDashing);
+    }
+
+
+    /*public void MovementAnimation()
     {
         if(Input.GetAxisRaw("Horizontal") <= -.2)
         {
@@ -264,5 +276,6 @@ public class PlayerController3D : MonoBehaviour
         characterAnimatior.SetFloat("MoveX", Mathf.Abs(moveX));
         characterAnimatior.SetBool("isWallJumping", isWallJumping);
     }
+    */
 
 }

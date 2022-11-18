@@ -1,0 +1,10 @@
+.label-main-title {
+    color: rgb(203, 170, 219);
+    font-size: 45px;
+    -unity-font-style: bold;
+    -unity-font: url('project://database/Assets/UI%20Toolkit/GEAREDSLAB.TTF?fileID=12800000&guid=4c3bdfdfb3781ef4bb6a29ac933dea90&type=3#GEAREDSLAB');
+    margin-left: 28px;
+    margin-right: 28px;
+    margin-top: 28px;
+    margin-bottom: 28px;
+}

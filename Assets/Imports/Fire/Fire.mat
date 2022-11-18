@@ -8,9 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Fire
-  m_Shader: {fileID: 4800000, guid: a21db43851b856d4ea68793ab2873b35, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords:
+  m_Shader: {fileID: 4800000, guid: 5ca92f1e9fc35504aba297fd1acd62df, type: 3}
+  m_ValidKeywords:
   - POI_EMISSION_1
   - POI_LIGHT_DATA_ADDITIVE_DIRECTIONAL_ENABLE
   - POI_LIGHT_DATA_ADDITIVE_ENABLE
@@ -20,14 +19,16 @@ Material:
   - _GLOSSYREFLECTIONS_OFF
   - _LIGHTINGMODE_FLAT
   - _RIMSTYLE_POIYOMI
+  m_InvalidKeywords:
   - _STOCHASTICMODE_DELIOT_HEITZ
   - _TPS_ANIMATEDTOGGLE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2450
   stringTagMap:
     OriginalShader: .poiyomi/Poiyomi 8.1/Poiyomi Toon
+    RenderType: TransparentCutout
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -552,7 +553,7 @@ Material:
     - _AddBlendOpAlpha: 0
     - _AddDstBlend: 1
     - _AddDstBlendAlpha: 1
-    - _AddSrcBlend: 0
+    - _AddSrcBlend: 1
     - _AddSrcBlendAlpha: 1
     - _Add_Antipodean_Rim2Light: 0
     - _Add_Antipodean_RimLight: 0
@@ -577,8 +578,8 @@ Material:
     - _AlphaFresnelSharpness: 0.5
     - _AlphaFresnelWidth: 0.5
     - _AlphaMipScale: 0.25
-    - _AlphaMod: -0.798
-    - _AlphaPremultiply: 1
+    - _AlphaMod: 0.136
+    - _AlphaPremultiply: 0
     - _AlphaSharpenedA2C: 0
     - _AlphaTextureStochastic: 0
     - _AlphaTextureUV: 0
@@ -952,7 +953,7 @@ Material:
     - _DistortionStrength1AudioLinkBand: 0
     - _DistortionStrengthAudioLinkBand: 0
     - _DistortionUvToDistort: 0
-    - _DstBlend: 1
+    - _DstBlend: 10
     - _DstBlendAlpha: 0
     - _EmissionAL0Enabled: 0
     - _EmissionAL0MultipliersBand: 0
@@ -1266,7 +1267,7 @@ Material:
     - _LightingAdditiveMonochromatic: 0
     - _LightingAdditivePassthrough: 0.5
     - _LightingAdditiveType: 1
-    - _LightingCap: 1
+    - _LightingCap: 0
     - _LightingCapEnabled: 0
     - _LightingCastedShadows: 0
     - _LightingColorMode: 0
@@ -1440,7 +1441,7 @@ Material:
     - _MochieSpecularStrength: 1
     - _MochieSpecularStrength2: 1
     - _MochieSpecularTintThemeIndex: 0
-    - _Mode: 5
+    - _Mode: 9
     - _ModelAngleMax: 90
     - _ModelAngleMin: 45
     - _MultilayerMathBlurMapUV: 0
@@ -1656,7 +1657,7 @@ Material:
     - _SphericalDissolveClamp: 0
     - _SphericalDissolveInvert: 0
     - _SphericalDissolveRadius: 1.5
-    - _SrcBlend: 10
+    - _SrcBlend: 5
     - _SrcBlendAlpha: 1
     - _SssBumpBlur: 0.7
     - _SssScale: 1
@@ -1836,7 +1837,7 @@ Material:
     - _VertexRoundingEnabled: 0
     - _VertexRoundingRangeBand: 0
     - _VertexWorldTranslationALBand: 0
-    - _ZTest: 0
+    - _ZTest: 4
     - _ZWrite: 1
     - _glitterFrequencyLinearEmissive: 20
     - footer_discord: 0
@@ -1983,7 +1984,7 @@ Material:
     - m_start_Matcap3: 0
     - m_start_Matcap4: 0
     - m_start_PathAudioLink: 0
-    - m_start_PoiLightData: 0
+    - m_start_PoiLightData: 1
     - m_start_PoiShading: 1
     - m_start_RGBMask: 0
     - m_start_Rim2AudioLink: 0

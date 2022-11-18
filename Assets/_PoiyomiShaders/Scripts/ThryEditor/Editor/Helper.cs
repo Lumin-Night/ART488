@@ -2,22 +2,14 @@
 // Copyright (C) 2019 Thryrallo
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Security;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.Profiling;
 
 namespace Thry
@@ -26,7 +18,7 @@ namespace Thry
     {
         public static string ReplaceVariables(this string s, params object[] values)
         {
-            for(int i = 0; i < values.Length;i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 s = s.Replace("{" + i + "}", values[i].ToString());
             }
@@ -281,7 +273,7 @@ namespace Thry
 
     public class FileHelper
     {
-        public static string FindFile(string name, string type=null)
+        public static string FindFile(string name, string type = null)
         {
             string[] guids;
             if (type != null)
@@ -295,7 +287,7 @@ namespace Thry
 
         //-----------------------Value To File Saver----------------------
 
-        private static Dictionary<string, Dictionary<string,string>> s_textFileData = new Dictionary<string, Dictionary<string, string>>();
+        private static Dictionary<string, Dictionary<string, string>> s_textFileData = new Dictionary<string, Dictionary<string, string>>();
 
         public static string LoadValueFromFile(string key, string path)
         {
@@ -310,13 +302,13 @@ namespace Thry
             string data = ReadFileIntoString(path);
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
             MatchCollection matchCollection = Regex.Matches(data, @".*\s*:=.*(?=\r?\n)");
-            foreach(Match m in matchCollection)
+            foreach (Match m in matchCollection)
             {
                 string[] keyvalue = m.Value.Split(new string[] { ":=" }, 2, StringSplitOptions.RemoveEmptyEntries);
-                if(keyvalue.Length>1)
+                if (keyvalue.Length > 1)
                     dictionary[keyvalue[0]] = keyvalue[1];
             }
-            s_textFileData[path] = dictionary; 
+            s_textFileData[path] = dictionary;
         }
 
         public static bool SaveValueToFile(string key, string value, string path)
@@ -332,7 +324,7 @@ namespace Thry
             if (s_textFileData[path].ContainsKey(key)) s_textFileData[path].Remove(key);
         }
 
-        private static bool SaveDictionaryToFile(string path, Dictionary<string,string> dictionary)
+        private static bool SaveDictionaryToFile(string path, Dictionary<string, string> dictionary)
         {
             s_textFileData[path] = dictionary;
             string data = s_textFileData[path].Aggregate("", (d1, d2) => d1 + d2.Key + ":=" + d2.Value + "\n");
@@ -457,9 +449,9 @@ namespace Thry
             {
                 string path = AssetDatabase.GetAssetPath(texture);
                 string gradient_data_string = null;
-                if(path != null) gradient_data_string = FileHelper.LoadValueFromFile(AssetDatabase.AssetPathToGUID(path), PATH.GRADIENT_INFO_FILE);
+                if (path != null) gradient_data_string = FileHelper.LoadValueFromFile(AssetDatabase.AssetPathToGUID(path), PATH.GRADIENT_INFO_FILE);
                 //For Backwards compatibility check old id (name) if guid cant be found
-                if(gradient_data_string == null) gradient_data_string  = FileHelper.LoadValueFromFile(texture.name, PATH.GRADIENT_INFO_FILE);
+                if (gradient_data_string == null) gradient_data_string = FileHelper.LoadValueFromFile(texture.name, PATH.GRADIENT_INFO_FILE);
                 if (gradient_data_string != null)
                 {
                     Debug.Log(texture.name + " Gradient loaded from file.");
@@ -676,11 +668,11 @@ namespace Thry
             { RenderTextureFormat.ARGBHalf , 64 },
             { RenderTextureFormat.Shadowmap , 8 }, //guessed bpp
             { RenderTextureFormat.RGB565 , 32 }, //guessed bpp
-            { RenderTextureFormat.ARGB4444 , 16 }, 
+            { RenderTextureFormat.ARGB4444 , 16 },
             { RenderTextureFormat.ARGB1555 , 16 },
-            { RenderTextureFormat.Default , 32 }, 
+            { RenderTextureFormat.Default , 32 },
             { RenderTextureFormat.ARGB2101010 , 32 },
-            { RenderTextureFormat.DefaultHDR , 128 }, 
+            { RenderTextureFormat.DefaultHDR , 128 },
             { RenderTextureFormat.ARGB64 , 64 },
             { RenderTextureFormat.ARGBFloat , 128 },
             { RenderTextureFormat.RGFloat , 64 },
@@ -803,7 +795,8 @@ namespace Thry
                 {
                     foreach (Material m in materials) m.renderQueue = q;
                 }
-            }else if (key == "render_type")
+            }
+            else if (key == "render_type")
             {
                 foreach (Material m in materials) m.SetOverrideTag("RenderType", value);
             }
@@ -824,7 +817,7 @@ namespace Thry
                 {
                     prev = p.floatValue;
                     p.floatValue = f_value;
-                    
+
                 }
             }
             else if (p.type == MaterialProperty.PropType.Vector)
@@ -1161,7 +1154,7 @@ namespace Thry
 
         //==============Texture Array=================
 
-        [MenuItem("Assets/Thry/Flipbooks/Images 2 TextureArray",false, 303)]
+        [MenuItem("Assets/Thry/Flipbooks/Images 2 TextureArray", false, 303)]
         static void SelectionImagesToTextureArray()
         {
             string[] paths = Selection.assetGUIDs.Select(g => AssetDatabase.GUIDToAssetPath(g)).ToArray();
@@ -1189,7 +1182,7 @@ namespace Thry
             else
             {
 #if SYSTEM_DRAWING
-                Texture2D[] wew = paths.Where(p=> AssetDatabase.GetMainAssetTypeAtPath(p).IsAssignableFrom(typeof(Texture2D))).Select(p => AssetDatabase.LoadAssetAtPath<Texture2D>(p)).ToArray();
+                Texture2D[] wew = paths.Where(p => AssetDatabase.GetMainAssetTypeAtPath(p).IsAssignableFrom(typeof(Texture2D))).Select(p => AssetDatabase.LoadAssetAtPath<Texture2D>(p)).ToArray();
                 Array.Sort(wew, (UnityEngine.Object one, UnityEngine.Object two) => one.name.CompareTo(two.name));
                 Selection.objects = wew;
                 Texture2DArray texture2DArray = new Texture2DArray(wew[0].width, wew[0].height, wew.Length, wew[0].format, true);
@@ -1221,7 +1214,7 @@ namespace Thry
             }
         }
 
-        [MenuItem("Assets/Thry/Flipbooks/Gif 2 TextureArray",false, 303)]
+        [MenuItem("Assets/Thry/Flipbooks/Gif 2 TextureArray", false, 303)]
         static void SelectionGifToTextureArray()
         {
             GifToTextureArray(AssetDatabase.GUIDToAssetPath(Selection.assetGUIDs[0]));
@@ -1702,12 +1695,16 @@ namespace Thry
                 {
                     // if is keyword drawer make sure all materials have the keyworkd enabled / disabled depending on their value
                     string keyword = null;
-                    if (propertyDrawer.GetType() == typeof(ThryToggleDrawer)){
+                    if (propertyDrawer.GetType() == typeof(ThryToggleDrawer))
+                    {
                         keyword = (string)keyWordFieldThry.GetValue(propertyDrawer);
-                    }else if (propertyDrawer.GetType().ToString() == "UnityEditor.MaterialToggleDrawer")
+                    }
+                    else if (propertyDrawer.GetType().ToString() == "UnityEditor.MaterialToggleDrawer")
                     {
                         keyword = (string)keyWordFieldUnityDefault.GetValue(propertyDrawer);
-                    }                    if(keyword != null) {
+                    }
+                    if (keyword != null)
+                    {
                         foreach (Material m in targets)
                         {
                             if (m.GetFloat(propertyName) == 1)
@@ -1868,7 +1865,7 @@ namespace Thry
     //SOFTWARE.
     public class MaterialCleaner
     {
-        public enum CleanPropertyType { Texture,Float,Color }
+        public enum CleanPropertyType { Texture, Float, Color }
 
         private const string PropPath_Tex = "m_SavedProperties.m_TexEnvs";
         private const string PropPath_Float = "m_SavedProperties.m_Floats";
@@ -1881,7 +1878,8 @@ namespace Thry
             return PropPath_Tex;
         }
         public static int CountAllUnusedProperties(params Material[] materials)
-        {;
+        {
+            ;
             return materials.Sum(m =>
             {
                 int count = 0;
@@ -1903,7 +1901,7 @@ namespace Thry
                     string propName = properties.GetArrayElementAtIndex(i).displayName;
                     if (!mat.HasProperty(propName))
                     {
-                        if (list!=null) list.Add(propName);
+                        if (list != null) list.Add(propName);
                         count++;
                     }
                 }
@@ -1914,7 +1912,7 @@ namespace Thry
         {
             List<string> list = new List<string>();
             int count = materials.Sum(m => CountUnusedProperties(m, new SerializedObject(m), type, list));
-            if(count > 0) ShaderEditor.Out($"Unbound properties of type {type}", list.Distinct().Select(s => $"↳{s}"));
+            if (count > 0) ShaderEditor.Out($"Unbound properties of type {type}", list.Distinct().Select(s => $"↳{s}"));
             return count;
         }
         public static int CountUnusedProperties(CleanPropertyType type, params Material[] materials)

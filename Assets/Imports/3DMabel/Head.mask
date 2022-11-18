@@ -1,0 +1,533 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Head
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Gloves
+    m_Weight: 0
+  - m_Path: Hips
+    m_Weight: 0
+  - m_Path: Hips/ButJiggleR
+    m_Weight: 0
+  - m_Path: Hips/ButtJiggleL
+    m_Weight: 0
+  - m_Path: Hips/Left_LegUp
+    m_Weight: 0
+  - m_Path: Hips/Left_LegUp/Left_Leg
+    m_Weight: 0
+  - m_Path: Hips/Left_LegUp/Left_Leg/Left_Ankle
+    m_Weight: 0
+  - m_Path: Hips/Left_LegUp/Left_Leg/Left_Ankle/Left_Foot
+    m_Weight: 0
+  - m_Path: Hips/Right_LegUp
+    m_Weight: 0
+  - m_Path: Hips/Right_LegUp/Right_Leg
+    m_Weight: 0
+  - m_Path: Hips/Right_LegUp/Right_Leg/Right_Ankle
+    m_Weight: 0
+  - m_Path: Hips/Right_LegUp/Right_Leg/Right_Ankle/Right_Foot
+    m_Weight: 0
+  - m_Path: Hips/RobeBackRight1
+    m_Weight: 0
+  - m_Path: Hips/RobeBackRight1/RobeBackRight2
+    m_Weight: 0
+  - m_Path: Hips/RobeBackRight1/RobeBackRight2/RobeBackRight3
+    m_Weight: 0
+  - m_Path: Hips/RobeBackRight7
+    m_Weight: 0
+  - m_Path: Hips/RobeBackRight7/RobeBackRight2
+    m_Weight: 0
+  - m_Path: Hips/RobeBackRight7/RobeBackRight2/RobeBackRight3
+    m_Weight: 0
+  - m_Path: Hips/RobeFront1
+    m_Weight: 0
+  - m_Path: Hips/RobeFront1/RobeFront2
+    m_Weight: 0
+  - m_Path: Hips/RobeFront1/RobeFront2/RobeFront3
+    m_Weight: 0
+  - m_Path: Hips/RobeFront1/RobeFront2/RobeFront3/RobeFront4
+    m_Weight: 0
+  - m_Path: Hips/RobeFrontRight1
+    m_Weight: 0
+  - m_Path: Hips/RobeFrontRight1/RobeFrontRight2
+    m_Weight: 0
+  - m_Path: Hips/RobeFrontRight1/RobeFrontRight2/RobeFrontRight3
+    m_Weight: 0
+  - m_Path: Hips/RobeFrontRight7
+    m_Weight: 0
+  - m_Path: Hips/RobeFrontRight7/RobeFrontRight2
+    m_Weight: 0
+  - m_Path: Hips/RobeFrontRight7/RobeFrontRight2/RobeFrontRight3
+    m_Weight: 0
+  - m_Path: Hips/RobeRight1
+    m_Weight: 0
+  - m_Path: Hips/RobeRight1/RobeRight2
+    m_Weight: 0
+  - m_Path: Hips/RobeRight1/RobeRight2/RobeRight3
+    m_Weight: 0
+  - m_Path: Hips/RobeRight7
+    m_Weight: 0
+  - m_Path: Hips/RobeRight7/RobeRight2
+    m_Weight: 0
+  - m_Path: Hips/RobeRight7/RobeRight2/RobeRight3
+    m_Weight: 0
+  - m_Path: Hips/Spine
+    m_Weight: 0
+  - m_Path: Hips/Spine/CloakRootBack
+    m_Weight: 0
+  - m_Path: Hips/Spine/CloakRootBack/CloakBack1
+    m_Weight: 0
+  - m_Path: Hips/Spine/CloakRootBack/CloakBack1/CloakBack2
+    m_Weight: 0
+  - m_Path: Hips/Spine/CloakRootBack/CloakBack1/CloakBack2/CloakBack3
+    m_Weight: 0
+  - m_Path: Hips/Spine/CloakRootBack/CloakBack1/CloakBack2/CloakBack3/CloakBack4
+    m_Weight: 0
+  - m_Path: Hips/Spine/CloakRootBack/CloakBack1/RobeBack1
+    m_Weight: 0
+  - m_Path: Hips/Spine/CloakRootBack/CloakBack1/RobeBack1/RobeBack2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Middle1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Middle1/Left_Middle2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Middle1/Left_Middle2/Left_Middle3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Middle1/Left_Middle2/Left_Middle3/Left_Middle4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Pinky1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Pinky1/Left_Pinky2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Pinky1/Left_Pinky2/Left_Pink
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Pinky1/Left_Pinky2/Left_Pink/Left_Pinky4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Pointer1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Pointer1/Left_Pointer2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Pointer1/Left_Pointer2/Left_Pointer3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Pointer1/Left_Pointer2/Left_Pointer3/Left_Pointer4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Ring1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Ring1/Left_Ring2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Ring1/Left_Ring2/Left_Ring
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Ring1/Left_Ring2/Left_Ring/Left_Ring4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Thumb1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Thumb1/Left_Thumb2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Thumb1/Left_Thumb2/Left_Thumb3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/Left_Wrist/Left_Thumb1/Left_Thumb2/Left_Thumb3/Left_Thumb4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/LeftSleeveBack1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/LeftSleeveBack1/LeftSleeveBack2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/LeftSleeveBack1/LeftSleeveBack2/LeftSleeveBack3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/LeftSleeveBack1/LeftSleeveBack2/LeftSleeveBack3/LeftSleeveBack4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/LeftSleeveFront1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/LeftSleeveFront1/LeftSleeveFront2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/LeftSleeveFront1/LeftSleeveFront2/LeftSleeveFront3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Left_Shoulder/Left_ArmUp/Left_Arm/LeftSleeveFront1/LeftSleeveFront2/LeftSleeveFront3/LeftSleeveFront4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/BangRight
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/BangRight/BangRight1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/BangRight/BangRight1/BangRight2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/BangRight6
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/BangRight6/BangRight1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/BangRight6/BangRight1/BangRight2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/EarRight
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/EarRight/EarRightTip
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/EarRight1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/EarRight1/EarRightTip
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/Eye_L
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/Eye_R
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairFront
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairFront/HairFront1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairFront/HairFront1/HairFront2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopLarge
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopLarge/HairTopLarge1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopLarge/HairTopLarge1/HairTopLarge2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopLargeLower1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopLargeLower1/HairTopLargeLower2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopLargeLower1/HairTopLargeLower2/HairTopLargeLower3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopLeft
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopLeft/HairTopLeft1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopLeft/HairTopLeft1/HairTopLeft2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopSmall
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/HairTopSmall/HairTopSmall1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Neck/Head/Mask
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Middle1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Middle1/Right_Middle2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Middle1/Right_Middle2/Right_Middle3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Middle1/Right_Middle2/Right_Middle3/Right_Middle4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Pinky1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Pinky1/Right_Pinky2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Pinky1/Right_Pinky2/Right_Pink
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Pinky1/Right_Pinky2/Right_Pink/Right_Pinky4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Pointer1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Pointer1/Right_Pointer2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Pointer1/Right_Pointer2/Right_Pointer3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Pointer1/Right_Pointer2/Right_Pointer3/Right_Pointer4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Ring1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Ring1/Right_Ring2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Ring1/Right_Ring2/Right_Ring
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Ring1/Right_Ring2/Right_Ring/Right_Ring4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Thumb1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Thumb1/Right_Thumb2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Thumb1/Right_Thumb2/Right_Thumb3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/Right_Wrist/Right_Thumb1/Right_Thumb2/Right_Thumb3/Right_Thumb4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/RightSleeveBack1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/RightSleeveBack1/RightSleeveBack2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/RightSleeveBack1/RightSleeveBack2/RightSleeveBack3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/RightSleeveBack1/RightSleeveBack2/RightSleeveBack3/RightSleeveBack4
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/RightSleeveFront1
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/RightSleeveFront1/RightSleeveFront2
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/RightSleeveFront1/RightSleeveFront2/RightSleeveFront3
+    m_Weight: 0
+  - m_Path: Hips/Spine/Spine1/Spine2/Right_Shoulder/Right_ArmUp/Right_Arm/RightSleeveFront1/RightSleeveFront2/RightSleeveFront3/RightSleeveFront4
+    m_Weight: 0
+  - m_Path: ikHandle5
+    m_Weight: 0
+  - m_Path: ikHandle6
+    m_Weight: 0
+  - m_Path: MabelBody
+    m_Weight: 0
+  - m_Path: MabelMaster
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle2
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle2/ikHandle1
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle2/nurbsCircle24
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle3
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle3/ikHandle2
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle3/nurbsCircle25
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/locator1
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/locator2
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/nurbsCircle5
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/nurbsCircle5/locator7
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/nurbsCircle5/locator8
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/nurbsCircle5/locator11
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/nurbsCircle6
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/nurbsCircle6/locator22
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/nurbsCircle6/locator23
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/nurbsCircle6/locator26
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/nurbsCircle46
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle4/nurbsCircle46/locator16
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle9
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle9/locator21
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle9/locator24
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle9/locator27
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle10
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle10/locator6
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle10/locator10
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle10/locator12
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle47
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle7/nurbsCircle47/locator15
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle12
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle12/locator3
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle22
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle22/locator30
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle22/locator36
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle22/nurbsCircle21
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle22/nurbsCircle21/locator31
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle22/nurbsCircle21/locator35
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle22/nurbsCircle21/nurbsCircle20
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle22/nurbsCircle21/nurbsCircle20/locator32
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle22/nurbsCircle21/nurbsCircle20/locator33
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle22/nurbsCircle21/nurbsCircle20/locator34
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle23
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle23/locator29
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle23/locator37
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle29
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle29/nurbsCircle33
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle29/nurbsCircle33/nurbsCircle37
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle30
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle30/nurbsCircle34
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle30/nurbsCircle34/nurbsCircle38
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle31
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle31/nurbsCircle35
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle31/nurbsCircle35/nurbsCircle39
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle32
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle32/nurbsCircle36
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle32/nurbsCircle36/nurbsCircle40
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle41
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle41/nurbsCircle42
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle41/nurbsCircle42/nurbsCircle43
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle16/nurbsCircle18/nurbsCircle48
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/curve1
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/curve2
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle44
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle45
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle50
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle50/nurbsCircle56
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle51
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle51/nurbsCircle55
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle52
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle53
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle53/nurbsCircle57
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle54
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle19/nurbsCircle54/nurbsCircle58
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle22
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle22/locator30
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle22/locator36
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle22/nurbsCircle21
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle22/nurbsCircle21/locator31
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle22/nurbsCircle21/locator35
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle22/nurbsCircle21/nurbsCircle20
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle22/nurbsCircle21/nurbsCircle20/locator32
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle22/nurbsCircle21/nurbsCircle20/locator33
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle22/nurbsCircle21/nurbsCircle20/locator34
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle23
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle23/locator29
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle23/locator37
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle29
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle29/nurbsCircle33
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle29/nurbsCircle33/nurbsCircle37
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle30
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle30/nurbsCircle34
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle30/nurbsCircle34/nurbsCircle38
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle31
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle31/nurbsCircle35
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle31/nurbsCircle35/nurbsCircle39
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle32
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle32/nurbsCircle36
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle32/nurbsCircle36/nurbsCircle40
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle41
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle41/nurbsCircle42
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle41/nurbsCircle42/nurbsCircle43
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle15/nurbsCircle26/LeftWrist/nurbsCircle49
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle27
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle27/locator19
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle27/nurbsCircle28
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle27/nurbsCircle28/locator17
+    m_Weight: 0
+  - m_Path: MabelMaster/nurbsCircle11/nurbsCircle13/nurbsCircle14/nurbsCircle27/nurbsCircle28/locator18
+    m_Weight: 0
+  - m_Path: OverCoat
+    m_Weight: 0
+  - m_Path: Robe
+    m_Weight: 0

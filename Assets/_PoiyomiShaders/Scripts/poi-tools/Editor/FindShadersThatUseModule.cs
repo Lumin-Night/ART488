@@ -1,10 +1,8 @@
 ﻿#if UNITY_EDITOR
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using System;
 using Poiyomi.ModularShaderSystem;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 namespace Poiyomi
 {

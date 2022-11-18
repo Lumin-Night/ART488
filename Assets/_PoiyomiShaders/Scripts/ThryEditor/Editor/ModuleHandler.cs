@@ -2,13 +2,9 @@
 // Copyright (C) 2019 Thryrallo
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEditor;
-using UnityEngine;
 
 namespace Thry
 {
@@ -60,13 +56,14 @@ namespace Thry
         private static void LoadModules()
         {
             modules_are_being_loaded = true;
-            WebHelper.DownloadStringASync(URL.MODULE_COLLECTION, delegate (string s) {
+            WebHelper.DownloadStringASync(URL.MODULE_COLLECTION, delegate (string s)
+            {
                 first_party_modules = new List<Module>();
                 third_party_modules = new List<Module>();
                 ModuleCollection module_collection = Parser.ParseToObject<ModuleCollection>(s);
-                foreach(ModuleCollectionInfo info in module_collection.first_party)
+                foreach (ModuleCollectionInfo info in module_collection.first_party)
                 {
-                    LoadModule(info,first_party_modules);
+                    LoadModule(info, first_party_modules);
                 }
                 foreach (ModuleCollectionInfo info in module_collection.third_party)
                 {
@@ -103,7 +100,7 @@ namespace Thry
 
         private static bool LoadModuleLocationData(Module m)
         {
-            string data = FileHelper.LoadValueFromFile(m.id,PATH.MODULES_LOCATION__DATA);
+            string data = FileHelper.LoadValueFromFile(m.id, PATH.MODULES_LOCATION__DATA);
             if (string.IsNullOrEmpty(data))
             {
                 return false;
@@ -135,7 +132,7 @@ namespace Thry
                 if (string.IsNullOrEmpty(module.path) == false)
                 {
                     module.installed_module = Parser.ParseToObject<ModuleInfo>(FileHelper.ReadFileIntoString(FindModuleFilePath(module.path)));
-                    SaveModuleLocationData(module,AssetDatabase.AssetPathToGUID(module.path));
+                    SaveModuleLocationData(module, AssetDatabase.AssetPathToGUID(module.path));
                 }
             }
         }
@@ -172,10 +169,10 @@ namespace Thry
         private static string GetModuleDirectory(Module m)
         {
             string path = null;
-            if(m.location_data != null)
+            if (m.location_data != null)
             {
                 path = AssetDatabase.GUIDToAssetPath(m.location_data.guid);
-                if(path == "" || path == null || !Directory.Exists(path))
+                if (path == "" || path == null || !Directory.Exists(path))
                 {
                     path = ResolveFilesToDirectory(m.location_data.files);
                 }
@@ -191,7 +188,7 @@ namespace Thry
             foreach (string file in files)
             {
                 string[] refernces = ResolveFilesToDirectoryFindAllReferneces(file);
-                foreach(string p in refernces)
+                foreach (string p in refernces)
                 {
                     string found_dir = p.Replace(file, "");
                     if (path_refernces.ContainsKey(found_dir))
@@ -202,7 +199,7 @@ namespace Thry
             }
             int most_refernces = 0;
             string path = null;
-            foreach(KeyValuePair<string,int> pair in path_refernces)
+            foreach (KeyValuePair<string, int> pair in path_refernces)
             {
                 if (pair.Value > most_refernces)
                 {
@@ -229,7 +226,8 @@ namespace Thry
         {
             string module_path = null;
             int likelyness = -1;
-            foreach(string f in Directory.GetFiles(directory_path)){
+            foreach (string f in Directory.GetFiles(directory_path))
+            {
                 string file_name = Path.GetFileName(f);
                 int l = 0;
                 if (file_name.Contains("module")) l++;
@@ -288,7 +286,7 @@ namespace Thry
         {
             module.is_being_installed_or_removed = true;
             string temp_path = InstallModuleGetTempDir(module);
-            InstallModuleDownloadFiles(module,temp_path);
+            InstallModuleDownloadFiles(module, temp_path);
         }
 
         private static string InstallModuleGetTempDir(Module module)
@@ -298,21 +296,21 @@ namespace Thry
 
         private static void InstallModuleDownloadFiles(Module module, string temp_path)
         {
-            EditorUtility.DisplayProgressBar(module.available_module.name+ " download progress", "", 0);
+            EditorUtility.DisplayProgressBar(module.available_module.name + " download progress", "", 0);
             string base_url = Path.GetDirectoryName(module.url);
             int i = 0;
             foreach (string file_path in module.available_module.files)
             {
-                WebHelper.DownloadFileASync(base_url + "/"+ file_path, temp_path + "/" + file_path, delegate (string data)
-                {
-                    i++;
-                    EditorUtility.DisplayProgressBar("Downloading files for " + module.available_module.name, "Downloaded " + base_url + file_path, (float)i / module.available_module.files.Count);
-                    if (i == module.available_module.files.Count)
-                    {
-                        EditorUtility.ClearProgressBar();
-                        InstallModuleFilesDownloaded(module,temp_path);
-                    }
-                });
+                WebHelper.DownloadFileASync(base_url + "/" + file_path, temp_path + "/" + file_path, delegate (string data)
+                 {
+                     i++;
+                     EditorUtility.DisplayProgressBar("Downloading files for " + module.available_module.name, "Downloaded " + base_url + file_path, (float)i / module.available_module.files.Count);
+                     if (i == module.available_module.files.Count)
+                     {
+                         EditorUtility.ClearProgressBar();
+                         InstallModuleFilesDownloaded(module, temp_path);
+                     }
+                 });
             }
         }
 
@@ -324,10 +322,10 @@ namespace Thry
             string install_path = modules_path + "/" + module.id;
             module.installed_module = module.available_module;
             string guid = AssetDatabase.CreateFolder(modules_path, module.id);
-            SaveModuleLocationData(module,guid);
+            SaveModuleLocationData(module, guid);
 
             FileHelper.WriteStringToFile(Parser.ObjectToString(module.available_module), temp_dir + "/module.json");
-            foreach(string d in Directory.GetDirectories(temp_dir))
+            foreach (string d in Directory.GetDirectories(temp_dir))
             {
                 Directory.Move(d, install_path + "/" + Path.GetFileName(d));
             }

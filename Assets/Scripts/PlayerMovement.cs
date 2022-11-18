@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -27,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody.velocity = new Vector2(moveInput * MovementSpeed, _rigidbody.velocity.y);
 
         //Facing Script
-        if(!Mathf.Approximately(0, moveInput))
+        if (!Mathf.Approximately(0, moveInput))
         {
             transform.rotation = moveInput > 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
         }
@@ -43,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
             airTimeCounter = floatTime;
             _rigidbody.velocity = Vector2.up * JumpForce;
         }
-        if(Input.GetButton("Jump") && isJumping == true)
+        if (Input.GetButton("Jump") && isJumping == true)
         {
             if (airTimeCounter > 0)
             {
@@ -55,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
                 isJumping = false;
             }
         }
-        if(Input.GetButtonUp("Jump"))
+        if (Input.GetButtonUp("Jump"))
         {
             isJumping = false;
         }

@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -145,7 +144,7 @@ namespace Thry
                 if (System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator == ",")
                     floatInput = input.Replace(".", ",");
                 float floatValue;
-                if (float.TryParse(floatInput,  out floatValue))
+                if (float.TryParse(floatInput, out floatValue))
                 {
                     if ((int)floatValue == floatValue)
                         return (int)floatValue;
@@ -178,12 +177,12 @@ namespace Thry
             return (type)ParsedToObject(parsed, typeof(type));
         }
 
-        private static object ParsedToObject(object parsed,Type objtype)
+        private static object ParsedToObject(object parsed, Type objtype)
         {
             if (parsed == null) return null;
             if (Helper.IsPrimitive(objtype)) return ConvertToPrimitive(parsed, objtype);
             if (objtype.IsGenericType && objtype.GetInterfaces().Contains(typeof(IList))) return ConvertToList(parsed, objtype);
-            if (objtype.IsGenericType && objtype.GetGenericTypeDefinition() == typeof(Dictionary<,>)) return ConvertToDictionary(parsed,objtype);
+            if (objtype.IsGenericType && objtype.GetGenericTypeDefinition() == typeof(Dictionary<,>)) return ConvertToDictionary(parsed, objtype);
             if (objtype.IsArray) return ConvertToArray(parsed, objtype);
             if (objtype.IsEnum) return ConvertToEnum(parsed, objtype);
             if (objtype.IsClass) return ConvertToObject(parsed, objtype);
@@ -199,7 +198,7 @@ namespace Thry
             {
                 dynamic key = ParsedToObject(keyvalue.Key, objtype.GetGenericArguments()[0]);
                 dynamic value = ParsedToObject(keyvalue.Value, objtype.GetGenericArguments()[1]);
-                returnObject.Add(key , value );
+                returnObject.Add(key, value);
             }
             return returnObject;
         }
@@ -250,7 +249,7 @@ namespace Thry
             foreach (object s in list_strings)
             {
                 object o = ParsedToObject(s, array_obj_type);
-                if(o!=null)
+                if (o != null)
                     return_list.Add(o);
             }
             object return_array = Activator.CreateInstance(objtype, return_list.Count);
@@ -269,7 +268,7 @@ namespace Thry
         private static object ConvertToPrimitive(object parsed, Type objtype)
         {
             if (typeof(String) == objtype)
-                return parsed!=null?parsed.ToString():null;
+                return parsed != null ? parsed.ToString() : null;
             if (typeof(char) == objtype)
                 return ((string)parsed)[0];
             return parsed;
@@ -284,7 +283,7 @@ namespace Thry
             {
                 object key = item.Key;
                 object val = item.Value;
-                ret += Serialize(key) + ":" + Serialize(val)+",";
+                ret += Serialize(key) + ":" + Serialize(val) + ",";
             }
             ret = ret.TrimEnd(new char[] { ',' });
             ret += "}";
@@ -294,15 +293,15 @@ namespace Thry
         private static string SerializeClass(object obj)
         {
             string ret = "{";
-            foreach(FieldInfo field in obj.GetType().GetFields())
+            foreach (FieldInfo field in obj.GetType().GetFields())
             {
-                if(field.IsPublic)
-                    ret += "\""+field.Name + "\"" + ":" + ObjectToString(field.GetValue(obj)) + ",";
+                if (field.IsPublic)
+                    ret += "\"" + field.Name + "\"" + ":" + ObjectToString(field.GetValue(obj)) + ",";
             }
             foreach (PropertyInfo property in obj.GetType().GetProperties())
             {
-                if(property.CanWrite && property.CanRead && property.GetIndexParameters().Length==0)
-                    ret += "\""+ property.Name + "\"" + ":" + ObjectToString(property.GetValue(obj,null)) + ",";
+                if (property.CanWrite && property.CanRead && property.GetIndexParameters().Length == 0)
+                    ret += "\"" + property.Name + "\"" + ":" + ObjectToString(property.GetValue(obj, null)) + ",";
             }
             ret = ret.TrimEnd(new char[] { ',' });
             ret += "}";
@@ -344,7 +343,7 @@ namespace Thry
 
         public enum PPtrType
         {
-            None,Material
+            None, Material
         }
 
         public class PPtrKeyframe
@@ -374,7 +373,7 @@ namespace Thry
                 int curveIndex;
                 int lastCurveIndex = pptrIndex;
                 //find all curves
-                while((curveIndex = data.IndexOf("  - curve:", lastCurveIndex, pptrEndIndex- lastCurveIndex)) != -1)
+                while ((curveIndex = data.IndexOf("  - curve:", lastCurveIndex, pptrEndIndex - lastCurveIndex)) != -1)
                 {
                     lastCurveIndex = curveIndex + 1;
                     int curveEndIndex = data.IndexOf("    script: ", curveIndex);
@@ -384,7 +383,7 @@ namespace Thry
 
                     int keyFrameIndex;
                     int lastKeyFrameIndex = curveIndex;
-                    while((keyFrameIndex = data.IndexOf("    - time:", lastKeyFrameIndex, curveEndIndex - lastKeyFrameIndex)) != -1)
+                    while ((keyFrameIndex = data.IndexOf("    - time:", lastKeyFrameIndex, curveEndIndex - lastKeyFrameIndex)) != -1)
                     {
                         lastKeyFrameIndex = keyFrameIndex + 1;
                         int keyFrameEndIndex = data.IndexOf("}", keyFrameIndex);

@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Poiyomi.ModularShaderSystem.UI
 {
-    public class PropertyAttributeAttribute : PropertyAttribute 
+    public class PropertyAttributeAttribute : PropertyAttribute
     {
     }
     [CustomPropertyDrawer(typeof(PropertyAttributeAttribute))]

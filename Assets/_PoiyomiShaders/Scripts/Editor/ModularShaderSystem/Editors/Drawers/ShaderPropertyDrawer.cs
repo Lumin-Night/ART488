@@ -1,10 +1,8 @@
 using System;
-using System.Linq;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
-using UnityEngine.Analytics;
 
 namespace Poiyomi.ModularShaderSystem.UI
 {
@@ -15,7 +13,7 @@ namespace Poiyomi.ModularShaderSystem.UI
         Gray,
         Bump,
     }
-    
+
     [CustomPropertyDrawer(typeof(Property))]
     public class ShaderPropertyDrawer : PropertyDrawer
     {
@@ -43,13 +41,13 @@ namespace Poiyomi.ModularShaderSystem.UI
             var propType = GetPropertyTypeFromSerializedProperty(type.stringValue);
 
             enumField.Init(propType);
-            
+
             enumField.value = propType;
-            
+
             enumField.RegisterValueChangedCallback(e =>
             {
                 SetPropType(type, (PropertyType)e.newValue);
-                SetPropDefaultValue(defaultValue,"");
+                SetPropDefaultValue(defaultValue, "");
                 UpdateValueContainer(property, defaultValue, type, (PropertyType)e.newValue, type.stringValue, defaultValue.stringValue, valueContainer);
             });
 
@@ -65,13 +63,13 @@ namespace Poiyomi.ModularShaderSystem.UI
             defaultValue.stringValue = v;
             defaultValue.serializedObject.ApplyModifiedProperties();
         }
-        
+
         private void SetPropType(SerializedProperty type, string v)
         {
             type.stringValue = v;
             type.serializedObject.ApplyModifiedProperties();
         }
-        
+
         private void SetPropType(SerializedProperty propType, PropertyType type)
         {
             string typeString = "";
@@ -101,8 +99,8 @@ namespace Poiyomi.ModularShaderSystem.UI
                 case PropertyType.Float:
                     float floatValue = 0;
                     if (float.TryParse(propValue, out float f)) floatValue = f;
-                    else SetPropDefaultValue(defaultValue,"" + floatValue);
-                    var flfield = new FloatField{ value = floatValue, label = "Default value"};
+                    else SetPropDefaultValue(defaultValue, "" + floatValue);
+                    var flfield = new FloatField { value = floatValue, label = "Default value" };
                     flfield.RegisterValueChangedCallback(e => SetPropDefaultValue(defaultValue, "" + e.newValue));
                     field = flfield;
                     break;
@@ -111,8 +109,8 @@ namespace Poiyomi.ModularShaderSystem.UI
                     field = new VisualElement();
                     var rangeLimits = new Vector2(0, 1);
                     float rangeValue = 0;
-                    
-                    string[] prt = propTypeString.Replace("Range(","").Replace(")","").Split(',');
+
+                    string[] prt = propTypeString.Replace("Range(", "").Replace(")", "").Split(',');
                     float[] prv = new float[2];
                     bool pfi = true;
                     for (int i = 0; i < 2; i++)
@@ -133,16 +131,16 @@ namespace Poiyomi.ModularShaderSystem.UI
                     var limits = new Vector2Field { label = "Range limits", value = rangeLimits };
 
                     if (float.TryParse(propValue, out float r)) rangeValue = r;
-                    else SetPropDefaultValue(defaultValue,"" + rangeValue);
+                    else SetPropDefaultValue(defaultValue, "" + rangeValue);
                     var horizontalElement = new VisualElement();
                     horizontalElement.style.flexDirection = FlexDirection.Row;
-                    
+
                     var valueSlider = new Slider
                     {
-                        value = rangeValue, 
-                        lowValue = Math.Min(rangeLimits[0], rangeLimits[1]), 
+                        value = rangeValue,
+                        lowValue = Math.Min(rangeLimits[0], rangeLimits[1]),
                         highValue = Math.Max(rangeLimits[0], rangeLimits[1]),
-                        
+
                         label = "Default value"
                     };
                     valueSlider.style.flexGrow = 1;
@@ -153,7 +151,7 @@ namespace Poiyomi.ModularShaderSystem.UI
                     {
                         valueSlider.lowValue = Math.Min(e.newValue[0], e.newValue[1]);
                         valueSlider.highValue = Math.Max(e.newValue[0], e.newValue[1]);
-                        SetPropType(type,$"Range({valueSlider.lowValue}, {valueSlider.highValue})");
+                        SetPropType(type, $"Range({valueSlider.lowValue}, {valueSlider.highValue})");
                     });
 
                     valueField.RegisterValueChangedCallback(e =>
@@ -166,31 +164,31 @@ namespace Poiyomi.ModularShaderSystem.UI
                             return;
                         }
                         valueSlider.SetValueWithoutNotify(e.newValue);
-                        SetPropDefaultValue(defaultValue,"" + e.newValue);
+                        SetPropDefaultValue(defaultValue, "" + e.newValue);
                     });
                     valueSlider.RegisterValueChangedCallback(e =>
                     {
                         valueField.SetValueWithoutNotify(e.newValue);
-                        SetPropDefaultValue(defaultValue,"" + e.newValue);
+                        SetPropDefaultValue(defaultValue, "" + e.newValue);
                     });
-                    
+
                     field.Add(limits);
                     horizontalElement.Add(valueSlider);
                     horizontalElement.Add(valueField);
                     field.Add(horizontalElement);
-                    
+
                     break;
                 case PropertyType.Int:
                     int intValue = 0;
                     if (int.TryParse(propValue, out int iv)) intValue = iv;
-                    else SetPropDefaultValue(defaultValue,"" + intValue);
-                    var ivfield = new IntegerField{ value = intValue, label = "Default value"};
+                    else SetPropDefaultValue(defaultValue, "" + intValue);
+                    var ivfield = new IntegerField { value = intValue, label = "Default value" };
                     field = ivfield;
-                    ivfield.RegisterValueChangedCallback(e => SetPropDefaultValue(defaultValue,"" + e.newValue));
+                    ivfield.RegisterValueChangedCallback(e => SetPropDefaultValue(defaultValue, "" + e.newValue));
                     break;
                 case PropertyType.Color:
                     Color colorValue = Color.white;
-                    string[] clvl = propValue.Replace("(","").Replace(")","").Split(',');
+                    string[] clvl = propValue.Replace("(", "").Replace(")", "").Split(',');
                     float[] fv = new float[4];
                     bool vfi = true;
                     for (int i = 0; i < 4; i++)
@@ -207,14 +205,14 @@ namespace Poiyomi.ModularShaderSystem.UI
                     }
 
                     if (vfi) colorValue = new Color(fv[0], fv[1], fv[2], fv[3]);
-                    else SetPropDefaultValue(defaultValue,$"({colorValue[0]}, {colorValue[1]}, {colorValue[2]}, {colorValue[3]})");
+                    else SetPropDefaultValue(defaultValue, $"({colorValue[0]}, {colorValue[1]}, {colorValue[2]}, {colorValue[3]})");
                     var clfield = new ColorField { value = colorValue, label = "Default value" };
                     field = clfield;
-                    clfield.RegisterValueChangedCallback(e => SetPropDefaultValue(defaultValue,$"({e.newValue[0]}, {e.newValue[1]}, {e.newValue[2]}, {e.newValue[3]})"));
+                    clfield.RegisterValueChangedCallback(e => SetPropDefaultValue(defaultValue, $"({e.newValue[0]}, {e.newValue[1]}, {e.newValue[2]}, {e.newValue[3]})"));
                     break;
                 case PropertyType.Vector:
                     Vector4 vectorValue = Vector4.zero;
-                    string[] vvl = propValue.Replace("(","").Replace(")","").Split(',');
+                    string[] vvl = propValue.Replace("(", "").Replace(")", "").Split(',');
                     float[] vv = new float[4];
                     bool vvi = true;
                     for (int i = 0; i < 4; i++)
@@ -229,11 +227,11 @@ namespace Poiyomi.ModularShaderSystem.UI
                             break;
                         }
                     }
-                    if (vvi) vectorValue = new Vector4(vv[0], vv[1], vv[2] ,vv[3]);
-                    else SetPropDefaultValue(defaultValue,$"({vv[0]}, {vv[1]}, {vv[2]}, {vv[3]})");
-                    var vlfield = new Vector4Field{ value = vectorValue, label = "Default value" };
+                    if (vvi) vectorValue = new Vector4(vv[0], vv[1], vv[2], vv[3]);
+                    else SetPropDefaultValue(defaultValue, $"({vv[0]}, {vv[1]}, {vv[2]}, {vv[3]})");
+                    var vlfield = new Vector4Field { value = vectorValue, label = "Default value" };
                     field = vlfield;
-                    vlfield.RegisterValueChangedCallback(e => SetPropDefaultValue(defaultValue,$"({e.newValue[0]}, {e.newValue[1]}, {e.newValue[2]}, {e.newValue[3]})"));
+                    vlfield.RegisterValueChangedCallback(e => SetPropDefaultValue(defaultValue, $"({e.newValue[0]}, {e.newValue[1]}, {e.newValue[2]}, {e.newValue[3]})"));
                     break;
                 case PropertyType.Texture2D:
                     var texValue = DefaultTextureValue.White;
@@ -241,7 +239,7 @@ namespace Poiyomi.ModularShaderSystem.UI
                     if (propValue.Contains("gray")) texValue = DefaultTextureValue.Gray;
                     if (propValue.Contains("black")) texValue = DefaultTextureValue.Black;
                     if (propValue.Contains("bump")) texValue = DefaultTextureValue.Bump;
-                    SetPropDefaultValue(defaultValue,$"\"{Enum.GetName(typeof(DefaultTextureValue), texValue)?.ToLower()}\" {{}}");
+                    SetPropDefaultValue(defaultValue, $"\"{Enum.GetName(typeof(DefaultTextureValue), texValue)?.ToLower()}\" {{}}");
                     var txfield = new EnumField { label = "Default value" };
                     txfield.Init(texValue);
                     var textureAsset = new PropertyField(property.FindPropertyRelative("DefaultTextureAsset"), "Texture Override");
@@ -250,25 +248,25 @@ namespace Poiyomi.ModularShaderSystem.UI
                     vl.Add(txfield);
                     vl.Add(textureAsset);
                     field = vl;
-                    txfield.RegisterValueChangedCallback(e => SetPropDefaultValue(defaultValue,$"\"{Enum.GetName(typeof(DefaultTextureValue), e.newValue)?.ToLower()}\" {{}}"));
+                    txfield.RegisterValueChangedCallback(e => SetPropDefaultValue(defaultValue, $"\"{Enum.GetName(typeof(DefaultTextureValue), e.newValue)?.ToLower()}\" {{}}"));
                     break;
                 case PropertyType.Texture2DArray:
                 case PropertyType.CubeArray:
                 case PropertyType.Texture3D:
-                    SetPropDefaultValue(defaultValue,"\"\"{}");
+                    SetPropDefaultValue(defaultValue, "\"\"{}");
                     break;
                 case PropertyType.Cube:
-                    SetPropDefaultValue(defaultValue,"\"\"{}");
+                    SetPropDefaultValue(defaultValue, "\"\"{}");
                     var textureCubeAsset = new PropertyField(property.FindPropertyRelative("DefaultTextureAsset"), "Texture Override");
                     textureCubeAsset.Bind(property.serializedObject);
-                    field = textureCubeAsset; 
+                    field = textureCubeAsset;
                     break;
             }
-            
+
             element.Clear();
             if (field != null) element.Add(field);
         }
-        
+
         private static PropertyType GetPropertyTypeFromSerializedProperty(string propType)
         {
             switch (propType.Trim())

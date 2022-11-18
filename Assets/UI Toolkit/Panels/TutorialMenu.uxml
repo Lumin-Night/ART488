@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Panels/Button.uss?fileID=7433441132597879392&amp;guid=9d1b378b573799044865fea220cf1252&amp;type=3#Button" />
+    <Style src="project://database/Assets/UI%20Toolkit/Panels/Tutorial_Labels.uss?fileID=7433441132597879392&amp;guid=fa28d37f65de2de4bba5c7b55de94af5&amp;type=3#Tutorial_Labels" />
+    <ui:VisualElement name="Background" style="height: 100%; width: 100%; flex-grow: 1; background-image: url(&apos;project://database/Assets/UI%20Toolkit/Panels/bkg-01.png?fileID=2800000&amp;guid=7ed7149ba7659b34fbf26462208dafac&amp;type=3#bkg-01&apos;); flex-direction: column; align-items: flex-start; justify-content: flex-start; background-color: rgba(0, 0, 0, 0); -unity-background-image-tint-color: rgba(255, 255, 255, 0);">
+        <ui:VisualElement style="height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.68); background-image: url(&apos;project://database/Assets/UI%20Toolkit/Panels/MainScreenBKG.png?fileID=2800000&amp;guid=0d943bd4fda14824bb21a5eb8e351018&amp;type=3#MainScreenBKG&apos;); -unity-background-image-tint-color: rgba(101, 0, 0, 0.35);">
+            <ui:VisualElement style="height: 232px; background-image: url(&apos;project://database/Assets/UI%20Toolkit/Panels/Title.png?fileID=2800000&amp;guid=bafe26c2643ed2041b7e731cd53acccb&amp;type=3#Title&apos;); width: 1249px; -unity-background-scale-mode: scale-and-crop; margin-top: 62px;" />
+            <ui:VisualElement style="background-image: url(&apos;project://database/Assets/_PoiyomiShaders/Textures/Ramps/T_Hair_SR.tga?fileID=2800000&amp;guid=49bcc4a51b69ddc438f1914cfa7f41f0&amp;type=3#T_Hair_SR&apos;); width: 1178px; height: 15px; -unity-background-scale-mode: scale-and-crop;" />
+            <ui:VisualElement style="height: 376px; width: 685px; margin-top: 60px;">
+                <ui:Button text="START" display-tooltip-when-elided="true" name="Start" class="button-main-title" />
+                <ui:Button text="SETTINGS" display-tooltip-when-elided="true" name="Settings" class="button-main-title" />
+                <ui:Button text="QUIT" display-tooltip-when-elided="true" name="Quit" class="button-main-title" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

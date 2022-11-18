@@ -14,9 +14,9 @@ namespace Poiyomi.ModularShaderSystem
         public override void OnImportAsset(UnityEditor.AssetImporters.AssetImportContext ctx)
         {
             var subAsset = ScriptableObject.CreateInstance<TemplateCollectionAsset>();
-            
 
-            
+
+
             using (var sr = new StringReader(File.ReadAllText(ctx.assetPath)))
             {
                 var builder = new StringBuilder();
@@ -29,7 +29,7 @@ namespace Poiyomi.ModularShaderSystem
                     {
                         if (builder.Length > 0 && !string.IsNullOrWhiteSpace(name))
                             SaveSubAsset(ctx, subAsset, builder, name);
-                        
+
                         builder = new StringBuilder();
                         name = line.Replace("#T#", "").Trim();
                         continue;
@@ -48,11 +48,11 @@ namespace Poiyomi.ModularShaderSystem
 
                     builder.AppendLine(line);
                 }
-                
+
                 if (builder.Length > 0 && !string.IsNullOrWhiteSpace(name))
                     SaveSubAsset(ctx, subAsset, builder, name);
             }
-            
+
             ctx.AddObjectToAsset("Collection", subAsset);
             ctx.SetMainObject(subAsset);
         }
@@ -62,18 +62,18 @@ namespace Poiyomi.ModularShaderSystem
             var templateAsset = ScriptableObject.CreateInstance<TemplateAsset>();
             templateAsset.Template = builder.ToString();
             templateAsset.name = name;
-            
+
             MatchCollection mk = Regex.Matches(templateAsset.Template, @"#K#\w*", RegexOptions.Multiline);
             MatchCollection mki = Regex.Matches(templateAsset.Template, @"#KI#\w*", RegexOptions.Multiline);
 
-            var mkr = new string[mk.Count + mki.Count]; 
+            var mkr = new string[mk.Count + mki.Count];
             for (var i = 0; i < mk.Count; i++)
                 mkr[i] = mk[i].Value;
             for (var i = 0; i < mki.Count; i++)
                 mkr[mk.Count + i] = mki[i].Value;
 
             templateAsset.Keywords = mkr.Distinct().ToArray();
-            
+
             ctx.AddObjectToAsset(name, templateAsset);
             asset.Templates.Add(templateAsset);
         }

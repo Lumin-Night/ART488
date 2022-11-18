@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: fb4391351939c014583b0bf5f0ff49ac
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Geared Slab
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 9b4c3fa692e4b57468a2a76946362846, type: 3}
+  - {fileID: 12800000, guid: 60ab7f85eddee514a8b4cdd900a578ef, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

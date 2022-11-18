@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,7 +15,9 @@ namespace Thry.ThryEditor
 
         static string[] p_presetNames;
         static Material[] p_presetMaterials;
-        static string[] presetNames { get
+        static string[] presetNames
+        {
+            get
             {
                 if (p_presetNames == null)
                 {
@@ -26,7 +26,7 @@ namespace Thry.ThryEditor
                     p_presetMaterials = AssetDatabase.FindAssets("t:material")
                         .Select(g => AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(g)))
                         .Where(m => IsPreset(m)).ToArray();
-                    p_presetNames = p_presetMaterials.Select(m => m.GetTag(TAG_PRESET_NAME,false,m.name)).Prepend("").ToArray();
+                    p_presetNames = p_presetMaterials.Select(m => m.GetTag(TAG_PRESET_NAME, false, m.name)).Prepend("").ToArray();
                     Debug.Log($"Presets: {p_presetNames.Length} presets found in {System.DateTime.Now - time}");
                 }
                 return p_presetNames;
@@ -78,7 +78,7 @@ namespace Thry.ThryEditor
             }
             if (appliedPresets.ContainsKey(shaderEditor.Materials[0]))
             {
-                if(GUILayout.Button(Locale.editor.Get("preset_revert")+appliedPresets[shaderEditor.Materials[0]].Item1.name))
+                if (GUILayout.Button(Locale.editor.Get("preset_revert") + appliedPresets[shaderEditor.Materials[0]].Item1.name))
                 {
                     Revert(shaderEditor);
                 }
@@ -118,7 +118,7 @@ namespace Thry.ThryEditor
 
         public static void ApplyList(ShaderEditor shaderEditor, Material[] originals, List<Material> presets)
         {
-            for(int i=0;i<shaderEditor.Materials.Length && i < originals.Length;i++)
+            for (int i = 0; i < shaderEditor.Materials.Length && i < originals.Length; i++)
                 shaderEditor.Materials[i].CopyPropertiesFromMaterial(originals[i]);
             foreach (Material preset in presets)
             {
@@ -136,14 +136,14 @@ namespace Thry.ThryEditor
 
         public static void SetProperty(Material m, ShaderPart prop, bool value)
         {
-            if (prop.MaterialProperty != null)   m.SetOverrideTag(prop.MaterialProperty.name + TAG_POSTFIX_IS_PRESET, value ? "true" : "");
-            if (prop.PropertyIdentifier != null) m.SetOverrideTag(prop.PropertyIdentifier    + TAG_POSTFIX_IS_PRESET, value ? "true" : "");
+            if (prop.MaterialProperty != null) m.SetOverrideTag(prop.MaterialProperty.name + TAG_POSTFIX_IS_PRESET, value ? "true" : "");
+            if (prop.PropertyIdentifier != null) m.SetOverrideTag(prop.PropertyIdentifier + TAG_POSTFIX_IS_PRESET, value ? "true" : "");
         }
 
         public static bool IsPreset(Material m, ShaderPart prop)
         {
-            if (prop.MaterialProperty != null)   return m.GetTag(prop.MaterialProperty.name + TAG_POSTFIX_IS_PRESET, false, "") == "true";
-            if (prop.PropertyIdentifier != null) return m.GetTag(prop.PropertyIdentifier    + TAG_POSTFIX_IS_PRESET, false, "") == "true";
+            if (prop.MaterialProperty != null) return m.GetTag(prop.MaterialProperty.name + TAG_POSTFIX_IS_PRESET, false, "") == "true";
+            if (prop.PropertyIdentifier != null) return m.GetTag(prop.PropertyIdentifier + TAG_POSTFIX_IS_PRESET, false, "") == "true";
             return false;
         }
 
@@ -201,7 +201,7 @@ namespace Thry.ThryEditor
     {
         class PresetStruct
         {
-            public Dictionary<string,PresetStruct> dict;
+            public Dictionary<string, PresetStruct> dict;
             string name;
             Material preset;
             bool isOpen = false;
@@ -225,7 +225,7 @@ namespace Thry.ThryEditor
             }
             public void StructGUI(PresetsPopupGUI popupGUI)
             {
-                if(preset != null)
+                if (preset != null)
                 {
                     EditorGUI.BeginChangeCheck();
                     isOn = EditorGUILayout.ToggleLeft(name, isOn);
@@ -234,7 +234,7 @@ namespace Thry.ThryEditor
                         popupGUI.ToggelPreset(preset, isOn);
                     }
                 }
-                if(dict.Count > 0)
+                if (dict.Count > 0)
                 {
                     Rect r = GUILayoutUtility.GetRect(new GUIContent(), Styles.dropDownHeader);
                     r.x = EditorGUI.indentLevel * 15;
@@ -260,7 +260,7 @@ namespace Thry.ThryEditor
                         EditorGUI.indentLevel -= 1;
                     }
                 }
-                
+
             }
 
             public void Reset()
@@ -280,7 +280,7 @@ namespace Thry.ThryEditor
             this.shaderEditor = shaderEditor;
             this.beforePreset = shaderEditor.Materials.Select(m => new Material(m)).ToArray();
             mainStruct = new PresetStruct("");
-            backgroundTextrure = new Texture2D(1,1);
+            backgroundTextrure = new Texture2D(1, 1);
             if (EditorGUIUtility.isProSkin) backgroundTextrure.SetPixel(0, 0, new Color(0.18f, 0.18f, 0.18f, 1));
             else backgroundTextrure.SetPixel(0, 0, new Color(0.9f, 0.9f, 0.9f, 1));
             backgroundTextrure.Apply();
@@ -288,11 +288,11 @@ namespace Thry.ThryEditor
             {
                 string[] path = names[i].Split('/');
                 PresetStruct addUnder = mainStruct;
-                for (int j=0;j<path.Length; j++)
+                for (int j = 0; j < path.Length; j++)
                 {
                     addUnder = addUnder.GetSubStruct(path[j]);
                 }
-                addUnder.SetPreset(presets[i-1]);
+                addUnder.SetPreset(presets[i - 1]);
             }
         }
 
@@ -325,7 +325,7 @@ namespace Thry.ThryEditor
                 _save = true;
                 this.Close();
             }
-                
+
             if (GUI.Button(new Rect(this.position.width / 2, this.position.height - 35, this.position.width / 2 - 5, 30), "Discard"))
             {
                 Revert();

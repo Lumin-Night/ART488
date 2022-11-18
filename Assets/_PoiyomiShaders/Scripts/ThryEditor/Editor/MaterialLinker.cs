@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,16 +6,16 @@ namespace Thry
 {
     public class MaterialLinker
     {
-        private static Dictionary<(Material,string), List<Material>> linked_materials;
+        private static Dictionary<(Material, string), List<Material>> linked_materials;
 
         private static void Load()
         {
             if (linked_materials == null)
             {
-                linked_materials = new Dictionary<(Material,string), List<Material>>();
+                linked_materials = new Dictionary<(Material, string), List<Material>>();
                 string raw = FileHelper.ReadFileIntoString(PATH.LINKED_MATERIALS_FILE);
                 string[][] parsed = Parser.ParseToObject<string[][]>(raw);
-                if(parsed!=null)
+                if (parsed != null)
                     foreach (string[] material_cloud in parsed)
                     {
                         List<Material> materials = new List<Material>();
@@ -28,7 +27,7 @@ namespace Thry
                                 materials.Add(m);
                         }
                         foreach (Material m in materials)
-                            if(linked_materials.ContainsKey((m, material_cloud[0])) == false)
+                            if (linked_materials.ContainsKey((m, material_cloud[0])) == false)
                                 linked_materials.Add((m, material_cloud[0]), materials);
                     }
             }
@@ -37,20 +36,21 @@ namespace Thry
         private static void Save()
         {
             List<string[]> save_structre = new List<string[]>();
-            HashSet<(Material,string)> has_already_been_saved = new HashSet<(Material,string)>();
-            foreach (KeyValuePair<(Material,string),List<Material>> link in linked_materials)
+            HashSet<(Material, string)> has_already_been_saved = new HashSet<(Material, string)>();
+            foreach (KeyValuePair<(Material, string), List<Material>> link in linked_materials)
             {
                 if (has_already_been_saved.Contains(link.Key)) continue;
                 string[] value = new string[link.Value.Count + 1];
                 value[0] = link.Key.Item2;
                 int i = 1;
-                foreach (Material m in link.Value) {
+                foreach (Material m in link.Value)
+                {
                     has_already_been_saved.Add((m, link.Key.Item2));
                     value[i++] = UnityHelper.GetGUID(m);
                 }
                 save_structre.Add(value);
             }
-            FileHelper.WriteStringToFile(Parser.ObjectToString(save_structre),PATH.LINKED_MATERIALS_FILE);
+            FileHelper.WriteStringToFile(Parser.ObjectToString(save_structre), PATH.LINKED_MATERIALS_FILE);
         }
 
         public static bool IsLinked(MaterialProperty p)
@@ -67,8 +67,8 @@ namespace Thry
         public static List<Material> GetLinked(Material m, MaterialProperty p)
         {
             Load();
-            if (linked_materials.ContainsKey((m,p.name)))
-                return linked_materials[(m,p.name)];
+            if (linked_materials.ContainsKey((m, p.name)))
+                return linked_materials[(m, p.name)];
             return null;
         }
 
@@ -76,10 +76,10 @@ namespace Thry
         {
             Load();
             Debug.Log("link " + master.name + "," + add_to.name);
-            bool containes_key1 = linked_materials.ContainsKey((master,p.name));
-            bool containes_key2 = linked_materials.ContainsKey((add_to,p.name));
+            bool containes_key1 = linked_materials.ContainsKey((master, p.name));
+            bool containes_key2 = linked_materials.ContainsKey((add_to, p.name));
 
-            if(containes_key1 && containes_key2)
+            if (containes_key1 && containes_key2)
             {
                 Unlink(add_to, p);
                 Link(master, add_to, p);
@@ -94,24 +94,24 @@ namespace Thry
                 List<Material> value = new List<Material>();
                 value.Add(master);
                 value.Add(add_to);
-                linked_materials[(master,p.name)] = value;
-                linked_materials[(add_to,p.name)] = value;
+                linked_materials[(master, p.name)] = value;
+                linked_materials[(add_to, p.name)] = value;
             }
         }
 
         private static void AddToListIfMaterialAlreadyLinked(Material existing, Material add, MaterialProperty p)
         {
-            List<Material> value = linked_materials[(existing,p.name)];
+            List<Material> value = linked_materials[(existing, p.name)];
             value.Add(add);
-            linked_materials[(add,p.name)] = value;
+            linked_materials[(add, p.name)] = value;
         }
 
         public static void Unlink(Material m, MaterialProperty p)
         {
             Load();
-            List<Material> value = linked_materials[(m,p.name)];
+            List<Material> value = linked_materials[(m, p.name)];
             value.Remove(m);
-            linked_materials.Remove((m,p.name));
+            linked_materials.Remove((m, p.name));
         }
 
         private static void UpdateLinkList(List<Material> new_linked_materials, MaterialProperty p)
@@ -130,7 +130,7 @@ namespace Thry
         public static void UnlinkAll(Material m)
         {
             List<(Material, string)> remove_keys = new List<(Material, string)>();
-            foreach (KeyValuePair<(Material,string), List<Material>> link_cloud in linked_materials)
+            foreach (KeyValuePair<(Material, string), List<Material>> link_cloud in linked_materials)
             {
                 if (link_cloud.Key.Item1 == m)
                 {
@@ -147,7 +147,7 @@ namespace Thry
         private static void RemoveEmptyLinks()
         {
             List<(Material, string)> remove_keys = new List<(Material, string)>();
-            foreach (KeyValuePair<(Material,string), List<Material>> link_cloud in linked_materials)
+            foreach (KeyValuePair<(Material, string), List<Material>> link_cloud in linked_materials)
             {
                 if (link_cloud.Value.Count < 2)
                 {
@@ -217,7 +217,7 @@ namespace Thry
                         HanldeDropEvent();
                     }
                 }
-                if (GUI.Button(new Rect(0,this.position.height-30,this.position.width,30),"Done"))
+                if (GUI.Button(new Rect(0, this.position.height - 30, this.position.width, 30), "Done"))
                     this.Close();
             }
 
@@ -234,7 +234,7 @@ namespace Thry
 
             void Awake()
             {
-                
+
             }
 
             void OnDestroy()
@@ -249,7 +249,7 @@ namespace Thry
                     if (linked_materials[i] == null)
                         linked_materials.RemoveAt(i);
                 }
-                if (linked_materials.Count>0 && !contains_itself)
+                if (linked_materials.Count > 0 && !contains_itself)
                     linked_materials.Add((Material)materialProperty.targets[0]);
 
                 UpdateLinkList(linked_materials, materialProperty);

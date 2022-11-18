@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -506,16 +504,21 @@ namespace Thry
             return EditorGUI.indentLevel * 15;
         }
         // Mimics the normal map import warning - written by Orels1
-        static bool TextureImportWarningBox(string message) {
+        static bool TextureImportWarningBox(string message)
+        {
             GUILayout.BeginVertical(new GUIStyle(EditorStyles.helpBox));
-            GUILayout.Label(message, new GUIStyle(EditorStyles.label) {
-                fontSize = 10, wordWrap = true
+            GUILayout.Label(message, new GUIStyle(EditorStyles.label)
+            {
+                fontSize = 10,
+                wordWrap = true
             });
-            EditorGUILayout.BeginHorizontal(new GUIStyle() {
+            EditorGUILayout.BeginHorizontal(new GUIStyle()
+            {
                 alignment = TextAnchor.MiddleRight
             }, GUILayout.Height(24));
             EditorGUILayout.Space();
-            bool buttonPress = GUILayout.Button("Fix Now", new GUIStyle("button") {
+            bool buttonPress = GUILayout.Button("Fix Now", new GUIStyle("button")
+            {
                 stretchWidth = false,
                 margin = new RectOffset(0, 0, 0, 0),
                 padding = new RectOffset(9, 9, 0, 0)
@@ -525,15 +528,20 @@ namespace Thry
             return buttonPress;
         }
 
-        public static void ColorspaceWarning(MaterialProperty tex, bool shouldHaveSRGB) {
-            if (tex.textureValue) {
+        public static void ColorspaceWarning(MaterialProperty tex, bool shouldHaveSRGB)
+        {
+            if (tex.textureValue)
+            {
                 string texPath = AssetDatabase.GetAssetPath(tex.textureValue);
                 TextureImporter texImporter;
                 var importer = TextureImporter.GetAtPath(texPath) as TextureImporter;
-                if (importer != null) {
+                if (importer != null)
+                {
                     texImporter = (TextureImporter)importer;
-                    if (texImporter.sRGBTexture != shouldHaveSRGB) {
-                        if (TextureImportWarningBox(shouldHaveSRGB ? Locale.editor.Get("colorSpaceWarningSRGB") : Locale.editor.Get("colorSpaceWarningLinear"))) {
+                    if (texImporter.sRGBTexture != shouldHaveSRGB)
+                    {
+                        if (TextureImportWarningBox(shouldHaveSRGB ? Locale.editor.Get("colorSpaceWarningSRGB") : Locale.editor.Get("colorSpaceWarningLinear")))
+                        {
                             texImporter.sRGBTexture = shouldHaveSRGB;
                             texImporter.SaveAndReimport();
                         }
@@ -572,14 +580,14 @@ namespace Thry
             Rect r = GUILayoutUtility.GetRect(width, height);
             return Button(r, style);
         }
-        
+
         public static bool ButtonWithCursor(GUIStyle style, int width, int height)
         {
             Rect r = GUILayoutUtility.GetRect(width, height);
             EditorGUIUtility.AddCursorRect(r, MouseCursor.Link);
             return Button(r, style);
         }
-        
+
         public static bool ButtonWithCursor(GUIStyle style, string tooltip, int width, int height)
         {
             Rect r = GUILayoutUtility.GetRect(width, height);
@@ -615,7 +623,7 @@ namespace Thry
         public static bool Button(Rect r, GUIStyle style, Color c, bool doColor)
         {
             Color prevColor = GUI.backgroundColor;
-            if(doColor) GUI.backgroundColor = c;
+            if (doColor) GUI.backgroundColor = c;
             bool b = GuiHelper.Button(r, style);
             GUI.backgroundColor = prevColor;
             return b;
@@ -720,7 +728,7 @@ namespace Thry
             {
                 if (empty) return;
                 bool isSelected = hoverOverRect.Contains(Event.current.mousePosition);
-                if (isSelected )
+                if (isSelected)
                 {
                     CalculatePositions(hoverOverRect);
                     activeTooltip = this;
@@ -736,7 +744,7 @@ namespace Thry
                 containerPosition.x = Mathf.Max(0, containerPosition.x);
                 containerPosition.x = Mathf.Min(EditorGUIUtility.currentViewWidth - contentSize.x - PADDING.x, containerPosition.x);
 
-                contentRect = new Rect(containerPosition + new Vector2(PADDING.x/2, PADDING.y/2), contentSize);
+                contentRect = new Rect(containerPosition + new Vector2(PADDING.x / 2, PADDING.y / 2), contentSize);
                 containerRect = new Rect(containerPosition, contentSize + new Vector2(PADDING.x, PADDING.y));
             }
 
@@ -750,7 +758,7 @@ namespace Thry
 
         public static void DrawActive()
         {
-            if(activeTooltip != null)
+            if (activeTooltip != null)
             {
                 if (activeTooltip.isSelected)
                 {
@@ -800,7 +808,8 @@ namespace Thry
             Rect cursorRect;
             if (isTextureContent)
             {
-                if(GUILayout.Button(content, new GUIStyle(), GUILayout.MaxWidth(texture_width), GUILayout.Height(texture_height))){
+                if (GUILayout.Button(content, new GUIStyle(), GUILayout.MaxWidth(texture_width), GUILayout.Height(texture_height)))
+                {
                     data.action.Perform(ShaderEditor.Active?.Materials);
                 }
                 cursorRect = GUILayoutUtility.GetLastRect();
@@ -942,7 +951,8 @@ namespace Thry
                 prop.Draw(new CRect(togglePropertyRect), new GUIContent(), isInHeader: true);
                 prop.XOffset = xOffset;
                 EditorGUIUtility.fieldWidth = fieldWidth;
-            }else if(keyword != null)
+            }
+            else if (keyword != null)
             {
                 GUI.Box(rect, "     " + content.text, Styles.dropDownHeader);
                 DrawIcons(rect, options, e);

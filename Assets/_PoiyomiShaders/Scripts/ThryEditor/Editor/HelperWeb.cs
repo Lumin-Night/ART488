@@ -2,10 +2,8 @@
 // Copyright (C) 2019 Thryrallo
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -21,7 +19,7 @@ namespace Thry
         {
             if (!url.StartsWith("http"))
                 url = "http://" + url;
-            url = url.Replace("\\","/");
+            url = url.Replace("\\", "/");
             if (System.Text.RegularExpressions.Regex.IsMatch(url, @"^https?:\/[^\/].*"))
                 url = url.Replace(":/", "://");
             return url;
@@ -105,10 +103,11 @@ namespace Thry
                 {
                     try
                     {
-                        if(queue[0].action is Action<string>) ((Action<string>)queue[0].action).DynamicInvoke(queue[0].arguments);
-                        if(queue[0].action is Action<byte[]>) ((Action<byte[]>)queue[0].action).DynamicInvoke(queue[0].arguments);
+                        if (queue[0].action is Action<string>) ((Action<string>)queue[0].action).DynamicInvoke(queue[0].arguments);
+                        if (queue[0].action is Action<byte[]>) ((Action<byte[]>)queue[0].action).DynamicInvoke(queue[0].arguments);
                     }
-                    catch(Exception e) {
+                    catch (Exception e)
+                    {
                         Debug.LogWarning("[Thry] Error during WebRequest: " + e.ToString());
                     }
                     queue.RemoveAt(0);
@@ -184,7 +183,8 @@ namespace Thry
             {
                 using (var wc = new System.Net.WebClient())
                     contents = wc.DownloadString(url);
-            }catch(WebException e)
+            }
+            catch (WebException e)
             {
                 Debug.LogError(e);
             }

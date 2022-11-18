@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Poiyomi.ModularShaderSystem;
 using UnityEngine;
 
 namespace Poiyomi.ModularShaderSystem.CibbiExtensions

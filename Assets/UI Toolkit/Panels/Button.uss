@@ -1,0 +1,37 @@
+.button-main-title {
+    background-color: rgb(63, 46, 47);
+    -unity-font-style: normal;
+    font-size: 47px;
+    -unity-font: url('project://database/Assets/UI%20Toolkit/GEAREDSLAB.TTF?fileID=12800000&guid=4c3bdfdfb3781ef4bb6a29ac933dea90&type=3#GEAREDSLAB');
+    color: rgb(255, 198, 196);
+    border-left-color: rgb(144, 89, 90);
+    border-right-color: rgb(144, 89, 90);
+    border-top-color: rgb(144, 89, 90);
+    border-bottom-color: rgb(144, 89, 90);
+    border-left-width: 4px;
+    border-right-width: 4px;
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+    border-top-left-radius: 9px;
+    border-bottom-left-radius: 9px;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+    margin-left: 182px;
+    margin-right: 225px;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    -unity-font-definition: url('project://database/Assets/UI%20Toolkit/GEAREDSLAB-BOLD%20SDF.asset?fileID=11400000&guid=e3065d17f5d183046bd7e57e2bc48f87&type=2#GEAREDSLAB-BOLD SDF');
+    letter-spacing: 7px;
+    padding-bottom: -7px;
+}
+
+.button-main-title:hover {
+    background-color: rgb(79, 35, 35);
+    color: rgb(255, 196, 224);
+}
+
+.button-main-title:active {
+    background-color: rgb(144, 89, 90);
+    -unity-background-scale-mode: stretch-to-fill;
+    color: rgb(255, 196, 224);
+}

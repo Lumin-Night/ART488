@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Poiyomi.ModularShaderSystem;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Poiyomi.ModularShaderSystem;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UIElements.Button;
 using Toggle = UnityEngine.UIElements.Toggle;
@@ -51,7 +50,7 @@ namespace PoiyomiPatreon.Scripts.poi_tools.Editor
             }
         }
     }
-    
+
     public class ModularShadersGeneratorWindow : EditorWindow
     {
         [MenuItem("Poi/Modular Shaders Generator")]
@@ -61,7 +60,7 @@ namespace PoiyomiPatreon.Scripts.poi_tools.Editor
             window.titleContent = new GUIContent("Modular Shaders Generator");
             window.Show();
         }
-        
+
         private VisualElement _root;
         internal List<ModularShadersGeneratorElement> _elements;
         private string _folderPath = "Assets/_poiyomiShaders/Shaders/8.1/Pro";
@@ -120,7 +119,7 @@ namespace PoiyomiPatreon.Scripts.poi_tools.Editor
                     element.IsSelected = !element.IsSelected;
             };
             selectButtons.Add(toggleSelections);
-            
+
             var reloadButton = new Button();
             reloadButton.text = "Refresh";
             reloadButton.style.flexGrow = 1;
@@ -182,12 +181,12 @@ namespace PoiyomiPatreon.Scripts.poi_tools.Editor
             };
             fileSelector.Add(fileButton);
             view.Add(fileSelector);
-            
+
             var button = new Button();
             button.text = "Generate Shaders";
             button.clicked += GenerateShaders;
             view.Add(button);
-            
+
             _root.Add(view);
         }
 
@@ -198,7 +197,7 @@ namespace PoiyomiPatreon.Scripts.poi_tools.Editor
                 EditorUtility.DisplayDialog("Error", "The destination folder does not exist", "Ok");
                 return;
             }
-            
+
             foreach (ModularShadersGeneratorElement element in _elements.Where(x => x.IsSelected))
                 ShaderGenerator.GenerateShader(_folderPath, element.Shader);
         }

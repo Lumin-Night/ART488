@@ -1,6 +1,5 @@
 using UnityEditor;
 using UnityEngine.UIElements;
-using Poiyomi.ModularShaderSystem.Debug;
 
 namespace Poiyomi.ModularShaderSystem.UI
 {

@@ -153,7 +153,7 @@ namespace Poiyomi.ModularShaderSystem.UI
 
                     for (int j = 0; j < _array.arraySize; j++)
                     {
-                        var element = ((ObjectField)x.target).parent.parent.parent.ElementAt(j*2+1).ElementAt(1);
+                        var element = ((ObjectField)x.target).parent.parent.parent.ElementAt(j * 2 + 1).ElementAt(1);
                         Label label = element.ElementAt(1) as Label;
                         if (index == j)
                             CheckModuleValidity(newValue, label, element);

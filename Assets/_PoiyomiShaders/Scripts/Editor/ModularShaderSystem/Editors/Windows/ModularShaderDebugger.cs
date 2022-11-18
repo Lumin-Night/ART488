@@ -2,21 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
 
 namespace Poiyomi.ModularShaderSystem.Debug
 {
     public interface IModularShaderDebuggerTab
-    { 
+    {
         VisualElement TabContainer { get; set; }
-        
+
         string TabName { get; set; }
 
         void UpdateTab(ModularShader shader);
     }
-    
+
     public class ModularShaderDebugger : EditorWindow
     {
         [MenuItem(MSSConstants.WINDOW_PATH + "/Modular Shader Debugger", priority = 5)]
@@ -24,7 +24,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
         {
             ModularShaderDebugger wnd = GetWindow<ModularShaderDebugger>();
             wnd.titleContent = new GUIContent("Modular Shader Debugger");
-            
+
             if (wnd.position.width < 400 || wnd.position.height < 400)
             {
                 Rect size = wnd.position;
@@ -32,10 +32,10 @@ namespace Poiyomi.ModularShaderSystem.Debug
                 size.height = 720;
                 wnd.position = size;
             }
-            
+
             wnd.Show();
         }
-        
+
         private ObjectField _modularShaderField;
         private ModularShader _modularShader;
         private VisualElement _selectedTab;
@@ -59,7 +59,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
                     _modularShader = (ModularShader)_modularShaderField.value;
                 else
                     _modularShader = null;
-                
+
                 UpdateTabs();
             });
 
@@ -83,7 +83,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
             root.Add(topArea);
             root.Add(buttonRow);
             root.Add(_selectedTab);
-            
+
             var tabTypes = AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(x => x.GetTypes())
@@ -94,23 +94,23 @@ namespace Poiyomi.ModularShaderSystem.Debug
             foreach (var type in tabTypes)
             {
                 var tab = Activator.CreateInstance(type) as IModularShaderDebuggerTab;
-                
+
                 var tabButton = new Button();
                 tabButton.text = tab?.TabName;
                 tabButton.AddToClassList("button-tab");
-                
+
                 tabButton.clicked += () =>
                 {
                     foreach (var button in buttonRow.Children())
-                        if(button.ClassListContains("button-tab-selected"))
+                        if (button.ClassListContains("button-tab-selected"))
                             button.RemoveFromClassList("button-tab-selected");
-                    
+
                     tabButton.AddToClassList("button-tab-selected");
-                   
+
                     _selectedTab.Clear();
                     _selectedTab.Add(tab.TabContainer);
                 };
-                
+
                 buttonRow.Add(tabButton);
                 _tabs.Add(tab);
             }
@@ -137,7 +137,7 @@ namespace Poiyomi.ModularShaderSystem.Debug
                 _tabs.Insert(0, graph);
                 buttonRow.Insert(0, button);
             }
-            
+
             buttonRow[0].AddToClassList("button-tab-selected");
             _selectedTab.Add(_tabs[0].TabContainer);
         }

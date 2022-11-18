@@ -9,22 +9,22 @@ namespace Poiyomi.ModularShaderSystem
         public static StringBuilder Prepend(this StringBuilder builder, string value) => builder.Insert(0, value);
 
         public static StringBuilder PrependLine(this StringBuilder builder, string value) => builder.Prepend(Environment.NewLine).Prepend(value);
-        
+
         public static StringBuilder AppendLineTabbed(this StringBuilder builder, int tabLevel, string value)
         {
             return builder.Append(Tabs(tabLevel)).AppendLine(value);
         }
-        
+
         public static StringBuilder PrependLineTabbed(this StringBuilder builder, int tabLevel, string value)
         {
             return builder.PrependLine(value).Prepend(Tabs(tabLevel));
         }
-        
+
         public static StringBuilder AppendTabbed(this StringBuilder builder, int tabLevel, string value)
         {
             return builder.Append(Tabs(tabLevel)).Append(value);
         }
-        
+
         public static StringBuilder PrependTabbed(this StringBuilder builder, int tabLevel, string value)
         {
             return builder.Prepend(value).Prepend(Tabs(tabLevel));
@@ -49,7 +49,7 @@ namespace Poiyomi.ModularShaderSystem
         {
             return haystack.IndexOf(needle) != -1;
         }
-        
+
         public static int IndexOf(this StringBuilder haystack, string needle)
         {
             if (haystack == null || needle == null)

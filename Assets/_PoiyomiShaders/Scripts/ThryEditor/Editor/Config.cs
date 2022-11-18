@@ -1,13 +1,7 @@
 ﻿// Material/Shader Inspector for Unity 2017/2018
 // Copyright (C) 2019 Thryrallo
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 
 namespace Thry
@@ -74,7 +68,7 @@ namespace Thry
         public string locale = "English";
 
         public string gradient_name = "gradient_<hash>.png";
-        
+
         public bool autoSetAnchorOverride = true;
         public HumanBodyBones humanBoneAnchor = HumanBodyBones.Spine;
         public string anchorOverrideObjectName = "AutoAnchorObject";

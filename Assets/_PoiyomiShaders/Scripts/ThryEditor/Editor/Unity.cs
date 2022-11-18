@@ -2,7 +2,6 @@
 // Copyright (C) 2019 Thryrallo
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,14 +34,14 @@ namespace Thry
                 {
                     PlayerSettings.SetScriptingDefineSymbolsForGroup(
                                   BuildTargetGroup.Standalone, symbols + ";" + symbol);
-                    if(refresh_if_changed)
+                    if (refresh_if_changed)
                         AssetDatabase.Refresh();
                 }
                 else if (symbols.Contains(symbol) && !active)
                 {
                     PlayerSettings.SetScriptingDefineSymbolsForGroup(
                                   BuildTargetGroup.Standalone, Regex.Replace(symbols, @";?" + @symbol, ""));
-                    if(refresh_if_changed)
+                    if (refresh_if_changed)
                         AssetDatabase.Refresh();
                 }
             }
