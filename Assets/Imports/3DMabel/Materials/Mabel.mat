@@ -14,6 +14,7 @@ Material:
   - POI_LIGHT_DATA_ADDITIVE_ENABLE
   - POI_MATCAP0
   - POI_VERTEXLIGHT_ON
+  - POSTPROCESS
   - VIGNETTE_MASKED
   - _LIGHTINGMODE_SHADEMAP
   - _RIMSTYLE_POIYOMI
@@ -1448,21 +1449,21 @@ Material:
     - _PBRMapsStochastic: 0
     - _PBRSplitMaskSample: 0
     - _PBRSplitMaskStochastic: 0
-    - _PPBrightness: 1
+    - _PPBrightness: 2
     - _PPContrast: 1
     - _PPEmissionMultiplier: 1
     - _PPFinalColorMultiplier: 1
-    - _PPHDR: 0
+    - _PPHDR: 0.57
     - _PPHelp: 0
     - _PPHue: 0
-    - _PPLightingAddition: 0
+    - _PPLightingAddition: 1
     - _PPLightingMultiplier: 1
     - _PPLightness: 0
     - _PPMaskInvert: 0
     - _PPMaskUV: 0
     - _PPPosterization: 0
     - _PPPosterizationAmount: 4
-    - _PPSaturation: 1
+    - _PPSaturation: 1.5
     - _PanoUseBothEyes: 1
     - _Parallax: 0.02
     - _ParallaxInternalHeightFromAlpha: 0
@@ -1532,7 +1533,7 @@ Material:
     - _PolarRadialScale: 1
     - _PolarSpiralPower: 0
     - _PolarUV: 0
-    - _PostProcess: 0
+    - _PostProcess: 1
     - _RGBBlendMultiplicative: 0
     - _RGBMaskEnabled: 0
     - _RGBMaskUV: 0
@@ -1941,7 +1942,7 @@ Material:
     - m_lightingCategory: 1
     - m_mainCategory: 0
     - m_modifierCategory: 1
-    - m_postprocessing: 0
+    - m_postprocessing: 1
     - m_renderingCategory: 0
     - m_specialFXCategory: 0
     - m_start_ALDecalSpectrum: 0
@@ -1979,7 +1980,7 @@ Material:
     - m_start_Matcap3: 0
     - m_start_Matcap4: 0
     - m_start_PathAudioLink: 0
-    - m_start_PoiLightData: 0
+    - m_start_PoiLightData: 1
     - m_start_PoiShading: 1
     - m_start_RGBMask: 0
     - m_start_Rim2AudioLink: 0
@@ -2023,7 +2024,7 @@ Material:
     - m_start_pathing: 0
     - m_start_pen_autoConfig: 0
     - m_start_pointToPoint: 0
-    - m_start_postprocess: 0
+    - m_start_postprocess: 1
     - m_start_reflectionRim: 0
     - m_start_rim2LightOptions: 0
     - m_start_rimLightOptions: 0

@@ -362,7 +362,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MochieMetallicMaps:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 9dee0dfa5da9862449cd0f8b4d266294, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MochieReflCube:
@@ -514,7 +514,7 @@ Material:
     - GeometryShader_Enabled: 1
     - Instancing: 0
     - Tessellation_Enabled: 1
-    - _1st2nd_Shades_Feather: 0.35
+    - _1st2nd_Shades_Feather: 0.343
     - _1stShadeMapMask_Inverse: 0
     - _1st_ShadeMapUV: 0
     - _2ndShadeMapMask_Inverse: 0
@@ -1425,12 +1425,12 @@ Material:
     - _MochieMetallicMapInvert: 0
     - _MochieMetallicMapsUV: 0
     - _MochieMetallicMasksUV: 0
-    - _MochieMetallicMultiplier: 1
+    - _MochieMetallicMultiplier: 0
     - _MochieReflectionMaskInvert: 0
-    - _MochieReflectionStrength: 0.46
+    - _MochieReflectionStrength: 0.505
     - _MochieReflectionTintThemeIndex: 0
     - _MochieRoughnessMapInvert: 0
-    - _MochieRoughnessMultiplier: 0.222
+    - _MochieRoughnessMultiplier: 0.824
     - _MochieRoughnessMultiplier2: 1
     - _MochieSpecularMaskInvert: 0
     - _MochieSpecularStrength: 1
@@ -1455,7 +1455,7 @@ Material:
     - _PPHDR: 0
     - _PPHelp: 0
     - _PPHue: 0
-    - _PPLightingAddition: 0
+    - _PPLightingAddition: 0.5
     - _PPLightingMultiplier: 1
     - _PPLightness: 0
     - _PPMaskInvert: 0
@@ -1626,7 +1626,7 @@ Material:
     - _ScrollingEmission2: 0
     - _ScrollingEmission3: 0
     - _Set_HighColorMaskUV: 0
-    - _ShadeColor_Step: 0.517
+    - _ShadeColor_Step: 0.422
     - _ShaderOptimizerEnabled: 0
     - _ShadingEnabled: 1
     - _ShadingShadeMapBlendType: 0
@@ -1941,7 +1941,7 @@ Material:
     - m_lightingCategory: 1
     - m_mainCategory: 1
     - m_modifierCategory: 0
-    - m_postprocessing: 0
+    - m_postprocessing: 1
     - m_renderingCategory: 0
     - m_specialFXCategory: 0
     - m_start_ALDecalSpectrum: 0
@@ -1980,7 +1980,7 @@ Material:
     - m_start_Matcap4: 0
     - m_start_PathAudioLink: 0
     - m_start_PoiLightData: 0
-    - m_start_PoiShading: 1
+    - m_start_PoiShading: 0
     - m_start_RGBMask: 0
     - m_start_Rim2AudioLink: 0
     - m_start_RimAudioLink: 0
