@@ -15,12 +15,4 @@ public class HallCam : MonoBehaviour
             CamController.Camera = Cam;
         }
     }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other == Mabel)
-        {
-            CamController.Camera = 0;
-        }
-
-    }
 }

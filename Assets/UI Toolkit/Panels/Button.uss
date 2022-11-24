@@ -17,21 +17,26 @@
     border-top-right-radius: 11px;
     border-bottom-right-radius: 11px;
     margin-left: 31px;
-    margin-right: 370px;
+    margin-right: 80px;
     margin-top: 20px;
     margin-bottom: 12px;
     -unity-font-definition: url('project://database/Assets/UI%20Toolkit/GEAREDSLAB-BOLD%20SDF.asset?fileID=11400000&guid=e3065d17f5d183046bd7e57e2bc48f87&type=2#GEAREDSLAB-BOLD SDF');
     letter-spacing: 7px;
     padding-bottom: -7px;
+    transition-duration: 0.1s;
+    transition-delay: 0s;
+    transition-timing-function: ease-in-out;
 }
 
 .button-main-title:hover {
     background-color: rgb(79, 35, 35);
     color: rgb(255, 196, 224);
+    scale: 1.1 1.1;
 }
 
 .button-main-title:active {
     background-color: rgb(144, 89, 90);
     -unity-background-scale-mode: stretch-to-fill;
     color: rgb(255, 196, 224);
+    scale: 1.05 1.05;
 }

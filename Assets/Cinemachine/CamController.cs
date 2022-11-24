@@ -6,7 +6,6 @@ using UnityEngine;
 public class CamController : MonoBehaviour
 {
     public int Camera = 0;
-    [SerializeField] private bool MainCam = true;
     public Animator animator;
     public void Update()
     {

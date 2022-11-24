@@ -1,0 +1,9 @@
+.active-screen {
+    display: flex;
+    visibility: visible;
+}
+
+.inactive-screen {
+    display: flex;
+    visibility: visible;
+}
