@@ -7,17 +7,17 @@
             <ui:VisualElement style="height: 80%; width: 100%;">
                 <ui:VisualElement name="FullscreenContainer" style="flex-direction: row;">
                     <ui:Button text="Fullscreen" display-tooltip-when-elided="true" name="Fullscreen" class="button-main-title" style="width: 30%;" />
-                    <ui:Toggle class="toggle" style="width: 130px;" />
+                    <ui:Toggle focusable="false" value="false" class="toggle" style="width: 130px;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="VisualsContainer">
                     <ui:Label text="VISUALS" display-tooltip-when-elided="true" style="-unity-font-definition: url(&apos;project://database/Assets/UI%20Toolkit/GEAREDSLAB-BOLD%20SDF.asset?fileID=11400000&amp;guid=e3065d17f5d183046bd7e57e2bc48f87&amp;type=2#GEAREDSLAB-BOLD SDF&apos;); color: rgb(120, 120, 120); font-size: 61px; margin-left: 31px; margin-bottom: -12px;" />
                     <ui:VisualElement name="DoFContainer" style="flex-direction: row;">
                         <ui:Button text="Depth of Field" display-tooltip-when-elided="true" name="DepthofField" class="button-main-title" style="width: 30%;" />
-                        <ui:Toggle class="toggle" />
+                        <ui:Toggle focusable="false" class="toggle" />
                     </ui:VisualElement>
                     <ui:VisualElement name="BloomContainer" style="flex-direction: row;">
                         <ui:Button text="Bloom" display-tooltip-when-elided="true" name="Bloom" class="button-main-title" style="width: 30%;" />
-                        <ui:Toggle class="toggle" />
+                        <ui:Toggle focusable="false" class="toggle" />
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:Button text="Back" display-tooltip-when-elided="true" name="Back" class="button-main-title" style="width: 10%; margin-top: 50px;" />

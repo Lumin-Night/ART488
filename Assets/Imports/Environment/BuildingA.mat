@@ -29,7 +29,22 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
-  stringTagMap: {}
+  stringTagMap:
+    _MochieMetallicMaps_texPack_a_channel: 4
+    _MochieMetallicMaps_texPack_a_fallback: 1
+    _MochieMetallicMaps_texPack_a_inverted: False
+    _MochieMetallicMaps_texPack_b_channel: 4
+    _MochieMetallicMaps_texPack_b_fallback: 1
+    _MochieMetallicMaps_texPack_b_guid: 4c4f0579dd50ea844867cb610cc985f0
+    _MochieMetallicMaps_texPack_b_inverted: False
+    _MochieMetallicMaps_texPack_g_channel: 4
+    _MochieMetallicMaps_texPack_g_fallback: 1
+    _MochieMetallicMaps_texPack_g_inverted: False
+    _MochieMetallicMaps_texPack_lastConfirmTime: 1669371991
+    _MochieMetallicMaps_texPack_r_channel: 4
+    _MochieMetallicMaps_texPack_r_fallback: 1
+    _MochieMetallicMaps_texPack_r_guid: a2dbe12cbf2f0af46a5160008be9ec93
+    _MochieMetallicMaps_texPack_r_inverted: true
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -367,7 +382,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MochieMetallicMaps:
-        m_Texture: {fileID: 2800000, guid: a2dbe12cbf2f0af46a5160008be9ec93, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3fa2692acf055ab4a8671a9ec1a282fb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MochieReflCube:
@@ -1442,10 +1457,10 @@ Material:
     - _MochieReflectionStrength: 1
     - _MochieReflectionTintThemeIndex: 0
     - _MochieRoughnessMapInvert: 0
-    - _MochieRoughnessMultiplier: 0.876
+    - _MochieRoughnessMultiplier: 0.328
     - _MochieRoughnessMultiplier2: 1
     - _MochieSpecularMaskInvert: 0
-    - _MochieSpecularStrength: 1
+    - _MochieSpecularStrength: 0
     - _MochieSpecularStrength2: 1
     - _MochieSpecularTintThemeIndex: 0
     - _Mode: 0
@@ -2017,7 +2032,7 @@ Material:
     - m_start_backFace: 0
     - m_start_bakedLighting: 0
     - m_start_blending: 0
-    - m_start_brdf: 0
+    - m_start_brdf: 1
     - m_start_clearCoat: 0
     - m_start_depthFX: 0
     - m_start_depthRimLightOptions: 0

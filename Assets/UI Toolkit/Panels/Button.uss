@@ -25,7 +25,14 @@
     padding-bottom: -7px;
     transition-duration: 0.1s;
     transition-delay: 0s;
-    transition-timing-function: ease-in-out;
+    transition-timing-function: ease;
+    transition-property: background-color;
+}
+
+.button-main-title:focus {
+    background-color: rgb(79, 35, 35);
+    color: rgb(255, 196, 224);
+    scale: 1.1 1.1;
 }
 
 .button-main-title:hover {
