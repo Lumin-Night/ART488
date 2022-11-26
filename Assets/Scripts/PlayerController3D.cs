@@ -2,31 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
+using System;
 
 public class PlayerController3D : MonoBehaviour
 {
     //Standard Movement
+    private PlayerInput MabelInput;
+    private InputAction moveAction;
+    private InputAction Dash;
+    private InputAction Jump;
     private CharacterController controller;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
-    [SerializeField] private float depthCompensation;
+    [SerializeField] private bool isDashing;
     [SerializeField] private Vector3 moveDirection;
-    [SerializeField] private float moveX;
-    [SerializeField] private float moveZ;
+    [SerializeField] private Vector2 moveXZ;
     private Vector3 velocity;
-    private float jumpForce;
     public Animator characterAnimatior;
     [SerializeField] private LayerMask MovePlatform;
-
-
-
+    public GameObject MabelModel;
+        
     //Boundary Detection
-    private bool isSlow;
+    [SerializeField] private bool isSlow;
     [SerializeField] private float multiplier;
 
     //Air Movement
     [SerializeField] private float jumpHeight;
+    [SerializeField] private float jumpForce;
     [SerializeField] private bool isGrounded;
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask groundMask;
@@ -37,6 +41,7 @@ public class PlayerController3D : MonoBehaviour
     [SerializeField] private bool isAirDashing;
     [SerializeField] private float airDashTime;
     [SerializeField] private float deceleration = 25;
+    [SerializeField] private float jump;
     [SerializeField] private bool isJumping;
     [SerializeField] private int wallJumper;
     [SerializeField] private int wallJumped;
@@ -52,7 +57,6 @@ public class PlayerController3D : MonoBehaviour
     [SerializeField] private Vector3 lastPosition;
     [SerializeField] private string KillZoneLayerName = "KillZone";
     [SerializeField] private string IntroLayerName = "Intro";
-    private int Intro;
     private int killZone;
     [SerializeField] private float respawnTime;
     [SerializeField] private bool respawning;
@@ -61,6 +65,21 @@ public class PlayerController3D : MonoBehaviour
     public int Collected;
     public TMP_Text CollectibleText;
     public Animator uiAnimations;
+    private bool intro;
+    private int Intro;
+
+
+    private void Awake()
+    {
+        MabelInput = GetComponent<PlayerInput>();
+        Jump = MabelInput.actions["Jump"];
+        moveAction = MabelInput.actions["Move"];
+        Dash = MabelInput.actions["Dash"];
+        Dash.performed += DashAction;
+        Dash.canceled += DashEnd;
+        Jump.performed += JumpAction;
+    }
+
 
     private void Start()
     {
@@ -75,7 +94,6 @@ public class PlayerController3D : MonoBehaviour
         uiAnimations.SetInteger("Jumps", jumps);
         uiAnimations.SetInteger("DashSpent", dashCount);
         MovementAnimation();
-
     }
     private void Move()
     {
@@ -93,10 +111,9 @@ public class PlayerController3D : MonoBehaviour
             wallJumped = 1;
 
         }
-
-        Movement();        
-        
-        if(isSlow == true)
+        moveXZ = moveAction.ReadValue<Vector2>();
+ 
+        if (isSlow == true)
         {
             if(multiplier >= .3)
             {
@@ -104,20 +121,33 @@ public class PlayerController3D : MonoBehaviour
             }
         }
 
-        moveDirection = new Vector3(moveDirection.x * (moveSpeed * multiplier), 0, moveDirection.z * (moveSpeed * multiplier));
+        if (moveXZ != Vector2.zero && !isDashing)
+        {
+            moveSpeed = walkSpeed;
+        }
+        else if (moveXZ != Vector2.zero && isDashing)
+        {
+            moveSpeed = runSpeed;
+        }
+        else if (moveXZ == Vector2.zero)
+        {
+            moveSpeed = 0;
+        }
+
+        moveSpeed = moveSpeed * multiplier;
+
+        moveDirection = new Vector3(moveXZ.x * moveSpeed, 0, moveXZ.y * moveSpeed);
+
+        if (moveDirection != Vector3.zero)
+        {
+            MabelModel.transform.forward = moveDirection;
+        }
+
 
         controller.Move(moveDirection * Time.deltaTime);
         velocity.y += gravity * Time.deltaTime;  
         controller.Move(velocity * Time.deltaTime);
-
-        if (Input.GetButtonDown("Jump") && jumps > 0)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
-            jumps--;
-            dashCount = 1;
-            isJumping = true;
-        }
-
+        
         AirDash();
 
         if (isWallJumping && !isJumping)
@@ -129,25 +159,23 @@ public class PlayerController3D : MonoBehaviour
             gravity = -20;
         }
     }
-    private void Movement()
+    private void JumpAction(InputAction.CallbackContext context)
     {
-
-        moveZ = Input.GetAxis("Vertical");
-        moveX = Input.GetAxis("Horizontal");
-
-        moveDirection = new Vector3(moveX, 0, moveZ);
-        if (moveDirection != Vector3.zero && !Input.GetButton("Sprint"))
+        if (jumps > 0)
         {
-            moveSpeed = walkSpeed;
+            velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+            jumps--;
+            dashCount = 1;
+            isJumping = true;
         }
-        else if (moveDirection != Vector3.zero && Input.GetButton("Sprint") && Input.GetButton("Sprint"))
-        {
-            moveSpeed = runSpeed;
-        }
-        else if (moveDirection == Vector3.zero)
-        {
-            moveSpeed = 0;
-        }
+    }
+    private void DashAction(InputAction.CallbackContext context)
+    {
+        isDashing = true;
+    }
+    private void DashEnd(InputAction.CallbackContext context)
+    {
+        isDashing = false;
     }
 
     public void SetSlow()
@@ -161,7 +189,7 @@ public class PlayerController3D : MonoBehaviour
     }
     public void AirDash()
     {
-        if (Input.GetButtonDown("Sprint") && isGrounded == false && dashCount > 0)
+        if (isDashing && isGrounded == false && dashCount > 0)
         {
             dashSpeed = 5;
             isAirDashing = true;
@@ -205,11 +233,11 @@ public class PlayerController3D : MonoBehaviour
                 jumps++;
             }
         }
-
         if (other.gameObject.layer == Intro)
         {
-            characterAnimatior.SetBool("Intro", true);
+            intro = true;
         }
+        else intro = false;
     }
 
     private void OnTriggerExit(Collider other)
@@ -221,24 +249,13 @@ public class PlayerController3D : MonoBehaviour
             isWallJumping = false;
             wallJumped = wallJumper;
         }
-        if (other.gameObject.layer == Intro)
-        {
-            characterAnimatior.SetBool("Intro", false);
-        }
     }
-
-    public void Collect()
-    {
-        Collected++;
-        CollectibleText.text = Collected.ToString();
-    }
-
     public void MovementAnimation()
     {
-        characterAnimatior.SetFloat("movementX", moveDirection.x);
-        characterAnimatior.SetFloat("movementZ", moveDirection.z);
+        characterAnimatior.SetFloat("Speed", moveSpeed);
         characterAnimatior.SetBool("isWallJumping", isWallJumping);
         characterAnimatior.SetBool("isJumping", isJumping);
         characterAnimatior.SetBool("isDashing", isAirDashing);
+        characterAnimatior.SetBool("Intro", intro);
     }
 }

@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{B8F0DD85-28D3-F3AC-346F-4638D8E7A672}</ProjectGuid>
+    <ProjectGuid>{E6901DCC-21D1-85A3-3594-F6183D51CF16}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>ThryAssemblyDefinition</AssemblyName>
+    <AssemblyName>Unity.ProBuilder.AddOns.Editor</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -48,7 +48,7 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
     <UnityProjectGeneratorVersion>2.0.16</UnityProjectGeneratorVersion>
-    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2021.3.7f1</UnityVersion>
   </PropertyGroup>
@@ -56,33 +56,10 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\EditorStructs.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ModuleHandler.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Presets.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ThryEditor.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\GradiantEditor.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Parser.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Drawers.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\GUIHelper.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Settings.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\MaterialLinker.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Unity.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Helper.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ThryFileBuilder.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ShaderTranslator.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\HelperWeb.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Styles.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\EditorChanger.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Locale.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\DataStructs.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Mediator.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ShaderOptimizer.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\UploadAnchorOverrideSetter.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Config.cs" />
+    <Compile Include="Library\PackageCache\com.unity.probuilder@5.0.6\Addons\Fbx.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ThryTexturePacker.compute" />
-    <None Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ThryAssemblyDefinition.asmdef" />
+    <None Include="Library\PackageCache\com.unity.probuilder@5.0.6\Addons\Unity.ProBuilder.AddOns.Editor.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -768,6 +745,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Unity.ProBuilder.csproj">
+      <Project>{14365B4B-1967-FB05-BF04-F61A96EFAE11}</Project>
+      <Name>Unity.ProBuilder</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ProBuilder.Editor.csproj">
+      <Project>{1BC08E83-2A8A-8CD0-F2FC-F00FEC69FF19}</Project>
+      <Name>Unity.ProBuilder.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="UnityEditor.TestRunner.csproj">
       <Project>{72CA1596-F6FC-C150-F16B-36B35AB98F65}</Project>
       <Name>UnityEditor.TestRunner</Name>

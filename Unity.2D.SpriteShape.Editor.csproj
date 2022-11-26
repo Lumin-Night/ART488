@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{B8F0DD85-28D3-F3AC-346F-4638D8E7A672}</ProjectGuid>
+    <ProjectGuid>{68FF0A2F-D79A-29F1-5C46-8EFD8618C1C5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>ThryAssemblyDefinition</AssemblyName>
+    <AssemblyName>Unity.2D.SpriteShape.Editor</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -48,7 +48,7 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
     <UnityProjectGeneratorVersion>2.0.16</UnityProjectGeneratorVersion>
-    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2021.3.7f1</UnityVersion>
   </PropertyGroup>
@@ -56,33 +56,29 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\EditorStructs.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ModuleHandler.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Presets.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ThryEditor.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\GradiantEditor.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Parser.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Drawers.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\GUIHelper.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Settings.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\MaterialLinker.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Unity.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Helper.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ThryFileBuilder.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ShaderTranslator.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\HelperWeb.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Styles.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\EditorChanger.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Locale.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\DataStructs.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Mediator.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ShaderOptimizer.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\UploadAnchorOverrideSetter.cs" />
-    <Compile Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\Config.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\ObjectMenuCreation\GameObjectCreation.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\AssemblyInfo.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SpriteShapeAnalytics.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SpriteShapeControllerEditor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\AngleRangeController.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SpriteShapeEditorAnalytics.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SpriteShapeHandleUtility.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\AngleRangeView.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\ContextMenu.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SpriteShapeEditor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SpriteShapeEditorTool.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\EditorSpriteGUIUtility.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SpriteShapeEditorGUI.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\ObjectMenuCreation\AssetCreation.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SpriteSelector.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SceneDragAndDrop.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\AngleRangeGUI.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SpriteShapeEditorUtility.cs" />
+    <Compile Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\SpriteShapeAssetPostProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ThryTexturePacker.compute" />
-    <None Include="Assets\_PoiyomiShaders\Scripts\ThryEditor\Editor\ThryAssemblyDefinition.asmdef" />
+    <None Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\Handles\Shaders\Sprites-Inspector.shader" />
+    <None Include="Library\PackageCache\com.unity.2d.spriteshape@7.0.5\Editor\Unity.2D.SpriteShape.Editor.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -768,6 +764,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Unity.InternalAPIEditorBridge.001.csproj">
+      <Project>{28BC2B7C-A711-3D7F-3649-4A2EEE2BF7E5}</Project>
+      <Name>Unity.InternalAPIEditorBridge.001</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.Common.Editor.csproj">
+      <Project>{7E779343-482F-E18A-F06E-A33545B9C3ED}</Project>
+      <Name>Unity.2D.Common.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.Common.Runtime.csproj">
+      <Project>{6C7E43BB-0725-3DEA-F92E-A51348B54664}</Project>
+      <Name>Unity.2D.Common.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.SpriteShape.Runtime.csproj">
+      <Project>{69302776-1B81-BA13-68B4-6EEF8E5A9F42}</Project>
+      <Name>Unity.2D.SpriteShape.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.Path.Editor.csproj">
+      <Project>{BED2B803-2644-551E-FA5F-66507336CEBF}</Project>
+      <Name>Unity.2D.Path.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="UnityEditor.TestRunner.csproj">
       <Project>{72CA1596-F6FC-C150-F16B-36B35AB98F65}</Project>
       <Name>UnityEditor.TestRunner</Name>
