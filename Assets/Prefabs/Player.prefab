@@ -707,8 +707,6 @@ MonoBehaviour:
   SafeZoneLayerName: SafeZone
   PlayerController3D: {fileID: 9005522663171243277}
   SafeZoneCounter: 0
-  positionX: 0
-  positionY: 0
   HeaderLight: {fileID: 0}
 --- !u!65 &9005522662946508532
 BoxCollider:
@@ -812,6 +810,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 0
   walkSpeed: 5
+  rotationSpeed: 720
   runSpeed: 8
   isDashing: 0
   moveDirection: {x: 0, y: 0, z: 0}

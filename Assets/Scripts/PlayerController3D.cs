@@ -15,10 +15,11 @@ public class PlayerController3D : MonoBehaviour
     private CharacterController controller;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float walkSpeed;
+    public float rotationSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private bool isDashing;
     [SerializeField] private Vector3 moveDirection;
-    [SerializeField] private Vector2 moveXZ;
+    public Vector2 moveXZ;
     private Vector3 velocity;
     public Animator characterAnimatior;
     [SerializeField] private LayerMask MovePlatform;
@@ -140,7 +141,10 @@ public class PlayerController3D : MonoBehaviour
 
         if (moveDirection != Vector3.zero)
         {
-            MabelModel.transform.forward = moveDirection;
+            //MabelModel.transform.forward = moveDirection;
+            Quaternion toRotate = Quaternion.LookRotation(moveDirection, Vector3.up);
+
+            MabelModel.transform.rotation = Quaternion.RotateTowards(MabelModel.transform.rotation, toRotate, rotationSpeed * Time.deltaTime);
         }
 
 

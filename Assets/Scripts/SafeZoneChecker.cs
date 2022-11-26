@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SafeZoneChecker : MonoBehaviour
 {
@@ -8,8 +9,6 @@ public class SafeZoneChecker : MonoBehaviour
     [SerializeField] private string SafeZoneLayerName="SafeZone";
     public PlayerController3D PlayerController3D;
     [SerializeField] private int SafeZoneCounter;
-    [SerializeField] private float positionX;
-    [SerializeField] private float positionY;
     public Light HeaderLight;
 
     private void Awake()
@@ -46,10 +45,7 @@ public class SafeZoneChecker : MonoBehaviour
 
     private void Update()
     {
-        positionX = Input.GetAxis("Horizontal") * 1.2f;
-        positionY = Input.GetAxis("Vertical") * 1.2f;
-
-        transform.localPosition = new Vector3(positionX, 0, positionY);
+        transform.localPosition = new Vector3(PlayerController3D.moveXZ.x * 1.2f , 0, PlayerController3D.moveXZ.y * 1.2f);
     }
 
 
