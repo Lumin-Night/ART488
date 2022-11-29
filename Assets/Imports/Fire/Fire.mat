@@ -79,7 +79,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ClippingMask:
         m_Texture: {fileID: 2800000, guid: c28a91202945a0d4cb1c78ed1ed9badd, type: 3}
-        m_Scale: {x: 1, y: 0.9}
+        m_Scale: {x: 1, y: 0.62}
         m_Offset: {x: 0, y: 0}
     - _ClothDFG:
         m_Texture: {fileID: 2800000, guid: 76d65cbce584df7449699fb8406f60ea, type: 3}
@@ -569,7 +569,7 @@ Material:
     - _AlphaDistanceFadeMin: 0
     - _AlphaDistanceFadeMinAlpha: 0
     - _AlphaDistanceFadeType: 1
-    - _AlphaDitherGradient: 0.1
+    - _AlphaDitherGradient: 1
     - _AlphaDithering: 0
     - _AlphaForceOpaque: 0
     - _AlphaFresnel: 0
@@ -578,7 +578,7 @@ Material:
     - _AlphaFresnelSharpness: 0.5
     - _AlphaFresnelWidth: 0.5
     - _AlphaMipScale: 0.25
-    - _AlphaMod: -0.176
+    - _AlphaMod: -0.625
     - _AlphaPremultiply: 1
     - _AlphaSharpenedA2C: 0
     - _AlphaTextureStochastic: 0
@@ -765,7 +765,7 @@ Material:
     - _CubeMapReplace: 1
     - _CubeMapUVMode: 1
     - _CubeMapWorldNormalsStrength: 1
-    - _Cull: 2
+    - _Cull: 0
     - _CurvFix: 1
     - _CurvatureU: 0
     - _CurvatureV: 0
@@ -968,7 +968,7 @@ Material:
     - _EmissionAL3MultipliersBand: 0
     - _EmissionAL3StrengthBand: 0
     - _EmissionBaseColorAsMap: 0
-    - _EmissionBaseColorAsMap1: 0
+    - _EmissionBaseColorAsMap1: 1
     - _EmissionBaseColorAsMap2: 0
     - _EmissionBaseColorAsMap3: 0
     - _EmissionBlinkingEnabled: 0
@@ -1040,7 +1040,7 @@ Material:
     - _EmissionScrollingVertexColor2: 0
     - _EmissionScrollingVertexColor3: 0
     - _EmissionStrength: 0
-    - _EmissionStrength1: 18.21
+    - _EmissionStrength1: 20
     - _EmissionStrength2: 0
     - _EmissionStrength3: 0
     - _EmissiveBlink_Max: 1

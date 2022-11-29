@@ -10,6 +10,7 @@ public class SettingsMenu : MonoBehaviour
 {
     public PostProcessVolume PostProcess;
     public TutorialMainMenuPresenter TutorialMainMenuPresenter;
+    public PauseMenu PauseMenu;
     public VisualElement SettingMenu;
     public Button backButton;
     public Button Fullscreen;
@@ -23,6 +24,7 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private int DFI;
     Bloom bloom;
     DepthOfField dof;
+    public bool settingsActive;
     void Start()
     {
         BL = true;
@@ -48,10 +50,20 @@ public class SettingsMenu : MonoBehaviour
         dofButton.clicked += DoFPressed;
 
     }
+    private void Update()
+    {
+        if(settingsActive == true)
+        {
+            SettingMenu.style.visibility = Visibility.Visible;
+        }
+        else
+        {
+            SettingMenu.style.visibility = Visibility.Hidden;
+        }
+    }
     void BackButtonPressed()
     {
-        SettingMenu.style.visibility = Visibility.Hidden;
-        TutorialMainMenuPresenter.MainMenu.style.visibility = Visibility.Visible;
+        settingsActive = false;
     }
 
     void FullscreenPressed()
@@ -77,5 +89,4 @@ public class SettingsMenu : MonoBehaviour
         PlayerPrefs.SetInt("dof", DFI);
         dof.active = DF;
     }
-
 }

@@ -15,7 +15,6 @@ public class TutorialMainMenuPresenter : MonoBehaviour
     void Start()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
-
         startButton = root.Q<Button>("Start");
         settingsButton = root.Q<Button>("Settings");
         quitButton = root.Q<Button>("Quit");
@@ -26,6 +25,18 @@ public class TutorialMainMenuPresenter : MonoBehaviour
         settingsButton.clicked += SettingsButtonPressed;
     }
 
+    private void Update()
+    {
+        if(SettingsMenu.settingsActive == true)
+        {
+            MainMenu.style.visibility = Visibility.Hidden;
+        }
+        else
+        {
+            MainMenu.style.visibility = Visibility.Visible;
+        }
+    }
+
     void StartButtonPressed()
     {
         SceneManager.LoadScene("Tutorial");
@@ -33,8 +44,7 @@ public class TutorialMainMenuPresenter : MonoBehaviour
 
     void SettingsButtonPressed()
     {
-        MainMenu.style.visibility = Visibility.Hidden;
-        SettingsMenu.SettingMenu.style.visibility = Visibility.Visible;
+        SettingsMenu.settingsActive = true;
     }
 
     void QuitButtonPressed()

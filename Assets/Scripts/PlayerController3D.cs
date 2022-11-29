@@ -18,6 +18,7 @@ public class PlayerController3D : MonoBehaviour
     public float rotationSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private bool isDashing;
+    [SerializeField] private float dashInput;
     [SerializeField] private Vector3 moveDirection;
     public Vector2 moveXZ;
     private Vector3 velocity;
@@ -68,7 +69,7 @@ public class PlayerController3D : MonoBehaviour
     public Animator uiAnimations;
     private bool intro;
     private int Intro;
-
+    public Pause Pause;
 
     private void Awake()
     {
@@ -76,9 +77,7 @@ public class PlayerController3D : MonoBehaviour
         Jump = MabelInput.actions["Jump"];
         moveAction = MabelInput.actions["Move"];
         Dash = MabelInput.actions["Dash"];
-        Dash.performed += DashAction;
-        Dash.canceled += DashEnd;
-        Jump.performed += JumpAction;
+        Jump.started += JumpAction;
     }
 
 
@@ -88,15 +87,27 @@ public class PlayerController3D : MonoBehaviour
         killZone = LayerMask.NameToLayer(KillZoneLayerName);
         wallJump = LayerMask.NameToLayer(WallJumpLayerName);
         Intro = LayerMask.NameToLayer(IntroLayerName);
+         
+
+
     }
     private void Update()
     {
-        Move();
-        uiAnimations.SetInteger("Jumps", jumps);
-        uiAnimations.SetInteger("DashSpent", dashCount);
-        MovementAnimation();
+        if(Pause.isPaused == false)
+        {
+            Move();
+            uiAnimations.SetInteger("Jumps", jumps);
+            uiAnimations.SetInteger("DashSpent", dashCount);
+            MovementAnimation();
+            if (Dash.IsPressed())
+            {
+                isDashing = true;
+            }
+            else isDashing = false;
+        }
+
     }
-    private void Move()
+    public void Move()
     {
         isGrounded = Physics.CheckSphere(transform.position, groundCheckDistance, groundMask);
         if (isGrounded && velocity.y < 0)
@@ -139,9 +150,9 @@ public class PlayerController3D : MonoBehaviour
 
         moveDirection = new Vector3(moveXZ.x * moveSpeed, 0, moveXZ.y * moveSpeed);
 
+
         if (moveDirection != Vector3.zero)
         {
-            //MabelModel.transform.forward = moveDirection;
             Quaternion toRotate = Quaternion.LookRotation(moveDirection, Vector3.up);
 
             MabelModel.transform.rotation = Quaternion.RotateTowards(MabelModel.transform.rotation, toRotate, rotationSpeed * Time.deltaTime);
@@ -173,15 +184,6 @@ public class PlayerController3D : MonoBehaviour
             isJumping = true;
         }
     }
-    private void DashAction(InputAction.CallbackContext context)
-    {
-        isDashing = true;
-    }
-    private void DashEnd(InputAction.CallbackContext context)
-    {
-        isDashing = false;
-    }
-
     public void SetSlow()
     {
         isSlow = true;
@@ -193,7 +195,7 @@ public class PlayerController3D : MonoBehaviour
     }
     public void AirDash()
     {
-        if (isDashing && isGrounded == false && dashCount > 0)
+        if (isJumping && dashCount > 0 && Dash.triggered)
         {
             dashSpeed = 5;
             isAirDashing = true;
