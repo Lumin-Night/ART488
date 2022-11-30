@@ -25,6 +25,10 @@ public class CamController : MonoBehaviour
         {
             animator.Play("BalconyCam");
         }
+        else if (Camera == 4)
+        {
+            animator.Play("ObservationCam");
+        }
     }
 
 }
