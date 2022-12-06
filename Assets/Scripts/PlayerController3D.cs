@@ -71,6 +71,10 @@ public class PlayerController3D : MonoBehaviour
     private int Intro;
     public Pause Pause;
 
+    //Effects
+    public GameObject jumpSmoke;
+    [SerializeField] private GameObject jumpEffect;
+
     private void Awake()
     {
         MabelInput = GetComponent<PlayerInput>();
@@ -87,9 +91,6 @@ public class PlayerController3D : MonoBehaviour
         killZone = LayerMask.NameToLayer(KillZoneLayerName);
         wallJump = LayerMask.NameToLayer(WallJumpLayerName);
         Intro = LayerMask.NameToLayer(IntroLayerName);
-         
-
-
     }
     private void Update()
     {
@@ -121,7 +122,6 @@ public class PlayerController3D : MonoBehaviour
             isJumping = false;
             wallJumper = 0;
             wallJumped = 1;
-
         }
         moveXZ = moveAction.ReadValue<Vector2>();
  
@@ -178,11 +178,13 @@ public class PlayerController3D : MonoBehaviour
     {
         if (jumps > 0)
         {
+            jumpEffect = Instantiate(jumpSmoke, currentPosition, transform.rotation);
+            jumpEffect.SetActive(true);
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
             jumps--;
             dashCount = 1;
             isJumping = true;
-        }
+        }        
     }
     public void SetSlow()
     {

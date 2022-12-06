@@ -31,6 +31,8 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
   stringTagMap:
+    OriginalShader: .poiyomi/Poiyomi 8.1/Poiyomi Pro World
+    RenderType: Opaque
     _MochieMetallicMaps_texPack_a_channel: 4
     _MochieMetallicMaps_texPack_a_fallback: 1
     _MochieMetallicMaps_texPack_a_inverted: False
@@ -107,7 +109,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubeMap:
-        m_Texture: {fileID: 8900000, guid: 8c77523212c6d9b4f9bd50a2f360fabc, type: 3}
+        m_Texture: {fileID: 8900000, guid: b154413d517bffa4d8647e5abeb8c29b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubeMapMask:

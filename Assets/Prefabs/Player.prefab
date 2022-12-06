@@ -704,6 +704,7 @@ MonoBehaviour:
   BLI: 0
   DF: 0
   DFI: 0
+  settingsActive: 0
 --- !u!1 &5162709624521514316
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,6 +997,7 @@ MonoBehaviour:
   rotationSpeed: 720
   runSpeed: 8
   isDashing: 0
+  dashInput: 0
   moveDirection: {x: 0, y: 0, z: 0}
   moveXZ: {x: 0, y: 0}
   characterAnimatior: {fileID: 9005522664181696709}
@@ -1035,6 +1037,7 @@ MonoBehaviour:
   CollectibleText: {fileID: 0}
   uiAnimations: {fileID: 901362848774449966}
   Pause: {fileID: 4603109682856745124}
+  jumpSmoke: {fileID: 2802757127356032907, guid: 34525e7820c58fb489a0e0e806a57e7e, type: 3}
 --- !u!65 &9005522663171243267
 BoxCollider:
   m_ObjectHideFlags: 0
