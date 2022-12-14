@@ -58,7 +58,6 @@ public class PlayerController3D : MonoBehaviour
     [SerializeField] private Vector3 currentPosition;
     [SerializeField] private Vector3 lastPosition;
     [SerializeField] private string KillZoneLayerName = "KillZone";
-    [SerializeField] private string IntroLayerName = "Intro";
     private int killZone;
     [SerializeField] private float respawnTime;
     [SerializeField] private bool respawning;
@@ -67,8 +66,6 @@ public class PlayerController3D : MonoBehaviour
     public int Collected;
     public TMP_Text CollectibleText;
     public Animator uiAnimations;
-    private bool intro;
-    private int Intro;
     public Pause Pause;
 
     //Effects
@@ -90,7 +87,6 @@ public class PlayerController3D : MonoBehaviour
         controller = GetComponent<CharacterController>();
         killZone = LayerMask.NameToLayer(KillZoneLayerName);
         wallJump = LayerMask.NameToLayer(WallJumpLayerName);
-        Intro = LayerMask.NameToLayer(IntroLayerName);
     }
     private void Update()
     {
@@ -241,11 +237,6 @@ public class PlayerController3D : MonoBehaviour
                 jumps++;
             }
         }
-        if (other.gameObject.layer == Intro)
-        {
-            intro = true;
-        }
-        else intro = false;
     }
 
     private void OnTriggerExit(Collider other)
@@ -264,6 +255,5 @@ public class PlayerController3D : MonoBehaviour
         characterAnimatior.SetBool("isWallJumping", isWallJumping);
         characterAnimatior.SetBool("isJumping", isJumping);
         characterAnimatior.SetBool("isDashing", isAirDashing);
-        characterAnimatior.SetBool("Intro", intro);
     }
 }

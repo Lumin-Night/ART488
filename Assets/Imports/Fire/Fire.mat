@@ -1950,7 +1950,7 @@ Material:
     - m_renderingCategory: 1
     - m_specialFXCategory: 1
     - m_start_ALDecalSpectrum: 0
-    - m_start_Alpha: 1
+    - m_start_Alpha: 0
     - m_start_Aniso: 0
     - m_start_BlackLightMasking: 0
     - m_start_BonusSliders: 0

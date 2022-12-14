@@ -71,7 +71,7 @@ MonoBehaviour:
   - m_From: JumpTutorialCamera
     m_To: HallCam
     m_Blend:
-      m_Style: 1
+      m_Style: 0
       m_Time: 1
       m_CustomCurve:
         serializedVersion: 2
@@ -104,7 +104,7 @@ MonoBehaviour:
   - m_From: MabelCam
     m_To: Balcon2Cam
     m_Blend:
-      m_Style: 1
+      m_Style: 0
       m_Time: 0.5
       m_CustomCurve:
         serializedVersion: 2

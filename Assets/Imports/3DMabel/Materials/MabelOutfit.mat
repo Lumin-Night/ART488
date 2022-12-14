@@ -2001,7 +2001,7 @@ Material:
     - m_start_UVTileDissolveRow3: 0
     - m_start_alphaBlending: 0
     - m_start_audioLink: 0
-    - m_start_backFace: 0
+    - m_start_backFace: 1
     - m_start_blending: 0
     - m_start_brdf: 0
     - m_start_clearCoat: 0

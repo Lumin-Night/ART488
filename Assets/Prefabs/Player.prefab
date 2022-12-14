@@ -1038,6 +1038,7 @@ MonoBehaviour:
   uiAnimations: {fileID: 901362848774449966}
   Pause: {fileID: 4603109682856745124}
   jumpSmoke: {fileID: 2802757127356032907, guid: 34525e7820c58fb489a0e0e806a57e7e, type: 3}
+  jumpEffect: {fileID: 0}
 --- !u!65 &9005522663171243267
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3113,21 +3114,37 @@ PrefabInstance:
       value: 65.50514
       objectReference: {fileID: 0}
     - target: {fileID: 7090217807565079134, guid: 57d24fec454d2e448a5ae7173db00b5a, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 691517221770520572, guid: 137fdf59a85471245a3a1a76c0d9b037, type: 3}
+    - target: {fileID: 7090217807565079134, guid: 57d24fec454d2e448a5ae7173db00b5a, type: 3}
       propertyPath: m_ProbeAnchor
       value: 
       objectReference: {fileID: 8894805369523094889}
     - target: {fileID: 7090217807565079134, guid: 57d24fec454d2e448a5ae7173db00b5a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090217807565079134, guid: 57d24fec454d2e448a5ae7173db00b5a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 2eaaa5cffea781b48a366a5e2bb678eb, type: 2}
+      objectReference: {fileID: 2100000, guid: 2f7284ec3dba06e46ba198f4e0a223d4, type: 2}
     - target: {fileID: 7090217807565079134, guid: 57d24fec454d2e448a5ae7173db00b5a, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: aa5c5a576fa3ef44ba506b54e80de302, type: 2}
+      objectReference: {fileID: 2100000, guid: 2eaaa5cffea781b48a366a5e2bb678eb, type: 2}
     - target: {fileID: 7090217807565079134, guid: 57d24fec454d2e448a5ae7173db00b5a, type: 3}
       propertyPath: m_Materials.Array.data[2]
       value: 
+      objectReference: {fileID: 2100000, guid: aa5c5a576fa3ef44ba506b54e80de302, type: 2}
+    - target: {fileID: 7090217807565079134, guid: 57d24fec454d2e448a5ae7173db00b5a, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
       objectReference: {fileID: 2100000, guid: af8c8df85f0ad744090332b58d4f5987, type: 2}
+    - target: {fileID: 7090217807565079134, guid: 57d24fec454d2e448a5ae7173db00b5a, type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2eaaa5cffea781b48a366a5e2bb678eb, type: 2}
     - target: {fileID: 7104995489373805738, guid: 57d24fec454d2e448a5ae7173db00b5a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -24.803568
