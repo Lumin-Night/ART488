@@ -8,9 +8,10 @@ _MatcapColor ("Color--{reference_property:_MatcapColorThemeIndex}", Color) = (1,
 [HideInInspector][ThryWideEnum(Off, 0, Theme Color 0, 1, Theme Color 1, 2, Theme Color 2, 3, Theme Color 3, 4, ColorChord 0, 5, ColorChord 1, 6, ColorChord 2, 7, ColorChord 3, 8, AL Theme 0, 9, AL Theme 1, 10, AL Theme 2, 11, AL Theme 3, 12)] _MatcapColorThemeIndex ("", Int) = 0
 [sRGBWarning(true)][TextureNoSO]_Matcap ("Matcap", 2D) = "white" { }
 _MatcapBorder ("Border", Range(0, .5)) = 0.43
-[sRGBWarning]_MatcapMask ("Mask--{reference_properties:[_MatcapMaskPan, _MatcapMaskUV, _MatcapMaskInvert]}", 2D) = "white" { }
+[sRGBWarning]_MatcapMask ("Mask--{reference_properties:[_MatcapMaskPan, _MatcapMaskUV, _MatcapMaskChannel, _MatcapMaskInvert]}", 2D) = "white" { }
 [HideInInspector][Vector2]_MatcapMaskPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _MatcapMaskUV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_MatcapMaskChannel ("Channel", Float) = 0
 [HideInInspector][ToggleUI]_MatcapMaskInvert ("Invert", Float) = 0
 [ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _MatcapMaskGlobalMask ("Global Mask--{reference_property:_MatcapMaskGlobalMaskBlendType}", Int) = 0
 [HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)]_MatcapMaskGlobalMaskBlendType ("Blending", Range(0, 1)) = 2
@@ -32,8 +33,10 @@ _MatcapAlphaOverride ("Override Alpha", Range(0, 1)) = 0
 [ThryToggleUI(true)] _MatcapHueShiftEnabled ("<size=13><b>  Hue Shift</b></size>", Float) = 0
 _MatcapHueShiftSpeed ("Shift Speed--{condition_showS:(_MatcapHueShiftEnabled==1)}", Float) = 0
 _MatcapHueShift ("Hue Shift--{condition_showS:(_MatcapHueShiftEnabled==1)}", Range(0, 1)) = 0
+[HideInInspector] g_start_MatcapTPSMaskGroup ("--{condition_showS:(_TPSPenetratorEnabled==1)}", Float) = 0
 [ThryToggleUI(true)] _MatcapTPSDepthEnabled ("<size=13><b>  TPS Depth Mask Enabled</b></size>", Float) = 0
 _MatcapTPSMaskStrength ("TPS Mask Strength--{condition_showS:(_MatcapTPSDepthEnabled==1)}", Range(0, 1)) = 1
+[HideInInspector] g_end_MatcapTPSMaskGroup ("", Float) = 0
 [HideInInspector] m_end_matcap ("Matcap--{condition_showS:(_MatcapHueShiftEnabled==1)}", Float) = 0
 //endex
 
@@ -46,9 +49,10 @@ _Matcap2Color ("Color--{reference_property:_Matcap2ColorThemeIndex}", Color) = (
 [HideInInspector][ThryWideEnum(Off, 0, Theme Color 0, 1, Theme Color 1, 2, Theme Color 2, 3, Theme Color 3, 4, ColorChord 0, 5, ColorChord 1, 6, ColorChord 2, 7, ColorChord 3, 8, AL Theme 0, 9, AL Theme 1, 10, AL Theme 2, 11, AL Theme 3, 12)] _Matcap2ColorThemeIndex ("", Int) = 0
 [sRGBWarning(true)][TextureNoSO]_Matcap2 ("Matcap", 2D) = "white" { }
 _Matcap2Border ("Border", Range(0, .5)) = 0.43
-[sRGBWarning]_Matcap2Mask ("Mask--{reference_properties:[_Matcap2MaskPan, _Matcap2MaskUV, _Matcap2MaskInvert]}", 2D) = "white" { }
+[sRGBWarning]_Matcap2Mask ("Mask--{reference_properties:[_Matcap2MaskPan, _Matcap2MaskUV, _Matcap2MaskChannel, _Matcap2MaskInvert]}", 2D) = "white" { }
 [HideInInspector][Vector2]_Matcap2MaskPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _Matcap2MaskUV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_Matcap2MaskChannel ("Channel", Float) = 0
 [HideInInspector][ToggleUI]_Matcap2MaskInvert ("Invert", Float) = 0
 [ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _Matcap2MaskGlobalMask ("Global Mask--{reference_property:_Matcap2MaskGlobalMaskBlendType}", Int) = 0
 [HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)]_Matcap2MaskGlobalMaskBlendType ("Blending", Range(0, 1)) = 2
@@ -71,8 +75,10 @@ _Matcap2AlphaOverride ("Override Alpha", Range(0, 1)) = 0
 [ThryToggleUI(true)] _Matcap2HueShiftEnabled ("<size=13><b>  Hue Shift</b></size>", Float) = 0
 _Matcap2HueShiftSpeed ("Shift Speed--{condition_showS:(_Matcap2HueShiftEnabled==1)}", Float) = 0
 _Matcap2HueShift ("Hue Shift--{condition_showS:(_Matcap2HueShiftEnabled==1)}", Range(0, 1)) = 0
+[HideInInspector] g_start_Matcap2TPSMaskGroup ("--{condition_showS:(_TPSPenetratorEnabled==1)}", Float) = 0
 [ThryToggleUI(true)] _Matcap2TPSDepthEnabled ("<size=13><b>  TPS Depth Mask Enabled</b></size>", Float) = 0
 _Matcap2TPSMaskStrength ("TPS Mask Strength--{condition_showS:(_Matcap2TPSDepthEnabled==1)}", Range(0, 1)) = 1
+[HideInInspector] g_end_Matcap2TPSMaskGroup ("", Float) = 0
 [HideInInspector] m_end_Matcap2 ("Matcap 1--{condition_showS:(_Matcap2HueShiftEnabled==1)}", Float) = 0
 //endex
 
@@ -85,7 +91,8 @@ _Matcap3Color ("Color--{reference_property:_Matcap3ColorThemeIndex}", Color) = (
 [HideInInspector][ThryWideEnum(Off, 0, Theme Color 0, 1, Theme Color 1, 2, Theme Color 2, 3, Theme Color 3, 4, ColorChord 0, 5, ColorChord 1, 6, ColorChord 2, 7, ColorChord 3, 8, AL Theme 0, 9, AL Theme 1, 10, AL Theme 2, 11, AL Theme 3, 12)] _Matcap3ColorThemeIndex ("", Int) = 0
 [sRGBWarning(true)][TextureNoSO]_Matcap3 ("Matcap", 2D) = "white" { }
 _Matcap3Border ("Border", Range(0, .5)) = 0.43
-[sRGBWarning]_Matcap3Mask ("Mask--{reference_properties:[_Matcap3MaskPan, _Matcap3MaskUV, _Matcap3MaskInvert]}", 2D) = "white" { }
+[sRGBWarning]_Matcap3Mask ("Mask--{reference_properties:[_Matcap3MaskPan, _Matcap3MaskUV, _Matcap3MaskChannel, _Matcap3MaskInvert]}", 2D) = "white" { }
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_Matcap3MaskChannel ("Channel", Float) = 0
 [HideInInspector][Vector2]_Matcap3MaskPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _Matcap3MaskUV ("UV", Int) = 0
 [HideInInspector][ToggleUI]_Matcap3MaskInvert ("Invert", Float) = 0
@@ -110,8 +117,10 @@ _Matcap3AlphaOverride ("Override Alpha", Range(0, 1)) = 0
 [ThryToggleUI(true)] _Matcap3HueShiftEnabled ("<size=13><b>  Hue Shift</b></size>", Float) = 0
 _Matcap3HueShiftSpeed ("Shift Speed--{condition_showS:(_Matcap3HueShiftEnabled==1)}", Float) = 0
 _Matcap3HueShift ("Hue Shift--{condition_showS:(_Matcap3HueShiftEnabled==1)}", Range(0, 1)) = 0
+[HideInInspector] g_start_Matcap3TPSMaskGroup ("--{condition_showS:(_TPSPenetratorEnabled==1)}", Float) = 0
 [ThryToggleUI(true)] _Matcap3TPSDepthEnabled ("<size=13><b>  TPS Depth Mask Enabled</b></size>", Float) = 0
 _Matcap3TPSMaskStrength ("TPS Mask Strength--{condition_showS:(_Matcap3TPSDepthEnabled==1)}", Range(0, 1)) = 1
+[HideInInspector] g_end_Matcap3TPSMaskGroup ("", Float) = 0
 [HideInInspector] m_end_Matcap3 ("Matcap 2--{condition_showS:(_Matcap3HueShiftEnabled==1)}", Float) = 0
 //endex
 
@@ -124,9 +133,10 @@ _Matcap4Color ("Color--{reference_property:_Matcap4ColorThemeIndex}", Color) = (
 [HideInInspector][ThryWideEnum(Off, 0, Theme Color 0, 1, Theme Color 1, 2, Theme Color 2, 3, Theme Color 3, 4, ColorChord 0, 5, ColorChord 1, 6, ColorChord 2, 7, ColorChord 3, 8, AL Theme 0, 9, AL Theme 1, 10, AL Theme 2, 11, AL Theme 3, 12)] _Matcap4ColorThemeIndex ("", Int) = 0
 [sRGBWarning(true)][TextureNoSO]_Matcap4 ("Matcap", 2D) = "white" { }
 _Matcap4Border ("Border", Range(0, .5)) = 0.43
-[sRGBWarning]_Matcap4Mask ("Mask--{reference_properties:[_Matcap4MaskPan, _Matcap4MaskUV, _Matcap4MaskInvert]}", 2D) = "white" { }
+[sRGBWarning]_Matcap4Mask ("Mask--{reference_properties:[_Matcap4MaskPan, _Matcap4MaskUV, _Matcap4MaskChannel, _Matcap4MaskInvert]}", 2D) = "white" { }
 [HideInInspector][Vector2]_Matcap4MaskPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _Matcap4MaskUV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_Matcap4MaskChannel ("Channel", Float) = 0
 [HideInInspector][ToggleUI]_Matcap4MaskInvert ("Invert", Float) = 0
 [ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _Matcap4MaskGlobalMask ("Global Mask--{reference_property:_Matcap4MaskGlobalMaskBlendType}", Int) = 0
 [HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)]_Matcap4MaskGlobalMaskBlendType ("Blending", Range(0, 1)) = 2
@@ -149,8 +159,10 @@ _Matcap4AlphaOverride ("Override Alpha", Range(0, 1)) = 0
 [ThryToggleUI(true)] _Matcap4HueShiftEnabled ("<size=13><b>  Hue Shift</b></size>", Float) = 0
 _Matcap4HueShiftSpeed ("Shift Speed--{condition_showS:(_Matcap4HueShiftEnabled==1)}", Float) = 0
 _Matcap4HueShift ("Hue Shift--{condition_showS:(_Matcap4HueShiftEnabled==1)}", Range(0, 1)) = 0
+[HideInInspector] g_start_Matcap4TPSMaskGroup ("--{condition_showS:(_TPSPenetratorEnabled==1)}", Float) = 0
 [ThryToggleUI(true)] _Matcap4TPSDepthEnabled ("<size=13><b>  TPS Depth Mask Enabled</b></size>", Float) = 0
 _Matcap4TPSMaskStrength ("TPS Mask Strength--{condition_showS:(_Matcap4TPSDepthEnabled==1)}", Range(0, 1)) = 1
+[HideInInspector] g_end_Matcap4TPSMaskGroup ("", Float) = 0
 [HideInInspector] m_end_Matcap4 ("Matcap 3--{condition_showS:(_Matcap4HueShiftEnabled==1)}", Float) = 0
 //endex
 
@@ -186,6 +198,7 @@ _Matcap4TPSMaskStrength ("TPS Mask Strength--{condition_showS:(_Matcap4TPSDepthE
 		float4 _MatcapMask_ST;
 		float2 _MatcapMaskPan;
 		float _MatcapMaskUV;
+		float _MatcapMaskChannel;
 	#endif
 	#ifdef POI_MATCAP0_CUSTOM_NORMAL
 		#if defined(PROP_MATCAP0NORMALMAP) || !defined(OPTIMIZER_ENABLED)
@@ -234,6 +247,7 @@ _Matcap4TPSMaskStrength ("TPS Mask Strength--{condition_showS:(_Matcap4TPSDepthE
 		float4 _Matcap2Mask_ST;
 		float2 _Matcap2MaskPan;
 		float _Matcap2MaskUV;
+		float _Matcap2MaskChannel;
 	#endif
 	#ifdef POI_MATCAP1_CUSTOM_NORMAL
 		#if defined(PROP_MATCAP1NORMALMAP) || !defined(OPTIMIZER_ENABLED)
@@ -283,6 +297,7 @@ _Matcap4TPSMaskStrength ("TPS Mask Strength--{condition_showS:(_Matcap4TPSDepthE
 		float4 _Matcap3Mask_ST;
 		float2 _Matcap3MaskPan;
 		float _Matcap3MaskUV;
+		float _Matcap3MaskChannel;
 	#endif
 	#ifdef POI_MATCAP2_CUSTOM_NORMAL
 		#if defined(PROP_MATCAP2NORMALMAP) || !defined(OPTIMIZER_ENABLED)
@@ -332,6 +347,7 @@ _Matcap4TPSMaskStrength ("TPS Mask Strength--{condition_showS:(_Matcap4TPSDepthE
 		float4 _Matcap4Mask_ST;
 		float2 _Matcap4MaskPan;
 		float _Matcap4MaskUV;
+		float _Matcap4MaskChannel;
 	#endif
 	#ifdef POI_MATCAP3_CUSTOM_NORMAL
 		#if defined(PROP_MATCAP3NORMALMAP) || !defined(OPTIMIZER_ENABLED)
@@ -457,7 +473,7 @@ void blendMatcap(inout PoiLight poiLight, inout PoiFragData poiFragData, in PoiM
 
 			matcap.rgb *= _MatcapIntensity;
 			#if defined(PROP_MATCAPMASK) || !defined(OPTIMIZER_ENABLED)
-				matcapMask = POI2D_SAMPLER_PAN(_MatcapMask, _MainTex, poiUV(poiMesh.uv[_MatcapMaskUV], _MatcapMask_ST), _MatcapMaskPan);
+				matcapMask = POI2D_SAMPLER_PAN(_MatcapMask, _MainTex, poiUV(poiMesh.uv[_MatcapMaskUV], _MatcapMask_ST), _MatcapMaskPan)[_MatcapMaskChannel];
 			#else
 				matcapMask = 1;
 			#endif
@@ -540,7 +556,7 @@ void blendMatcap(inout PoiLight poiLight, inout PoiFragData poiFragData, in PoiM
 			#endif
 			matcap2.rgb *= _Matcap2Intensity;
 			#if defined(PROP_MATCAP2MASK) || !defined(OPTIMIZER_ENABLED)
-				matcap2Mask = POI2D_SAMPLER_PAN(_Matcap2Mask, _MainTex, poiUV(poiMesh.uv[_Matcap2MaskUV], _Matcap2Mask_ST), _Matcap2MaskPan);
+				matcap2Mask = POI2D_SAMPLER_PAN(_Matcap2Mask, _MainTex, poiUV(poiMesh.uv[_Matcap2MaskUV], _Matcap2Mask_ST), _Matcap2MaskPan)[_Matcap2MaskChannel];
 			#else
 				matcap2Mask = 1;
 			#endif
@@ -622,7 +638,7 @@ void blendMatcap(inout PoiLight poiLight, inout PoiFragData poiFragData, in PoiM
 			#endif
 			matcap3.rgb *= _Matcap3Intensity;
 			#if defined(PROP_MATCAP3MASK) || !defined(OPTIMIZER_ENABLED)
-				matcap3Mask = POI2D_SAMPLER_PAN(_Matcap3Mask, _MainTex, poiUV(poiMesh.uv[_Matcap3MaskUV], _Matcap3Mask_ST), _Matcap3MaskPan);
+				matcap3Mask = POI2D_SAMPLER_PAN(_Matcap3Mask, _MainTex, poiUV(poiMesh.uv[_Matcap3MaskUV], _Matcap3Mask_ST), _Matcap3MaskPan)[_Matcap3MaskChannel];
 			#else
 				matcap3Mask = 1;
 			#endif
@@ -704,7 +720,7 @@ void blendMatcap(inout PoiLight poiLight, inout PoiFragData poiFragData, in PoiM
 			#endif
 			matcap4.rgb *= _Matcap4Intensity;
 			#if defined(PROP_MATCAP4MASK) || !defined(OPTIMIZER_ENABLED)
-				matcap4Mask = POI2D_SAMPLER_PAN(_Matcap4Mask, _MainTex, poiUV(poiMesh.uv[_Matcap4MaskUV], _Matcap4Mask_ST), _Matcap4MaskPan);
+				matcap4Mask = POI2D_SAMPLER_PAN(_Matcap4Mask, _MainTex, poiUV(poiMesh.uv[_Matcap4MaskUV], _Matcap4Mask_ST), _Matcap4MaskPan)[_Matcap4MaskChannel];
 			#else
 				matcap4Mask = 1;
 			#endif

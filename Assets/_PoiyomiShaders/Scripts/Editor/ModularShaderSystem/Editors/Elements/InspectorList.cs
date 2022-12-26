@@ -155,7 +155,7 @@ namespace Poiyomi.ModularShaderSystem.UI
                     if (_currentDrop == dropArea) _currentDrop = null;
                 }
             });
-
+            
             _listContainer.Add(dropArea);
             _drops.Add(dropArea);
         }

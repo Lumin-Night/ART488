@@ -89,7 +89,7 @@
 
 		if(isDiscarded) // Early Return skips rest of vertex shader
 		{
-			return (VertexOut)0;
+			return (VertexOut)POI_NAN;
 		}
 	}
 #endif

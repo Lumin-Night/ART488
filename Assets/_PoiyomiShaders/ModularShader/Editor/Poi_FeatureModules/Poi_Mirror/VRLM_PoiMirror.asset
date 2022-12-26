@@ -17,14 +17,7 @@ MonoBehaviour:
   Version: 1.0
   Author: Poiyomi
   Description: 
-  Enabled:
-    Name: 
-    DisplayName: 
-    Type: 
-    DefaultValue: 
-    DefaultTextureAsset: {fileID: 0}
-    Attributes: []
-    EnableValue: 0
+  EnableProperties: []
   Properties: []
   ModuleDependencies: []
   IncompatibleWith: []
@@ -49,6 +42,12 @@ MonoBehaviour:
     - SHADOW_PROPERTY_VARIABLES
     - META_PROPERTY_VARIABLES
     - OUTLINE_PROPERTY_VARIABLES
+    NeedsVariant: 0
+    Queue: 100
+  - Template: {fileID: 4613429807666155046, guid: 48228288a6886d0428d6f8f7f54f5dde,
+      type: 3}
+    Keywords:
+    - VERTEX_INPUT_MODS
     NeedsVariant: 0
     Queue: 100
   - Template: {fileID: -8778409245144489639, guid: 48228288a6886d0428d6f8f7f54f5dde,

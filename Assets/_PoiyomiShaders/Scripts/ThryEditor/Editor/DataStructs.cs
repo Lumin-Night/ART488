@@ -2,10 +2,13 @@
 // Copyright (C) 2019 Thryrallo
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Thry
 {
@@ -79,7 +82,7 @@ namespace Thry
 
         public static void RegisterDecorator(MaterialPropertyDrawer drawer)
         {
-            if (IsCollectingProperties)
+            if(IsCollectingProperties)
             {
                 LastPropertyDecorators.Add(drawer);
             }
@@ -173,23 +176,22 @@ namespace Thry
         {
             get
             {
-                if (!s_loaded_textures.ContainsKey(name) || s_loaded_textures[name] == null)
+                if(!s_loaded_textures.ContainsKey(name) || s_loaded_textures[name] == null)
                 {
-                    if (IsUrl())
+                    if(IsUrl())
                     {
-                        if (!_isLoading)
+                        if(!_isLoading)
                         {
                             WebHelper.DownloadBytesASync(name, (byte[] b) =>
                             {
                                 _isLoading = false;
-                                Texture2D tex = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                                Texture2D tex = new Texture2D(1,1, TextureFormat.ARGB32, false);
                                 ImageConversion.LoadImage(tex, b, false);
                                 s_loaded_textures[name] = tex;
                             });
                             _isLoading = true;
                         }
-                    }
-                    else
+                    }else
                     {
                         string path = FileHelper.FindFile(name, "texture");
                         if (path != null)
@@ -197,7 +199,7 @@ namespace Thry
                         else
                             s_loaded_textures[name] = new Texture2D(1, 1);
                     }
-                    if (!s_loaded_textures.ContainsKey(name))
+                    if(!s_loaded_textures.ContainsKey(name))
                     {
                         return null;
                     }
@@ -208,7 +210,7 @@ namespace Thry
 
         private static TextureData ParseForThryParser(string s)
         {
-            if (s.StartsWith("{") == false)
+            if(s.StartsWith("{") == false)
             {
                 return new TextureData()
                 {
@@ -231,23 +233,23 @@ namespace Thry
 
         public bool Execute(MaterialProperty p, Material[] targets)
         {
-            if (
-                (p.type == MaterialProperty.PropType.Float && p.floatValue.ToString() == value) ||
-                (p.type == MaterialProperty.PropType.Range && p.floatValue.ToString() == value) ||
-                (p.type == MaterialProperty.PropType.Color && p.colorValue.ToString() == value) ||
-                (p.type == MaterialProperty.PropType.Vector && p.vectorValue.ToString() == value) ||
+            if(
+                (p.type == MaterialProperty.PropType.Float   && p.floatValue.ToString()   ==  value)          ||
+                (p.type == MaterialProperty.PropType.Range   && p.floatValue.ToString()   ==  value)          ||
+                (p.type == MaterialProperty.PropType.Color   && p.colorValue.ToString()   ==  value)          ||
+                (p.type == MaterialProperty.PropType.Vector  && p.vectorValue.ToString()  ==  value)          ||
                 (p.type == MaterialProperty.PropType.Texture && ((p.textureValue == null) == (value == "0"))) ||
                 (p.type == MaterialProperty.PropType.Texture && ((p.textureValue != null) == (value == "1"))) ||
-                (p.type == MaterialProperty.PropType.Texture && (p.textureValue != null && p.textureValue.name == value))
+                (p.type == MaterialProperty.PropType.Texture && (p.textureValue != null && p.textureValue.name == value)) 
             )
-            {
+                {
                 foreach (DefineableAction a in actions)
                     a.Perform(targets);
                 return true;
             }
             return false;
         }
-
+        
         private static PropertyValueAction ParseForThryParser(string s)
         {
             return Parse(s);
@@ -257,15 +259,18 @@ namespace Thry
         public static PropertyValueAction Parse(string s)
         {
             s = s.Trim();
-            string[] parts = s.Split(',');
-            if (parts.Length > 0)
+            string[] valueAndActions = s.Split(new string[]{"=>"}, System.StringSplitOptions.RemoveEmptyEntries);
+            if (valueAndActions.Length > 1)
             {
                 PropertyValueAction propaction = new PropertyValueAction();
-                propaction.value = parts[0];
+                propaction.value = valueAndActions[0];
                 List<DefineableAction> actions = new List<DefineableAction>();
-                for (int i = 1; i < parts.Length; i++)
+                string[] actionStrings = valueAndActions[1].Split(';');
+                for (int i = 0; i < actionStrings.Length; i++)
                 {
-                    actions.Add(DefineableAction.Parse(parts[i]));
+                    if(string.IsNullOrWhiteSpace(actionStrings[i]))
+                        continue;
+                    actions.Add(DefineableAction.Parse(actionStrings[i]));
                 }
                 propaction.actions = actions.ToArray();
                 return propaction;
@@ -280,10 +285,10 @@ namespace Thry
 
         public static PropertyValueAction[] ParseToArray(string s)
         {
-            //s = v,p1=v1,p2=v2;v3
+            //s := 0=>p1=v1;p2=v2;1=>p1=v3...
             List<PropertyValueAction> propactions = new List<PropertyValueAction>();
-            string[] parts = s.Split(';');
-            foreach (string p in parts)
+            string[] valueAndActionMatches = Regex.Matches(s, @"[^;]+=>.+?(?=(;[^;]+=>)|$)", RegexOptions.Multiline).Cast<Match>().Select(m => m.Value).ToArray();
+            foreach (string p in valueAndActionMatches)
             {
                 PropertyValueAction propertyValueAction = PropertyValueAction.Parse(p);
                 if (propertyValueAction != null)
@@ -331,8 +336,7 @@ namespace Thry
                             EditorWindow window = EditorWindow.GetWindow(t);
                             window.titleContent = new GUIContent("TPS Setup Wizard");
                             window.Show();
-                        }
-                        catch (System.Exception e)
+                        }catch(System.Exception e)
                         {
                             Debug.LogError("[Thry] Couldn't open Editor Window of type" + data);
                             Debug.LogException(e);
@@ -385,7 +389,7 @@ namespace Thry
             if (s.StartsWith("youtube#", StringComparison.Ordinal))
             {
                 action.type = DefineableActionType.URL;
-                action.data = "https://www.youtube.com/watch?v=" + s.Substring(8);
+                action.data = "https://www.youtube.com/watch?v="+s.Substring(8);
             }
             return action;
         }
@@ -438,8 +442,8 @@ namespace Thry
                 _compareType = compareType;
 
                 string[] parts = Regex.Split(data, compareString);
-                _obj = parts[0];
-                _value = parts[parts.Length - 1];
+                _obj = parts[0].Trim();
+                _value = parts[parts.Length - 1].Trim();
 
                 _floatValue = Parser.ParseFloat(_value);
                 if (ShaderEditor.Active != null && ShaderEditor.Active.PropertyDictionary.ContainsKey(_obj))
@@ -449,7 +453,7 @@ namespace Thry
                 else if (type == DefineableConditionType.VRC_SDK_VERSION) InitVRCSDKVersion();
                 else _hasConstantValue = false;
             }
-
+            
             _isInit = true;
         }
 
@@ -484,7 +488,7 @@ namespace Thry
         {
             Init();
             if (_hasConstantValue) return _constantValue;
-
+            
             MaterialProperty materialProperty = null;
             switch (type)
             {
@@ -515,40 +519,40 @@ namespace Thry
                 case DefineableConditionType.PROPERTY_IS_NOT_ANIMATED:
                     return !ShaderOptimizer.IsAnimated(_materialInsteadOfEditor, _obj);
                 case DefineableConditionType.AND:
-                    if (condition1 != null && condition2 != null) return condition1.Test() && condition2.Test();
+                    if(condition1!=null&&condition2!=null) return condition1.Test() && condition2.Test();
                     break;
                 case DefineableConditionType.OR:
-                    if (condition1 != null && condition2 != null) return condition1.Test() || condition2.Test();
+                    if(condition1 != null && condition2 != null) return condition1.Test() || condition2.Test();
                     break;
                 case DefineableConditionType.NOT:
-                    if (condition1 != null) return !condition1.Test();
+                    if(condition1 != null) return !condition1.Test();
                     break;
             }
-
+            
             return true;
         }
 
         private MaterialProperty GetMaterialProperty()
         {
-            if (_materialInsteadOfEditor) return MaterialEditor.GetMaterialProperty(new Material[] { _materialInsteadOfEditor }, _obj);
-            if (_propertyObj != null) return _propertyObj.MaterialProperty;
+            if(_materialInsteadOfEditor) return MaterialEditor.GetMaterialProperty(new Material[]{_materialInsteadOfEditor}, _obj);
+            if(_propertyObj != null) return _propertyObj.MaterialProperty;
             return null;
         }
-        private (CompareType, string) GetComparetor()
+        private (CompareType,string) GetComparetor()
         {
             if (data.Contains("=="))
-                return (CompareType.EQUAL, "==");
+                return (CompareType.EQUAL,"==");
             if (data.Contains("!="))
-                return (CompareType.NOT_EQUAL, "!=");
+                return (CompareType.NOT_EQUAL,"!=");
             if (data.Contains(">="))
-                return (CompareType.BIGGER_EQ, ">=");
+                return (CompareType.BIGGER_EQ,">=");
             if (data.Contains("<="))
-                return (CompareType.SMALLER_EQ, "<=");
+                return (CompareType.SMALLER_EQ,"<=");
             if (data.Contains(">"))
-                return (CompareType.BIGGER, ">");
+                return (CompareType.BIGGER,">");
             if (data.Contains("<"))
-                return (CompareType.SMALLER, "<");
-            return (CompareType.NONE, "##");
+                return (CompareType.SMALLER,"<");
+            return (CompareType.NONE,"##");
         }
 
         public override string ToString()
@@ -570,10 +574,10 @@ namespace Thry
                 case DefineableConditionType.PROPERTY_IS_NOT_ANIMATED:
                     return $"isNotAnimated({data})";
                 case DefineableConditionType.AND:
-                    if (condition1 != null && condition2 != null) return "(" + condition1.ToString() + "&&" + condition2.ToString() + ")";
+                    if (condition1 != null && condition2 != null) return "("+condition1.ToString() + "&&" + condition2.ToString()+")";
                     break;
                 case DefineableConditionType.OR:
-                    if (condition1 != null && condition2 != null) return "(" + condition1.ToString() + "||" + condition2.ToString() + ")";
+                    if (condition1 != null && condition2 != null) return "("+condition1.ToString()+"||"+condition2.ToString()+")";
                     break;
             }
             return "";
@@ -592,7 +596,7 @@ namespace Thry
 
             s = Strip(s);
 
-            if (s.StartsWith("!"))
+            if(s.StartsWith("!"))
             {
                 con.type = DefineableConditionType.NOT;
                 con.condition1 = Parse(s.Substring(1), useThisMaterialInsteadOfOpenEditor);
@@ -627,7 +631,7 @@ namespace Thry
                     }
                 }
             }
-            if (s.IndexOfAny(ComparissionLiteralsToCheckFor) != -1)
+            if(s.IndexOfAny(ComparissionLiteralsToCheckFor) != -1)
             {
                 //is a comparission
                 con.data = s;
@@ -636,26 +640,24 @@ namespace Thry
                 {
                     con.type = DefineableConditionType.VRC_SDK_VERSION;
                     con.data = s.Replace("VRCSDK", "");
-                }
-                else if (s.StartsWith("ThryEditor", StringComparison.Ordinal))
+                }else if (s.StartsWith("ThryEditor", StringComparison.Ordinal))
                 {
                     con.type = DefineableConditionType.EDITOR_VERSION;
                     con.data = s.Replace("ThryEditor", "");
-                }
-                else if (IsTextureNullComparission(s, useThisMaterialInsteadOfOpenEditor))
+                }else if(IsTextureNullComparission(s, useThisMaterialInsteadOfOpenEditor))
                 {
                     con.type = DefineableConditionType.TEXTURE_SET;
                     con.data = s.Replace("TEXTURE_SET", "");
                 }
                 return con;
             }
-            if (s.StartsWith("isNotAnimated(", StringComparison.Ordinal))
+            if(s.StartsWith("isNotAnimated(", StringComparison.Ordinal))
             {
                 con.type = DefineableConditionType.PROPERTY_IS_NOT_ANIMATED;
                 con.data = s.Replace("isNotAnimated(", "").TrimEnd(')');
                 return con;
             }
-            if (s.StartsWith("isAnimated(", StringComparison.Ordinal))
+            if(s.StartsWith("isAnimated(", StringComparison.Ordinal))
             {
                 con.type = DefineableConditionType.PROPERTY_IS_ANIMATED;
                 con.data = s.Replace("isAnimated(", "").TrimEnd(')');
@@ -668,19 +670,19 @@ namespace Thry
         {
             // Check if property is a texture property && is checking for null
             Material m = GetReferencedMaterial(useThisMaterialInsteadOfOpenEditor);
-            if (m == null) return false;
-            if (data.Length < 7) return false;
-            if (data.EndsWith("null") == false) return false;
+            if( m == null) return false;
+            if(data.Length < 7) return false;
+            if(data.EndsWith("null") == false) return false;
             string propertyName = data.Substring(0, data.Length - 6);
-            if (m.HasProperty(propertyName) == false) return false;
-            MaterialProperty p = MaterialEditor.GetMaterialProperty(new Material[] { m }, propertyName);
+            if(m.HasProperty(propertyName) == false) return false;
+            MaterialProperty p = MaterialEditor.GetMaterialProperty(new Material[]{m}, propertyName);
             return p.type == MaterialProperty.PropType.Texture;
         }
 
         static Material GetReferencedMaterial(Material useThisMaterialInsteadOfOpenEditor = null)
         {
-            if (useThisMaterialInsteadOfOpenEditor != null) return useThisMaterialInsteadOfOpenEditor;
-            if (ShaderEditor.Active != null) return ShaderEditor.Active.Materials[0];
+            if( useThisMaterialInsteadOfOpenEditor != null ) return useThisMaterialInsteadOfOpenEditor;
+            if( ShaderEditor.Active != null ) return ShaderEditor.Active.Materials[0];
             return null;
         }
 
@@ -708,7 +710,7 @@ namespace Thry
         }
     }
 
-    enum CompareType { NONE, BIGGER, SMALLER, EQUAL, NOT_EQUAL, BIGGER_EQ, SMALLER_EQ }
+    enum CompareType { NONE,BIGGER,SMALLER,EQUAL,NOT_EQUAL,BIGGER_EQ,SMALLER_EQ }
 
     public enum DefineableConditionType
     {

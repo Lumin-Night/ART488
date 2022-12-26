@@ -7,8 +7,8 @@ struct PoiMesh
 	float3 normals[2];
 	float3 objNormal;
 	float3 tangentSpaceNormal;
-	float3 binormal;
-	float3 tangent;
+	float3 binormal[2];
+	float3 tangent[2];
 	float3 worldPos;
 	float3 localPos;
 	float3 objectPosition;
@@ -151,8 +151,8 @@ poiFragData.alpha = 1;
 poiMesh.objectPosition = i.objectPos;
 poiMesh.objNormal = i.objNormal;
 poiMesh.normals[0] = i.normal;
-poiMesh.tangent = i.tangent;
-poiMesh.binormal = i.binormal;
+poiMesh.tangent[0] = i.tangent;
+poiMesh.binormal[0] = i.binormal;
 poiMesh.worldPos = i.worldPos.xyz;
 poiMesh.localPos = i.localPos.xyz;
 poiMesh.vertexColor = i.vertexColor;
@@ -162,8 +162,8 @@ poiMesh.isFrontFace = facing;
 	if (!poiMesh.isFrontFace)
 	{
 		poiMesh.normals[0] *= -1;
-		poiMesh.tangent *= -1;
-		poiMesh.binormal *= -1;
+		poiMesh.tangent[0] *= -1;
+		poiMesh.binormal[0] *= -1;
 	}
 #endif
 

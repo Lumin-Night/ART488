@@ -47,6 +47,11 @@ float4 frag(VertexOut i, uint facing : SV_IsFrontFace) : SV_Target
 	}
 
 	clip(poiFragData.alpha - _Cutoff);
-	
+
+	if (_Mode == POI_MODE_CUTOUT && !_AlphaToCoverage)
+	{
+		poiFragData.alpha = 1;
+	}
+
 	return float4(poiFragData.finalColor + poiFragData.emission * poiMods.globalEmission, poiFragData.alpha) + POI_SAFE_RGB0;
 }

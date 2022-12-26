@@ -43,8 +43,8 @@ _TPS_IdleSkrinkLength("Idle Shrink Length--{tooltip:P shrinks while not penetrat
 
 #T#TPSKeywords
 //ifex _TPSPenetratorEnabled==0
-#pragma shader_feature TPS_Penetrator
-#pragma shader_feature TPS_IsSkinnedMesh
+#pragma shader_feature_local TPS_Penetrator
+#pragma shader_feature_local TPS_IsSkinnedMesh
 //endex
 
 #T#TPSVariables

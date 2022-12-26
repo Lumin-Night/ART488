@@ -52,12 +52,6 @@ MonoBehaviour:
     - SHADER_PROGRAMS
     NeedsVariant: 0
     Queue: 100
-  - Template: {fileID: -1631914710095369708, guid: 6e4412064b1eec041b948b92b1288442,
-      type: 3}
-    Keywords:
-    - SHADER_PROGRAMS
-    NeedsVariant: 0
-    Queue: 100
   - Template: {fileID: 1584899311542343876, guid: 39c30d32225906e4485becba0aab7230,
       type: 3}
     Keywords:
@@ -78,17 +72,6 @@ MonoBehaviour:
     - HULLDOMAIN_SHADOW_PROGRAM
     - HULLDOMAIN_OUTLINE_PROGRAM
     - HULLDOMAIN_META_PROGRAM
-    NeedsVariant: 0
-    Queue: 100
-  - Template: {fileID: 6337895953853048418, guid: 6e4412064b1eec041b948b92b1288442,
-      type: 3}
-    Keywords:
-    - GEOMETRY_EARLYZ_PROGRAM
-    - GEOMETRY_BASE_PROGRAM
-    - GEOMETRY_ADD_PROGRAM
-    - GEOMETRY_SHADOW_PROGRAM
-    - GEOMETRY_OUTLINE_PROGRAM
-    - GEOMETRY_META_PROGRAM
     NeedsVariant: 0
     Queue: 100
   - Template: {fileID: -544282384758852595, guid: f54d51f65e140634aa87249deef0018b,
@@ -121,5 +104,11 @@ MonoBehaviour:
     - FRAGMENT_META_PROGRAM
     NeedsVariant: 0
     Queue: 100
+  - Template: {fileID: -370845260220813009, guid: fa6669507200b8f4a88007672af0d777,
+      type: 3}
+    Keywords:
+    - EXTRAS_PROPERTIES
+    NeedsVariant: 0
+    Queue: 200
   Functions: []
   AdditionalSerializedData: 

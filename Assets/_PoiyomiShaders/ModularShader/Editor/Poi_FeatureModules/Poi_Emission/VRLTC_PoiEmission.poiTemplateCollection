@@ -10,9 +10,10 @@
 [HideInInspector][Vector2]_EmissionMapPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _EmissionMapUV ("UV", Int) = 0
 [ToggleUI]_EmissionBaseColorAsMap ("Base Color as Map", Float) = 0
-[sRGBWarning]_EmissionMask ("Emission Mask--{reference_properties:[_EmissionMaskPan, _EmissionMaskUV, _EmissionMaskInvert]}", 2D) = "white" { }
+[sRGBWarning]_EmissionMask ("Emission Mask--{reference_properties:[_EmissionMaskPan, _EmissionMaskUV, _EmissionMaskChannel, _EmissionMaskInvert]}", 2D) = "white" { }
 [HideInInspector][Vector2]_EmissionMaskPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _EmissionMaskUV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_EmissionMaskChannel ("Channel", Float) = 0
 [ToggleUI]_EmissionMaskInvert ("Invert", Float) = 0
 [ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _EmissionMask0GlobalMask ("Global Mask--{reference_property:_EmissionMask0GlobalMaskBlendType}", Int) = 0
 [HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)]_EmissionMask0GlobalMaskBlendType ("Blending", Range(0, 1)) = 2
@@ -62,12 +63,13 @@ _EmissionScrollingOffset ("Offset--{condition_showS:(_ScrollingEmission==1)}", F
 [Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL0MultipliersBand ("Emission Multiplier Band--{ condition_showS:(_EmissionAL0Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)]_EmissionAL0Multipliers ("Emission Multiplier--{ condition_showS:(_EmissionAL0Enabled==1 && _EnableAudioLink==1)}", Vector) = (1, 1, 0, 0)
 	[Space(7)]
-[Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL0StrengthBand ("Emission Add Band--{ condition_showS:(_EmissionAL0Enabled==1 && _EnableAudioLink==1)}", Int) = 0
+[Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL0StrengthBand ("Emission Strength Add Band--{ condition_showS:(_EmissionAL0Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)]_EmissionAL0StrengthMod ("Emission Strength Add--{ condition_showS:(_EmissionAL0Enabled==1 && _EnableAudioLink==1)}", Vector) = (0, 0, 0, 0)
 	[Space(7)]
 [Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _AudioLinkEmission0CenterOutBand ("Center Out Band--{ condition_showS:(_EmissionAL0Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)] _AudioLinkEmission0CenterOut ("Center Out--{ condition_showS:(_EmissionAL0Enabled==1 && _EnableAudioLink==1)}", Vector) = (0, 0, 0, 0)
 _AudioLinkEmission0CenterOutSize ("Intensity Threshold--{ condition_showS:(_EmissionAL0Enabled==1 && _EnableAudioLink==1)}", Range(0, 1)) = 0
+_AudioLinkEmission0CenterOutDuration ("Duration--{tooltip:''How much AL history is used. Negative values reverse direction'', condition_showS:(_EmissionAL0Enabled==1 && _EnableAudioLink==1)}", Range(-1, 1)) = 1
 [HideInInspector] m_end_emissionOptions ("", Float) = 0
 //endex
 //ifex _EnableEmission1==0
@@ -81,9 +83,10 @@ _AudioLinkEmission0CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 [HideInInspector][Vector2]_EmissionMap1Pan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _EmissionMap1UV ("UV", Int) = 0
 [ToggleUI]_EmissionBaseColorAsMap1 ("Base Color as Map", Float) = 0
-[sRGBWarning]_EmissionMask1 ("Emission Mask--{reference_properties:[_EmissionMask1Pan, _EmissionMask1UV, _EmissionMaskInvert1]}", 2D) = "white" { }
+[sRGBWarning]_EmissionMask1 ("Emission Mask--{reference_properties:[_EmissionMask1Pan, _EmissionMask1UV, _EmissionMask1Channel, _EmissionMaskInvert1]}", 2D) = "white" { }
 [HideInInspector][Vector2]_EmissionMask1Pan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _EmissionMask1UV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_EmissionMask1Channel ("Channel", Float) = 0
 [ToggleUI]_EmissionMaskInvert1 ("Invert", Float) = 0
 [ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _EmissionMask1GlobalMask ("Global Mask--{reference_property:_EmissionMask1GlobalMaskBlendType}", Int) = 0
 [HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)]_EmissionMask1GlobalMaskBlendType ("Blending", Range(0, 1)) = 2
@@ -133,12 +136,13 @@ _EmissionScrollingOffset1 ("Offset--{condition_showS:(_ScrollingEmission1==1)}",
 [Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL1MultipliersBand ("Emission Multiplier Band--{ condition_showS:(_EmissionAL1Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)]_EmissionAL1Multipliers ("Emission Multiplier--{ condition_showS:(_EmissionAL1Enabled==1 && _EnableAudioLink==1)}", Vector) = (1, 1, 0, 0)
 	[Space(7)]
-[Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL1StrengthBand ("Emission Add Band--{ condition_showS:(_EmissionAL1Enabled==1 && _EnableAudioLink==1)}", Int) = 0
+[Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL1StrengthBand ("Emission Strength Add Band--{ condition_showS:(_EmissionAL1Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)]_EmissionAL1StrengthMod ("Emission Strength Add--{ condition_showS:(_EmissionAL1Enabled==1 && _EnableAudioLink==1)}", Vector) = (0, 0, 0, 0)
 	[Space(7)]
 [Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _AudioLinkEmission1CenterOutBand ("Center Out Band--{ condition_showS:(_EmissionAL1Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)] _AudioLinkEmission1CenterOut ("Center Out--{ condition_showS:(_EmissionAL1Enabled==1 && _EnableAudioLink==1)}", Vector) = (0, 0, 0, 0)
 _AudioLinkEmission1CenterOutSize ("Intensity Threshold--{ condition_showS:(_EmissionAL1Enabled==1 && _EnableAudioLink==1)}", Range(0, 1)) = 0
+_AudioLinkEmission1CenterOutDuration ("Duration--{tooltip:''How much AL history is used. Negative values reverse direction'', condition_showS:(_EmissionAL1Enabled==1 && _EnableAudioLink==1)}", Range(-1, 1)) = 1
 [HideInInspector] m_end_emission1Options ("", Float) = 0
 //endex
 //ifex _EnableEmission2==0
@@ -152,9 +156,10 @@ _AudioLinkEmission1CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 [HideInInspector][Vector2]_EmissionMap2Pan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _EmissionMap2UV ("UV", Int) = 0
 [ToggleUI]_EmissionBaseColorAsMap2 ("Base Color as Map", Float) = 0
-[sRGBWarning]_EmissionMask2 ("Emission Mask--{reference_properties:[_EmissionMask2Pan, _EmissionMask2UV, _EmissionMaskInvert2]}", 2D) = "white" { }
+[sRGBWarning]_EmissionMask2 ("Emission Mask--{reference_properties:[_EmissionMask2Pan, _EmissionMask2UV, _EmissionMask2Channel, _EmissionMaskInvert2]}", 2D) = "white" { }
 [HideInInspector][Vector2]_EmissionMask2Pan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _EmissionMask2UV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_EmissionMask2Channel ("Channel", Float) = 0
 [ToggleUI]_EmissionMaskInvert2 ("Invert", Float) = 0
 [ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _EmissionMask2GlobalMask ("Global Mask--{reference_property:_EmissionMask2GlobalMaskBlendType}", Int) = 0
 [HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)]_EmissionMask2GlobalMaskBlendType ("Blending", Range(0, 1)) = 2
@@ -204,11 +209,12 @@ _EmissionScrollingOffset2 ("Offset--{condition_showS:(_ScrollingEmission2==1)}",
 [Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL2MultipliersBand ("Emission Multiplier Band--{ condition_showS:(_EmissionAL2Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)]_EmissionAL2Multipliers ("Emission Multiplier--{ condition_showS:(_EmissionAL2Enabled==1 && _EnableAudioLink==1)}", Vector) = (1, 1, 0, 0)
 	[Space(7)]
-[Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL2StrengthBand ("Emission Add Band--{ condition_showS:(_EmissionAL2Enabled==1 && _EnableAudioLink==1)}", Int) = 0
+[Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL2StrengthBand ("Emission Strength Add Band--{ condition_showS:(_EmissionAL2Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)]_EmissionAL2StrengthMod ("Emission Strength Add--{ condition_showS:(_EmissionAL2Enabled==1 && _EnableAudioLink==1)}", Vector) = (0, 0, 0, 0)
 	[Space(7)]
 [Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _AudioLinkEmission2CenterOutBand ("Center Out Band--{ condition_showS:(_EmissionAL2Enabled==1 && _EnableAudioLink==1)}", Int) = 0[VectorLabel(Min, Max)] _AudioLinkEmission2CenterOut ("Center Out--{ condition_showS:(_EmissionAL2Enabled==1 && _EnableAudioLink==1)}", Vector) = (0, 0, 0, 0)
 _AudioLinkEmission2CenterOutSize ("Intensity Threshold--{ condition_showS:(_EmissionAL2Enabled==1 && _EnableAudioLink==1)}", Range(0, 1)) = 0
+_AudioLinkEmission2CenterOutDuration ("Duration--{tooltip:''How much AL history is used. Negative values reverse direction'', condition_showS:(_EmissionAL2Enabled==1 && _EnableAudioLink==1)}", Range(-1, 1)) = 1
 [HideInInspector] m_end_emission2Options ("", Float) = 0
 //endex
 
@@ -223,9 +229,10 @@ _AudioLinkEmission2CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 [HideInInspector][Vector2]_EmissionMap3Pan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _EmissionMap3UV ("UV", Int) = 0
 [ToggleUI]_EmissionBaseColorAsMap3 ("Base Color as Map", Float) = 0
-[sRGBWarning]_EmissionMask3 ("Emission Mask--{reference_properties:[_EmissionMask3Pan, _EmissionMask3UV, _EmissionMaskInvert3]}", 2D) = "white" { }
+[sRGBWarning]_EmissionMask3 ("Emission Mask--{reference_properties:[_EmissionMask3Pan, _EmissionMask3UV, _EmissionMask3Channel, _EmissionMaskInvert3]}", 2D) = "white" { }
 [HideInInspector][Vector2]_EmissionMask3Pan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _EmissionMask3UV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_EmissionMask3Channel ("Channel", Float) = 0
 [ToggleUI]_EmissionMaskInvert3 ("Invert", Float) = 0
 [ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _EmissionMask3GlobalMask ("Global Mask--{reference_property:_EmissionMask3GlobalMaskBlendType}", Int) = 0
 [HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)]_EmissionMask3GlobalMaskBlendType ("Blending", Range(0, 1)) = 2
@@ -275,12 +282,13 @@ _EmissionScrollingOffset3 ("Offset--{condition_showS:(_ScrollingEmission3==1)}",
 [Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL3MultipliersBand ("Emission Multiplier Band--{ condition_showS:(_EmissionAL3Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)]_EmissionAL3Multipliers ("Emission Multiplier--{ condition_showS:(_EmissionAL3Enabled==1 && _EnableAudioLink==1)}", Vector) = (1, 1, 0, 0)
 	[Space(7)]
-[Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL3StrengthBand ("Emission Add Band--{ condition_showS:(_EmissionAL3Enabled==1 && _EnableAudioLink==1)}", Int) = 0
+[Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _EmissionAL3StrengthBand ("Emission Strength Add Band--{ condition_showS:(_EmissionAL3Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)]_EmissionAL3StrengthMod ("Emission Strength Add--{ condition_showS:(_EmissionAL3Enabled==1 && _EnableAudioLink==1)}", Vector) = (0, 0, 0, 0)
 	[Space(7)]
 [Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)] _AudioLinkEmission3CenterOutBand ("Center Out Band--{ condition_showS:(_EmissionAL3Enabled==1 && _EnableAudioLink==1)}", Int) = 0
 [VectorLabel(Min, Max)] _AudioLinkEmission3CenterOut ("Center Out--{ condition_showS:(_EmissionAL3Enabled==1 && _EnableAudioLink==1)}", Vector) = (0, 0, 0, 0)
 _AudioLinkEmission3CenterOutSize ("Intensity Threshold--{ condition_showS:(_EmissionAL3Enabled==1 && _EnableAudioLink==1)}", Range(0, 1)) = 0
+_AudioLinkEmission3CenterOutDuration ("Duration--{tooltip:''How much AL history is used. Negative values reverse direction'', condition_showS:(_EmissionAL3Enabled==1 && _EnableAudioLink==1)}", Range(-1, 1)) = 1
 [HideInInspector] m_end_emission3Options ("", Float) = 0
 //endex
 
@@ -314,6 +322,7 @@ _AudioLinkEmission3CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 	float2 _EmissionMaskPan;
 	float _EmissionMaskUV;
 	float _EmissionMaskInvert;
+	float _EmissionMaskChannel;
 	float _EmissionMask0GlobalMask;
 	float _EmissionMask0GlobalMaskBlendType;
 	#if defined(PROP_EMISSIONSCROLLINGCURVE) || !defined(OPTIMIZER_ENABLED)
@@ -359,6 +368,7 @@ _AudioLinkEmission3CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 	float2 _AudioLinkEmission0CenterOut;
 	float _AudioLinkEmission0CenterOutSize;
 	float _AudioLinkEmission0CenterOutBand;
+	float _AudioLinkEmission0CenterOutDuration;
 	float2 _EmissionAL0Multipliers;
 	float _EmissionAL0MultipliersBand;
 #endif
@@ -378,6 +388,7 @@ _AudioLinkEmission3CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 	float4 _EmissionMask1_ST;
 	float2 _EmissionMask1Pan;
 	float _EmissionMask1UV;
+	float _EmissionMask1Channel;
 	float _EmissionMaskInvert1;
 	float _EmissionMask1GlobalMask;
 	float _EmissionMask1GlobalMaskBlendType;
@@ -424,6 +435,7 @@ _AudioLinkEmission3CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 	float2 _AudioLinkEmission1CenterOut;
 	float _AudioLinkEmission1CenterOutSize;
 	float _AudioLinkEmission1CenterOutBand;
+	float _AudioLinkEmission1CenterOutDuration;
 	float2 _EmissionAL1Multipliers;
 	float _EmissionAL1MultipliersBand;
 #endif
@@ -443,6 +455,7 @@ _AudioLinkEmission3CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 	float4 _EmissionMask2_ST;
 	float2 _EmissionMask2Pan;
 	float _EmissionMask2UV;
+	float _EmissionMask2Channel;
 	float _EmissionMaskInvert2;
 	float _EmissionMask2GlobalMask;
 	float _EmissionMask2GlobalMaskBlendType;
@@ -489,6 +502,7 @@ _AudioLinkEmission3CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 	float2 _AudioLinkEmission2CenterOut;
 	float _AudioLinkEmission2CenterOutSize;
 	float _AudioLinkEmission2CenterOutBand;
+	float _AudioLinkEmission2CenterOutDuration;
 	float2 _EmissionAL2Multipliers;
 	float _EmissionAL2MultipliersBand;
 #endif
@@ -508,6 +522,7 @@ _AudioLinkEmission3CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 	float4 _EmissionMask3_ST;
 	float2 _EmissionMask3Pan;
 	float _EmissionMask3UV;
+	float _EmissionMask3Channel;
 	float _EmissionMaskInvert3;
 	float _EmissionMask3GlobalMask;
 	float _EmissionMask3GlobalMaskBlendType;
@@ -554,6 +569,7 @@ _AudioLinkEmission3CenterOutSize ("Intensity Threshold--{ condition_showS:(_Emis
 	float2 _AudioLinkEmission3CenterOut;
 	float _AudioLinkEmission3CenterOutSize;
 	float _AudioLinkEmission3CenterOutBand;
+	float _AudioLinkEmission3CenterOutDuration;
 	float2 _EmissionAL3Multipliers;
 	float _EmissionAL3MultipliersBand;
 #endif
@@ -604,12 +620,23 @@ void applyALEmmissionStrength(in PoiMods poiMods, inout float emissionStrength, 
 	#endif
 }
 
-void applyALCenterOutEmission(in PoiMods poiMods, in float nDotV, inout float emissionStrength, in float size, in float band, in float2 emissionToAdd, in float enabled)
+void applyALCenterOutEmission(in PoiMods poiMods, in float nDotV, inout float emissionStrength, in float size, in float band, in float2 emissionToAdd, in float enabled, in float duration)
 {
 	#ifdef POI_AUDIOLINK
 		if (poiMods.audioLinkAvailable && enabled)
 		{
-			emissionStrength += lerp(emissionToAdd.x, emissionToAdd.y, getBandAtTime(band, saturate(1 - nDotV), size));
+			float intensity;
+			[flatten]
+			if(duration >= 0)
+			{
+				intensity = getBandAtTime(band, saturate(remap(nDotV, 1, 0, 0, duration)), size);
+			}
+			else
+			{
+				duration *= -1;
+				intensity = getBandAtTime(band, saturate(remap(pow(nDotV, 2), 0, 1 + duration, 0, duration)), size);
+			}
+			emissionStrength += lerp(emissionToAdd[0], emissionToAdd[1], intensity);
 		}
 	#endif
 }
@@ -685,7 +712,7 @@ void applyLumaGradient(in PoiMods poiMods, inout float3 emissionColor, in float 
 		emissionColor0 = hueShift(emissionColor0, frac(_EmissionHueShift + _EmissionHueShiftSpeed * _Time.x) * _EmissionHueShiftEnabled);
 		
 		#if defined(PROP_EMISSIONMASK) || !defined(OPTIMIZER_ENABLED)
-			float emissionMask0 = UNITY_SAMPLE_TEX2D_SAMPLER(_EmissionMask, _MainTex, poiUV(poiMesh.uv[_EmissionMaskUV], _EmissionMask_ST) + _Time.x * _EmissionMaskPan).r;
+			float emissionMask0 = UNITY_SAMPLE_TEX2D_SAMPLER(_EmissionMask, _MainTex, poiUV(poiMesh.uv[_EmissionMaskUV], _EmissionMask_ST) + _Time.x * _EmissionMaskPan)[_EmissionMaskChannel];
 		#else
 			float emissionMask0 = 1;
 		#endif
@@ -701,7 +728,7 @@ void applyLumaGradient(in PoiMods poiMods, inout float3 emissionColor, in float 
 		}
 		
 		applyALEmmissionStrength(poiMods, emissionStrength0, _EmissionAL0StrengthMod, _EmissionAL0StrengthBand, _EmissionAL0Multipliers, _EmissionAL0MultipliersBand, _EmissionAL0Enabled);
-		applyALCenterOutEmission(poiMods, poiLight.nDotV, emissionStrength0, _AudioLinkEmission0CenterOutSize, _AudioLinkEmission0CenterOutBand, _AudioLinkEmission0CenterOut, _EmissionAL0Enabled);
+		applyALCenterOutEmission(poiMods, poiLight.nDotV, emissionStrength0, _AudioLinkEmission0CenterOutSize, _AudioLinkEmission0CenterOutBand, _AudioLinkEmission0CenterOut, _EmissionAL0Enabled, _AudioLinkEmission0CenterOutDuration);
 		
 		emissionStrength0 *= glowInTheDarkMultiplier0 * emissionMask0;
 		emission0 = max(emissionStrength0 * emissionColor0, 0);
@@ -780,7 +807,7 @@ void applyLumaGradient(in PoiMods poiMods, inout float3 emissionColor, in float 
 		applyLumaGradient(poiMods, emissionColor1, _EmissionColor1ThemeIndex, poiLight.nDotV);
 		emissionColor1 = hueShift(emissionColor1, frac(_EmissionHueShift1 + _EmissionHueShiftSpeed1 * _Time.x) * _EmissionHueShiftEnabled1);
 		#if defined(PROP_EMISSIONMASK1) || !defined(OPTIMIZER_ENABLED)
-			float emissionMask1 = UNITY_SAMPLE_TEX2D_SAMPLER(_EmissionMask1, _MainTex, poiUV(poiMesh.uv[_EmissionMask1UV], _EmissionMask1_ST) + _Time.x * _EmissionMask1Pan);
+			float emissionMask1 = UNITY_SAMPLE_TEX2D_SAMPLER(_EmissionMask1, _MainTex, poiUV(poiMesh.uv[_EmissionMask1UV], _EmissionMask1_ST) + _Time.x * _EmissionMask1Pan)[_EmissionMask1Channel];
 		#else
 			float emissionMask1 = 1;
 		#endif
@@ -795,7 +822,7 @@ void applyLumaGradient(in PoiMods poiMods, inout float3 emissionColor, in float 
 			emissionMask1 = customBlend(emissionMask1, poiMods.globalMask[_EmissionMask1GlobalMask-1], _EmissionMask1GlobalMaskBlendType);
 		}
 		applyALEmmissionStrength(poiMods, emissionStrength1, _EmissionAL1StrengthMod, _EmissionAL1StrengthBand, _EmissionAL1Multipliers, _EmissionAL1MultipliersBand, _EmissionAL1Enabled);
-		applyALCenterOutEmission(poiMods, poiLight.nDotV, emissionStrength1, _AudioLinkEmission1CenterOutSize, _AudioLinkEmission1CenterOutBand, _AudioLinkEmission1CenterOut, _EmissionAL1Enabled);
+		applyALCenterOutEmission(poiMods, poiLight.nDotV, emissionStrength1, _AudioLinkEmission1CenterOutSize, _AudioLinkEmission1CenterOutBand, _AudioLinkEmission1CenterOut, _EmissionAL1Enabled, _AudioLinkEmission1CenterOutDuration);
 		
 		emissionStrength1 *= glowInTheDarkMultiplier1 * emissionMask1;
 		emission1 = max(emissionStrength1 * emissionColor1, 0);
@@ -864,7 +891,7 @@ void applyLumaGradient(in PoiMods poiMods, inout float3 emissionColor, in float 
 		applyLumaGradient(poiMods, emissionColor2, _EmissionColor2ThemeIndex, poiLight.nDotV);
 		emissionColor2 = hueShift(emissionColor2, frac(_EmissionHueShift2 + _EmissionHueShiftSpeed2 * _Time.x) * _EmissionHueShiftEnabled2);
 		#if defined(PROP_EMISSIONMASK2) || !defined(OPTIMIZER_ENABLED)
-			float emissionMask2 = UNITY_SAMPLE_TEX2D_SAMPLER(_EmissionMask2, _MainTex, poiUV(poiMesh.uv[_EmissionMask2UV], _EmissionMask2_ST) + _Time.x * _EmissionMask2Pan);
+			float emissionMask2 = UNITY_SAMPLE_TEX2D_SAMPLER(_EmissionMask2, _MainTex, poiUV(poiMesh.uv[_EmissionMask2UV], _EmissionMask2_ST) + _Time.x * _EmissionMask2Pan)[_EmissionMask2Channel];
 		#else
 			float emissionMask2 = 1;
 		#endif
@@ -878,7 +905,7 @@ void applyLumaGradient(in PoiMods poiMods, inout float3 emissionColor, in float 
 			emissionMask2 = customBlend(emissionMask2, poiMods.globalMask[_EmissionMask2GlobalMask-1], _EmissionMask2GlobalMaskBlendType);
 		}
 		applyALEmmissionStrength(poiMods, emissionStrength2, _EmissionAL2StrengthMod, _EmissionAL2StrengthBand, _EmissionAL2Multipliers, _EmissionAL2MultipliersBand, _EmissionAL2Enabled);
-		applyALCenterOutEmission(poiMods, poiLight.nDotV, emissionStrength2, _AudioLinkEmission2CenterOutSize, _AudioLinkEmission2CenterOutBand, _AudioLinkEmission2CenterOut, _EmissionAL2Enabled);
+		applyALCenterOutEmission(poiMods, poiLight.nDotV, emissionStrength2, _AudioLinkEmission2CenterOutSize, _AudioLinkEmission2CenterOutBand, _AudioLinkEmission2CenterOut, _EmissionAL2Enabled, _AudioLinkEmission2CenterOutDuration);
 		emissionStrength2 *= glowInTheDarkMultiplier2 * emissionMask2;
 		emission2 = max(emissionStrength2 * emissionColor2, 0);
 
@@ -946,7 +973,7 @@ void applyLumaGradient(in PoiMods poiMods, inout float3 emissionColor, in float 
 		applyLumaGradient(poiMods, emissionColor3, _EmissionColor3ThemeIndex, poiLight.nDotV);
 		emissionColor3 = hueShift(emissionColor3, frac(_EmissionHueShift3 + _EmissionHueShiftSpeed3 * _Time.x) * _EmissionHueShiftEnabled3);
 		#if defined(PROP_EMISSIONMASK3) || !defined(OPTIMIZER_ENABLED)
-			float emissionMask3 = UNITY_SAMPLE_TEX2D_SAMPLER(_EmissionMask3, _MainTex, poiUV(poiMesh.uv[_EmissionMask3UV], _EmissionMask3_ST) + _Time.x * _EmissionMask3Pan);
+			float emissionMask3 = UNITY_SAMPLE_TEX2D_SAMPLER(_EmissionMask3, _MainTex, poiUV(poiMesh.uv[_EmissionMask3UV], _EmissionMask3_ST) + _Time.x * _EmissionMask3Pan)[_EmissionMask3Channel];
 		#else
 			float emissionMask3 = 1;
 		#endif
@@ -961,7 +988,7 @@ void applyLumaGradient(in PoiMods poiMods, inout float3 emissionColor, in float 
 			emissionMask3 = customBlend(emissionMask3, poiMods.globalMask[_EmissionMask3GlobalMask-1], _EmissionMask3GlobalMaskBlendType);
 		}
 		applyALEmmissionStrength(poiMods, emissionStrength3, _EmissionAL3StrengthMod, _EmissionAL3StrengthBand, _EmissionAL3Multipliers, _EmissionAL3MultipliersBand, _EmissionAL3Enabled);
-		applyALCenterOutEmission(poiMods, poiLight.nDotV, emissionStrength3, _AudioLinkEmission3CenterOutSize, _AudioLinkEmission3CenterOutBand, _AudioLinkEmission3CenterOut, _EmissionAL3Enabled);
+		applyALCenterOutEmission(poiMods, poiLight.nDotV, emissionStrength3, _AudioLinkEmission3CenterOutSize, _AudioLinkEmission3CenterOutBand, _AudioLinkEmission3CenterOut, _EmissionAL3Enabled, _AudioLinkEmission3CenterOutDuration);
 		emissionStrength3 *= glowInTheDarkMultiplier3 * emissionMask3;
 		emission3 = max(emissionStrength3 * emissionColor3, 0);
 

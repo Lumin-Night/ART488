@@ -89,6 +89,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0d6b81a017d50284b9874a8d5da6e81f, type: 2}
   - {fileID: 11400000, guid: 38117acd601e0a04f8526bda9342b594, type: 2}
   - {fileID: 11400000, guid: c4fd319e47cec1c45a221ca15c8291fe, type: 2}
+  - {fileID: 11400000, guid: 39a772a68824e5842955ec40afcb7e79, type: 2}
   AdditionalModules: []
   LockBaseModules: 0
   LastGeneratedShaders:

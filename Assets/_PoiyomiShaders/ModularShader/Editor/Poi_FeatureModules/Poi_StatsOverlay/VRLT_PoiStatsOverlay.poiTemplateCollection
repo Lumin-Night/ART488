@@ -329,8 +329,6 @@ _TextNumericRotation ("Rotation", Range(0, 360)) = 0
 		globalTextEmission += poiThemeColor(poiMods, _TextFPSColor.rgb, _TextFPSColorThemeIndex) * opacity * _TextFPSEmissionStrength;
 	}
 
-	#define glsl_mod(x,y) (((x)-(y)*floor((x)/(y)))) 
-
 	void ApplyNumericText(inout PoiFragData poiFragData, float2 uv, in PoiMods poiMods)
 	{
 		// If both digits are set to zero: exit.

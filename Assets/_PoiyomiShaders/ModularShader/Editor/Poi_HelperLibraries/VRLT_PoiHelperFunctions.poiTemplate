@@ -1,3 +1,9 @@
+// glsl_mod behaves better on negative numbers, and 
+// in some situations actually outperforms HLSL's fmod()
+#ifndef glsl_mod
+    #define glsl_mod(x, y) (((x) - (y) * floor((x) / (y))))
+#endif
+
 float2 poiUV(float2 uv, float4 tex_st)
 {
 	return uv * tex_st.xy + tex_st.zw;
@@ -41,6 +47,22 @@ float2 vertexUV(in appdata v, int index)
 float calculateluminance(float3 color)
 {
 	return color.r * 0.299 + color.g * 0.587 + color.b * 0.114;
+}
+
+// Set by VRChat (as of open beta 1245)
+// _VRChatCameraMode: 0 => Normal, 1 => VR HandCam, 2 => Desktop Handcam, 3 => Screenshot/Photo
+// _VRChatMirrorMode: 0 => Normal, 1 => Mirror (VR), 2 => Mirror (Deskie)
+float _VRChatCameraMode;
+float _VRChatMirrorMode;
+
+float VRCCameraMode()
+{
+	return _VRChatCameraMode;
+}
+
+float VRCMirrorMode()
+{
+	return _VRChatMirrorMode;
 }
 
 bool IsInMirror()
@@ -153,8 +175,8 @@ float3 calculateNormal(in float3 baseNormal, in PoiMesh poiMesh, in Texture2D no
 {
 	float3 normal = UnpackScaleNormal(POI2D_SAMPLER_PAN(normalTexture, _MainTex, poiUV(poiMesh.uv[normalUV], normal_ST), normalPan), normalIntensity);
 	return normalize(
-		normal.x * poiMesh.tangent +
-		normal.y * poiMesh.binormal +
+		normal.x * poiMesh.tangent[0] +
+		normal.y * poiMesh.binormal[0] +
 		normal.z * baseNormal
 	);
 }
@@ -251,7 +273,7 @@ float3 blendAverage(float3 base, float3 blend)
 // Color burn
 float blendColorBurn(float base, float blend)
 {
-	return (blend == 0.0)?blend : max((1.0 - ((1.0 - base) / blend)), 0.0);
+	return (blend == 0.0) ? blend : max((1.0 - ((1.0 - base) * rcp(blend))), 0.0);
 }
 
 float3 blendColorBurn(float3 base, float3 blend)
@@ -1098,6 +1120,22 @@ float3 OpenLitComputeCustomLightDirection(float4 lightDirectionOverride)
 	return lightDirectionOverride.w ? customDir : lightDirectionOverride.xyz; // .w isn't doc'd anywhere and is always 0 unless end user changes it
 }
 
+float3 OpenLitLightingDirectionForSH9()
+{
+	float3 mainDir = _WorldSpaceLightPos0.xyz * OpenLitLuminance(_LightColor0.rgb);
+	#if !defined(LIGHTMAP_ON) && UNITY_SHOULD_SAMPLE_SH
+		float3 sh9Dir = unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333;
+		float3 sh9DirAbs = float3(sh9Dir.x, abs(sh9Dir.y), sh9Dir.z);
+	#else
+		float3 sh9Dir = 0;
+		float3 sh9DirAbs = 0;
+	#endif
+
+	float3 lightDirectionForSH9 = sh9Dir + mainDir;
+	lightDirectionForSH9 = dot(lightDirectionForSH9, lightDirectionForSH9) < 0.000001 ? 0 : normalize(lightDirectionForSH9);
+	return lightDirectionForSH9;
+}
+
 float3 OpenLitLightingDirection(float4 lightDirectionOverride)
 {
 	float3 mainDir = _WorldSpaceLightPos0.xyz * OpenLitLuminance(_LightColor0.rgb);
@@ -1144,7 +1182,7 @@ float2 sharpSample( float4 texelSize , float2 p )
 
 void applyToGlobalMask(inout PoiMods poiMods, int index, int blendType, float val)
     {
-        float valBlended = customBlend(poiMods.globalMask[index], val, blendType);
+        float valBlended = saturate(customBlend(poiMods.globalMask[index], val, blendType));
         switch (index)
         {
             case 0: poiMods.globalMask[0] = valBlended; break;
@@ -1165,3 +1203,14 @@ void applyToGlobalMask(inout PoiMods poiMods, int index, int blendType, float va
             case 15: poiMods.globalMask[15] = valBlended; break;
         }
     }
+
+void assignValueToVectorFromIndex(inout float4 vec, int index, float value)
+{
+	switch (index)
+	{
+		case 0: vec[0] = value; break;
+		case 1: vec[1] = value; break;
+		case 2: vec[2] = value; break;
+		case 3: vec[3] = value; break;
+	}
+}

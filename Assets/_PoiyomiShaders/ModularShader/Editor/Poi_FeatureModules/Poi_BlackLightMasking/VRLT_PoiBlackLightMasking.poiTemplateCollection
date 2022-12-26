@@ -32,7 +32,7 @@ _BlackLightMasking3Key ("Key", Float) = 4
 
 #T#PoiBlackLightMaskingKeywords
 //ifex _BlackLightMaskingEnabled==0
-#pragma shader_feature POI_BLACKLIGHTMASKING
+#pragma shader_feature_local POI_BLACKLIGHTMASKING
 //endex
 
 #T#PoiBlackLightMaskingVariables

@@ -2,9 +2,11 @@
 // Copyright (C) 2019 Thryrallo
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -279,9 +281,9 @@ namespace Thry
         public ThryRGBAPackerDrawer(string label1, string label2, float sRGB) : this(label1, label2, null, null, sRGB) { }
         public ThryRGBAPackerDrawer(string label1, string label2, string label3, float sRGB) : this(label1, label2, label3, null, sRGB) { }
 
-        public ThryRGBAPackerDrawer(string label1, string label2) : this(label1, label2, null, null, 0) { }
-        public ThryRGBAPackerDrawer(string label1, string label2, string label3) : this(label1, label2, label3, null, 0) { }
-        public ThryRGBAPackerDrawer(string label1, string label2, string label3, string label4) : this(label1, label2, label3, label4, 0) { }
+        public ThryRGBAPackerDrawer(string label1, string label2) : this(label1,label2,null, null, 0){}
+        public ThryRGBAPackerDrawer(string label1, string label2, string label3) : this(label1,label2,label3, null, 0){}
+        public ThryRGBAPackerDrawer(string label1, string label2, string label3, string label4) : this(label1,label2,label3,label4, 0){}
 
         public ThryRGBAPackerDrawer(float firstTextureIsRGB, string label1, string label2) : this(label1, label2, null, null, 0)
         {
@@ -326,7 +328,7 @@ namespace Thry
             changeCheck |= DidTextureGetEdit(_current._input_g);
             changeCheck |= DidTextureGetEdit(_current._input_b);
             changeCheck |= DidTextureGetEdit(_current._input_a);
-            if (changeCheck)
+            if(changeCheck)
             {
                 _current._hasConfigChanged = true;
                 Save();
@@ -343,8 +345,6 @@ namespace Thry
             if (GUI.Button(buttonRect, "Revert")) Revert();
             EditorGUI.EndDisabledGroup();
         }
-
-        Texture test;
 
         PackerChannelConfig TexturePackerSlotGUI(PackerChannelConfig input, string label)
         {
@@ -378,7 +378,7 @@ namespace Thry
             {
                 r.width = 50;
                 r.x = totalRect.x + totalRect.width - r.width;
-                if (!_firstTextureIsRGB || input != _current._input_r)
+                if(!_firstTextureIsRGB || input != _current._input_r)
                     input.Channel = (TextureChannel)EditorGUI.EnumPopup(r, input.Channel);
 
                 r.width = 20;
@@ -413,9 +413,9 @@ namespace Thry
             SaveForChannel(_current._input_g, _prop.name, "g");
             SaveForChannel(_current._input_b, _prop.name, "b");
             SaveForChannel(_current._input_a, _prop.name, "a");
-            foreach (Material m in ShaderEditor.Active.Materials)
+            foreach(Material m in ShaderEditor.Active.Materials)
             {
-                m.SetOverrideTag(_prop.name + "_texPack_lastConfirmTime", "" + _current._lastConfirmTime);
+                m.SetOverrideTag(_prop.name + "_texPack_lastConfirmTime", "" +_current._lastConfirmTime);
             }
         }
 
@@ -457,7 +457,7 @@ namespace Thry
             _current._input_b.FindMaxSize(ref width, ref height);
             _current._input_a.FindMaxSize(ref width, ref height);
 
-            RenderTexture target = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+            RenderTexture target = new RenderTexture(width,height, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
             target.enableRandomWrite = true;
             target.filterMode = GetFiltermode();
             target.Create();
@@ -546,12 +546,11 @@ namespace Thry
                 if (_loadedUnityTexture != Texture || _loadedUncompressedTexture == null || DoReloadUncompressedTexture)
                 {
                     string path = AssetDatabase.GetAssetPath(Texture);
-                    if (path.EndsWith(".png") || path.EndsWith(".jpg"))
+                    if(path.EndsWith(".png") || path.EndsWith(".jpg"))
                     {
                         _loadedUncompressedTexture = new Texture2D(Texture.width, Texture.height, TextureFormat.ARGB32, false, true);
                         ImageConversion.LoadImage(_loadedUncompressedTexture, System.IO.File.ReadAllBytes(path));
-                    }
-                    else if (path.EndsWith(".tga"))
+                    }else if (path.EndsWith(".tga"))
                     {
                         _loadedUncompressedTexture = TextureHelper.LoadTGA(path);
                     }
@@ -568,16 +567,16 @@ namespace Thry
             public void SetComputeShaderValues(ComputeShader computeShader, string prefix, int maxWidth, int maxHeight)
             {
                 //Always setting texture cause else null error, cant branch in shader (executes both sides always)
-                if (Texture == null) computeShader.SetTexture(0, prefix + "_Input", Texture2D.whiteTexture);
+                if(Texture == null) computeShader.SetTexture(0, prefix + "_Input", Texture2D.whiteTexture);
                 else computeShader.SetTexture(0, prefix + "_Input", _loadedUncompressedTexture);
-                computeShader.SetVector(prefix + "_Config", GetComputeShaderConfig(maxWidth, maxHeight));
+                computeShader.SetVector(prefix+"_Config", GetComputeShaderConfig(maxWidth, maxHeight));
             }
 
             public Vector4 GetComputeShaderConfig(int maxWidth, int maxHeight)
             {
                 float hasTexture = Texture != null ? 1 : 0;
                 float billinearFiltering = (Texture != null && (maxWidth != _loadedUncompressedTexture.width || maxHeight != _loadedUncompressedTexture.height)) ? 1 : 0;
-                return new Vector4(hasTexture, Texture == null ? Fallback : billinearFiltering, (int)Channel, Invert ? 1 : 0);
+                return new Vector4(hasTexture, Texture == null?Fallback: billinearFiltering, (int)Channel, Invert ? 1 : 0);
             }
         }
         enum TextureChannel { R, G, B, A, Max }
@@ -594,7 +593,7 @@ namespace Thry
 
         private void Init(MaterialProperty prop, bool replace = false)
         {
-            if (!replace && _gradient_data.ContainsKey(prop.targets[0]))
+            if(!replace && _gradient_data.ContainsKey(prop.targets[0]))
             {
                 data = _gradient_data[prop.targets[0]];
                 return;
@@ -683,7 +682,7 @@ namespace Thry
     {
         private string framesProperty;
 
-        public TextureArrayDrawer() { }
+        public TextureArrayDrawer(){}
 
         public TextureArrayDrawer(string framesProperty)
         {
@@ -739,9 +738,21 @@ namespace Thry
             return base.GetPropertyHeight(prop, label, editor);
         }
     }
-    #endregion
+#endregion
 
     #region Decorators
+    public class NoAnimateDecorator : MaterialPropertyDrawer{
+        public override void OnGUI(Rect position, MaterialProperty prop, GUIContent label, MaterialEditor editor)
+        {
+        }
+
+        public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
+        {
+            DrawingData.LastPropertyDoesntAllowAnimation = true;
+            return 0;
+        }
+    }
+    
     public class ThrySeperatorDecorator : MaterialPropertyDrawer
     {
         Color _color = Styles.COLOR_FG;
@@ -810,7 +821,7 @@ namespace Thry
             style.fontSize = this.size;
         }
 
-        public ThryRichLabelDrawer() : this(EditorStyles.standardFont.fontSize) { }
+        public ThryRichLabelDrawer() : this(EditorStyles.standardFont.fontSize) {}
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
@@ -824,7 +835,7 @@ namespace Thry
             GUI.Label(position, label, style);
         }
     }
-    #endregion
+#endregion
 
     public class ThryToggleDrawer : MaterialPropertyDrawer
     {
@@ -897,7 +908,7 @@ namespace Thry
             {
                 CheckKeyword(prop);
                 DrawingData.LastPropertyDoesntAllowAnimation = true;
-            }
+            } 
             return base.GetPropertyHeight(prop, label, editor);
         }
 
@@ -909,23 +920,23 @@ namespace Thry
             }
             if (isFirstGUICall && !ShaderEditor.Active.IsLockedMaterial)
             {
-                if (hasKeyword) CheckKeyword(prop);
+                if(hasKeyword) CheckKeyword(prop);
                 isFirstGUICall = false;
             }
             //why is this not inFirstGUICall ? cause it seems drawers are kept between different openings of the shader editor, so this needs to be set again every time the shader editor is reopened for that material
             (ShaderEditor.Active.PropertyDictionary[prop.name] as ShaderProperty).keyword = keyword;
 
             EditorGUI.BeginChangeCheck();
-
+            
             bool value = (Math.Abs(prop.floatValue) > 0.001f);
             EditorGUI.showMixedValue = prop.hasMixedValue;
-            if (left) value = EditorGUI.ToggleLeft(position, label, value, Styles.style_toggle_left_richtext);
-            else value = EditorGUI.Toggle(position, label, value);
+            if(left) value = EditorGUI.ToggleLeft(position, label, value, Styles.style_toggle_left_richtext);
+            else     value = EditorGUI.Toggle(position, label, value);
             EditorGUI.showMixedValue = false;
             if (EditorGUI.EndChangeCheck())
             {
                 prop.floatValue = value ? 1.0f : 0.0f;
-                if (hasKeyword) SetKeyword(prop, value);
+                if(hasKeyword) SetKeyword(prop, value);
             }
         }
 
@@ -938,7 +949,7 @@ namespace Thry
             if (prop.hasMixedValue)
                 return;
 
-            if (hasKeyword) SetKeyword(prop, (Math.Abs(prop.floatValue) > 0.001f));
+            if(hasKeyword) SetKeyword(prop, (Math.Abs(prop.floatValue) > 0.001f));
         }
 
         protected void SetKeywordInternal(MaterialProperty prop, bool on, string defaultKeywordSuffix)
@@ -957,7 +968,7 @@ namespace Thry
     }
 
     //This class only exists for backward compatibility
-    public class ThryToggleUIDrawer : ThryToggleDrawer
+    public class ThryToggleUIDrawer: ThryToggleDrawer
     {
         public ThryToggleUIDrawer()
         {
@@ -1023,18 +1034,14 @@ namespace Thry
             _twoMinMaxDrawers = twoMinMaxDrawers == 1;
         }
 
-        public VectorToSlidersDrawer(string label1, float min1, float max1, string label2, float min2, float max2, string label3, float min3, float max3, string label4, float min4, float max4) :
-            this(new SliderConfig(label1, min1, max1), new SliderConfig(label2, min2, max2), new SliderConfig(label3, min3, max3), new SliderConfig(label4, min4, max4), 0)
-        { }
+        public VectorToSlidersDrawer(string label1, float min1, float max1, string label2, float min2, float max2, string label3, float min3, float max3, string label4, float min4, float max4) : 
+            this(new SliderConfig(label1, min1, max1), new SliderConfig(label2, min2, max2), new SliderConfig(label3, min3, max3), new SliderConfig(label4, min4, max4), 0) { }
         public VectorToSlidersDrawer(string label1, float min1, float max1, string label2, float min2, float max2, string label3, float min3, float max3) :
-            this(new SliderConfig(label1, min1, max1), new SliderConfig(label2, min2, max2), new SliderConfig(label3, min3, max3), null, 0)
-        { }
+            this(new SliderConfig(label1, min1, max1), new SliderConfig(label2, min2, max2), new SliderConfig(label3, min3, max3), null, 0){ }
         public VectorToSlidersDrawer(string label1, float min1, float max1, string label2, float min2, float max2) :
-            this(new SliderConfig(label1, min1, max1), new SliderConfig(label2, min2, max2), null, null, 0)
-        { }
+            this(new SliderConfig(label1, min1, max1), new SliderConfig(label2, min2, max2), null, null, 0){ }
         public VectorToSlidersDrawer(float twoMinMaxDrawers, string label1, float min1, float max1, string label2, float min2, float max2) :
-            this(new SliderConfig(label1, min1, max1), new SliderConfig(label2, min2, max2), null, null, twoMinMaxDrawers)
-        { }
+            this(new SliderConfig(label1, min1, max1), new SliderConfig(label2, min2, max2), null, null, twoMinMaxDrawers){ }
 
         public override void OnGUI(Rect position, MaterialProperty prop, GUIContent label, MaterialEditor editor)
         {
@@ -1063,13 +1070,13 @@ namespace Thry
                     EditorGUI.showMixedValue = prop.hasMixedValue;
                     vector.z = EditorGUILayout.Slider(_slider3.Label, vector.z, _slider3.Min, _slider3.Max);
                 }
-                if (_slider4 != null)
+                if(_slider4 != null)
                 {
                     EditorGUI.showMixedValue = prop.hasMixedValue;
                     vector.w = EditorGUILayout.Slider(_slider4.Label, vector.w, _slider4.Min, _slider4.Max);
-                }
+                }    
             }
-            if (EditorGUI.EndChangeCheck())
+            if(EditorGUI.EndChangeCheck())
                 prop.vectorValue = vector;
         }
 
@@ -1146,16 +1153,16 @@ namespace Thry
             int indentLevel = EditorGUI.indentLevel; //else it double indents
             EditorGUI.indentLevel = 0;
             PropGUI(prop, contentR, 0);
-            if (ShaderEditor.Active.IsInAnimationMode)
+            if(ShaderEditor.Active.IsInAnimationMode)
                 MaterialEditor.PrepareMaterialPropertiesForAnimationMode(_otherMaterialProps, true);
             for (int i = 0; i < _otherProperties.Length; i++)
             {
                 PropGUI(_otherMaterialProps[i], contentR, i + 1);
             }
             EditorGUI.indentLevel = indentLevel;
-
+            
             //If edited in animation mode mark as animated (needed cause other properties isnt checked in draw)
-            if (EditorGUI.EndChangeCheck() && ShaderEditor.Active.IsInAnimationMode && !ShaderEditor.Active.CurrentProperty.IsAnimated)
+            if(EditorGUI.EndChangeCheck() && ShaderEditor.Active.IsInAnimationMode && !ShaderEditor.Active.CurrentProperty.IsAnimated)
                 ShaderEditor.Active.CurrentProperty.SetAnimated(true, false);
             //make sure all are animated together
             bool animated = ShaderEditor.Active.CurrentProperty.IsAnimated;
@@ -1221,7 +1228,7 @@ namespace Thry
 
     public class VectorLabelDrawer : MaterialPropertyDrawer
     {
-        string[] _labelStrings = new string[4] { "X", "Y", "Z", "W" };
+        string[] _labelStrings = new string[4] {"X", "Y", "Z", "W"};
         int vectorChannels = 0;
 
         public VectorLabelDrawer(string labelX, string labelY)
@@ -1253,8 +1260,8 @@ namespace Thry
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
 
-            Rect labelR = new Rect(position.x, position.y, position.width * 0.41f, position.height);
-            Rect contentR = new Rect(position.x + labelR.width, position.y, position.width - labelR.width, position.height);
+            Rect labelR     = new Rect(position.x,                position.y, position.width * 0.41f,        position.height);
+            Rect contentR   = new Rect(position.x + labelR.width, position.y, position.width - labelR.width, position.height);
 
             float[] values = new float[vectorChannels];
             GUIContent[] labels = new GUIContent[vectorChannels];
@@ -1270,7 +1277,7 @@ namespace Thry
 
             if (EditorGUI.EndChangeCheck())
             {
-                switch (vectorChannels)
+                switch(vectorChannels)
                 {
                     case 2:
                         prop.vectorValue = new Vector4(values[0], values[1], prop.vectorValue.z, prop.vectorValue.w);
@@ -1329,15 +1336,15 @@ namespace Thry
             _isSRGB = false;
         }
 
-        public sRGBWarningDecorator(string shouldHaveSRGB)
-        {
-            this._isSRGB = shouldHaveSRGB.ToLower() == "true";
-        }
+		public sRGBWarningDecorator(string shouldHaveSRGB)
+		{
+			this._isSRGB = shouldHaveSRGB.ToLower() == "true";
+		}
 
-        public override void OnGUI(Rect position, MaterialProperty prop, GUIContent label, MaterialEditor editor)
-        {
-            GuiHelper.ColorspaceWarning(prop, _isSRGB);
-        }
+		public override void OnGUI(Rect position, MaterialProperty prop, GUIContent label, MaterialEditor editor)
+		{
+			GuiHelper.ColorspaceWarning(prop, _isSRGB);
+		}
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
@@ -1352,7 +1359,7 @@ namespace Thry
         protected bool _isInit;
         protected virtual void Init(string s)
         {
-            if (_isInit) return;
+            if(_isInit) return;
             _buttonData = Parser.ParseToObject<ButtonData>(s);
             _isInit = true;
         }
@@ -1360,17 +1367,17 @@ namespace Thry
         public override void OnGUI(Rect position, MaterialProperty prop, GUIContent label, MaterialEditor editor)
         {
             Init(prop.displayName);
-            if (_buttonData == null) return;
-            if (_buttonData.text.Length > 0)
+            if(_buttonData == null) return;
+            if(_buttonData.text.Length > 0)
             {
-                GUILayout.Label(new GUIContent(_buttonData.text, _buttonData.hover), _buttonData.center_position ? Styles.richtext_center : Styles.richtext);
+                GUILayout.Label(new GUIContent(_buttonData.text,_buttonData.hover), _buttonData.center_position?Styles.richtext_center: Styles.richtext);
                 Rect r = GUILayoutUtility.GetLastRect();
                 if (Event.current.type == EventType.MouseDown && r.Contains(Event.current.mousePosition))
                     _buttonData.action.Perform(ShaderEditor.Active?.Materials);
             }
-            if (_buttonData.texture != null)
+            if(_buttonData.texture != null)
             {
-                if (_buttonData.center_position) GUILayout.Label(new GUIContent(_buttonData.texture.loaded_texture, _buttonData.hover), EditorStyles.centeredGreyMiniLabel, GUILayout.MaxHeight(_buttonData.texture.height));
+                if(_buttonData.center_position) GUILayout.Label(new GUIContent(_buttonData.texture.loaded_texture, _buttonData.hover), EditorStyles.centeredGreyMiniLabel, GUILayout.MaxHeight(_buttonData.texture.height));
                 else GUILayout.Label(new GUIContent(_buttonData.texture.loaded_texture, _buttonData.hover), GUILayout.MaxHeight(_buttonData.texture.height));
                 Rect r = GUILayoutUtility.GetLastRect();
                 if (Event.current.type == EventType.MouseDown && r.Contains(Event.current.mousePosition))
@@ -1390,7 +1397,7 @@ namespace Thry
 
         protected override void Init(string s)
         {
-            if (_isInit) return;
+            if(_isInit) return;
             WebHelper.DownloadStringASync(s, (string data) =>
             {
                 _buttonData = Parser.ParseToObject<ButtonData>(data);
@@ -1473,15 +1480,14 @@ namespace Thry
         {
             Material material = shaderOptimizer.targets[0] as Material;
             Shader shader = material.shader;
-            bool isLocked = shader.name.StartsWith("Hidden/Locked/") || (shader.name.StartsWith("Hidden/") &&
-                (material.GetTag("OriginalShader", false, "") != "" && shader.GetPropertyDefaultFloatValue(shader.FindPropertyIndex(shaderOptimizer.name)) == 1));
+            bool isLocked = shader.name.StartsWith("Hidden/Locked/") || (shader.name.StartsWith("Hidden/") && 
+                (material.GetTag("OriginalShader",false,"") != "" && shader.GetPropertyDefaultFloatValue(shader.FindPropertyIndex(shaderOptimizer.name)) == 1));
             //this will make sure the button is unlocked if you manually swap to an unlocked shader
             //shaders that have the ability to be locked shouldnt really be hidden themself. at least it wouldnt make too much sense
             if (shaderOptimizer.hasMixedValue == false && shaderOptimizer.floatValue == 1 && isLocked == false)
             {
                 shaderOptimizer.floatValue = 0;
-            }
-            else if (shaderOptimizer.hasMixedValue == false && shaderOptimizer.floatValue == 0 && isLocked)
+            }else if(shaderOptimizer.hasMixedValue == false && shaderOptimizer.floatValue == 0 && isLocked)
             {
                 shaderOptimizer.floatValue = 1;
             }
@@ -1523,17 +1529,26 @@ namespace Thry
                     RestoreChangeStack();
                 }
             }
-            if (Config.Singleton.allowCustomLockingRenaming && !ShaderEditor.Active.IsLockedMaterial)
+            if(Config.Singleton.allowCustomLockingRenaming || ShaderEditor.Active.HasCustomRenameSuffix)
             {
+                EditorGUI.BeginDisabledGroup(!Config.Singleton.allowCustomLockingRenaming || ShaderEditor.Active.IsLockedMaterial);
                 EditorGUI.BeginChangeCheck();
                 ShaderEditor.Active.RenamedPropertySuffix = EditorGUILayout.TextField("Locked property suffix: ", ShaderEditor.Active.RenamedPropertySuffix);
                 if (EditorGUI.EndChangeCheck())
                 {
+                    // Make sure suffix that is saved is valid
+                    ShaderEditor.Active.RenamedPropertySuffix = ShaderOptimizer.CleanStringForPropertyNames(ShaderEditor.Active.RenamedPropertySuffix.Replace(" ","_"));
                     foreach (Material m in ShaderEditor.Active.Materials)
                         m.SetOverrideTag("thry_rename_suffix", ShaderEditor.Active.RenamedPropertySuffix);
                     if (ShaderEditor.Active.RenamedPropertySuffix == "")
                         ShaderEditor.Active.RenamedPropertySuffix = ShaderOptimizer.GetRenamedPropertySuffix(ShaderEditor.Active.Materials[0]);
+                    ShaderEditor.Active.HasCustomRenameSuffix = ShaderOptimizer.HasCustomRenameSuffix(ShaderEditor.Active.Materials[0]);
                 }
+                if(!Config.Singleton.allowCustomLockingRenaming)
+                {
+                    EditorGUILayout.HelpBox("This feature is disabled in the config file. You can enable it by setting allowCustomLockingRenaming to true.", MessageType.Info);
+                }
+                EditorGUI.EndDisabledGroup();
             }
         }
 
@@ -1545,7 +1560,7 @@ namespace Thry
             if (changeStack != null)
             {
                 Stack<bool> stack = (Stack<bool>)changeStack.GetValue(null);
-                if (stack != null)
+                if(stack != null)
                 {
                     preLockStackSize = stack.Count();
                 }
@@ -1561,7 +1576,7 @@ namespace Thry
                 {
                     int postLockStackSize = stack.Count();
                     //Restore change stack from before lock / unlocking
-                    for (int i = postLockStackSize; i < preLockStackSize; i++)
+                    for(int i=postLockStackSize; i < preLockStackSize; i++)
                     {
                         EditorGUI.BeginChangeCheck();
                     }
@@ -1600,7 +1615,7 @@ namespace Thry
                 return new Type[0];
             }
         }
-        public ThryWideEnumDrawer(string enumName, int j)
+        public ThryWideEnumDrawer(string enumName,int j)
         {
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(
                 x => TypesFromAssembly(x)).ToArray();
@@ -1634,8 +1649,8 @@ namespace Thry
         public ThryWideEnumDrawer(string n1, float v1, string n2, float v2, string n3, float v3, string n4, float v4, string n5, float v5) : this(new[] { n1, n2, n3, n4, n5 }, new[] { v1, v2, v3, v4, v5 }) { }
         public ThryWideEnumDrawer(string n1, float v1, string n2, float v2, string n3, float v3, string n4, float v4, string n5, float v5, string n6, float v6) : this(new[] { n1, n2, n3, n4, n5, n6 }, new[] { v1, v2, v3, v4, v5, v6 }) { }
         public ThryWideEnumDrawer(string n1, float v1, string n2, float v2, string n3, float v3, string n4, float v4, string n5, float v5, string n6, float v6, string n7, float v7) : this(new[] { n1, n2, n3, n4, n5, n6, n7 }, new[] { v1, v2, v3, v4, v5, v6, v7 }) { }
-        public ThryWideEnumDrawer(string n1, float v1, string n2, float v2, string n3, float v3, string n4, float v4, string n5, float v5, string n6, float v6, string n7, float v7, string n8, float v8) : this(new[] { n1, n2, n3, n4, n5, n6, n7, n8 }, new[] { v1, v2, v3, v4, v5, v6, v7, v8 }) { }
-        public ThryWideEnumDrawer(string n1, float v1, string n2, float v2, string n3, float v3, string n4, float v4, string n5, float v5, string n6, float v6, string n7, float v7, string n8, float v8, string n9, float v9) : this(new[] { n1, n2, n3, n4, n5, n6, n7, n8, n9 }, new[] { v1, v2, v3, v4, v5, v6, v7, v8, v9 }) { }
+        public ThryWideEnumDrawer(string n1, float v1, string n2, float v2, string n3, float v3, string n4, float v4, string n5, float v5, string n6, float v6, string n7, float v7, string n8, float v8) : this(new[] { n1, n2, n3, n4, n5, n6, n7, n8}, new[] { v1, v2, v3, v4, v5, v6, v7, v8}) { }
+        public ThryWideEnumDrawer(string n1, float v1, string n2, float v2, string n3, float v3, string n4, float v4, string n5, float v5, string n6, float v6, string n7, float v7, string n8, float v8, string n9, float v9) : this(new[] { n1, n2, n3, n4, n5, n6, n7, n8, n9}, new[] { v1, v2, v3, v4, v5, v6, v7, v8, v9}) { }
         public ThryWideEnumDrawer(string n1, float v1, string n2, float v2, string n3, float v3, string n4, float v4, string n5, float v5, string n6, float v6, string n7, float v7, string n8, float v8, string n9, float v9, string n10, float v10) : this(new[] { n1, n2, n3, n4, n5, n6, n7, n8, n9, n10 }, new[] { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 }) { }
         public ThryWideEnumDrawer(string n1, float v1, string n2, float v2, string n3, float v3, string n4, float v4, string n5, float v5, string n6, float v6, string n7, float v7, string n8, float v8, string n9, float v9, string n10, float v10, string n11, float v11) : this(new[] { n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11 }, new[] { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11 }) { }
         public ThryWideEnumDrawer(string n1, float v1, string n2, float v2, string n3, float v3, string n4, float v4, string n5, float v5, string n6, float v6, string n7, float v7, string n8, float v8, string n9, float v9, string n10, float v10, string n11, float v11, string n12, float v12) : this(new[] { n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12 }, new[] { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12 }) { }

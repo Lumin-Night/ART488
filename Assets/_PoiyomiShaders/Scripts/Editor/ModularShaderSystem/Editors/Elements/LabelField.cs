@@ -35,11 +35,11 @@ namespace Poiyomi.ModularShaderSystem.UI
             _value = value;
             _labelField = new Label(label);
             _valueField = new Label(value);
-
+            
             AddToClassList("unity-base-field");
             AddToClassList("unity-base-text-field");
             AddToClassList("unity-text-field");
-
+            
             _labelField.AddToClassList("unity-text-element");
             _labelField.AddToClassList("unity-label");
             _labelField.AddToClassList("unity-base-field__label");
@@ -47,10 +47,10 @@ namespace Poiyomi.ModularShaderSystem.UI
             _labelField.AddToClassList("unity-text-field__label");
             _labelField.AddToClassList("label-field-title");
             _valueField.AddToClassList("label-field-value");
-
+            
             Add(_labelField);
             Add(_valueField);
-
+            
         }
     }
 }

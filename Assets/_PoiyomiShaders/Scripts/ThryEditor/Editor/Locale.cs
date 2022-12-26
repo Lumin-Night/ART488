@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Thry
@@ -31,7 +33,7 @@ namespace Thry
 
         public string Get(string key)
         {
-            if (dictionary.ContainsKey(key)) return dictionary[key][selected_locale_index];
+            if(dictionary.ContainsKey(key)) return dictionary[key][selected_locale_index];
             Debug.LogWarning("Locale[key] could not be found.");
             return key;
         }
@@ -49,7 +51,7 @@ namespace Thry
             }
         }
 
-        public Dictionary<string, string[]>.KeyCollection GetAllKeys()
+        public Dictionary<string,string[]>.KeyCollection GetAllKeys()
         {
             return dictionary.Keys;
         }
@@ -92,14 +94,14 @@ namespace Thry
         private void InitDictionary(List<List<string>> lines)
         {
             dictionary = new Dictionary<string, string[]>();
-            foreach (List<string> line in lines)
+            foreach(List<string> line in lines)
             {
                 string key = line[0];
                 if (key == "")
                     continue;
                 string[] value = new string[languages.Length];
                 value[0] = "";
-                for (int i = 0; i < value.Length; i++)
+                for(int i = 0; i < value.Length; i++)
                 {
                     if (line.Count > i + 1 && line[i + 1] != "")
                         value[i] = line[i + 1];

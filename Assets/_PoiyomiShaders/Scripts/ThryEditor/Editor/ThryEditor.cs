@@ -1,14 +1,16 @@
 ﻿// Material/Shader Inspector for Unity 2017/2018
 // Copyright (C) 2019 Thryrallo
 
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using Thry.ThryEditor;
 using UnityEditor;
 using UnityEngine;
+using Thry;
+using System;
+using System.Reflection;
+using System.Linq;
+using Thry.ThryEditor;
 
 namespace Thry
 {
@@ -66,6 +68,7 @@ namespace Thry
         public bool IsInAnimationMode;
         public Renderer ActiveRenderer;
         public string RenamedPropertySuffix;
+        public bool HasCustomRenameSuffix;
         public Locale Locale;
         public ShaderTranslator SuggestedTranslationDefinition;
 
@@ -179,7 +182,7 @@ namespace Thry
                 if (name.StartsWith("space"))
                     return ThryPropertyType.space;
             }
-            else if (flags.HasFlag(MaterialProperty.PropFlags.HideInInspector) == false)
+            else if(flags.HasFlag(MaterialProperty.PropFlags.HideInInspector) == false)
             {
                 if (!options.hide_in_inspector)
                     return ThryPropertyType.property;
@@ -353,7 +356,7 @@ namespace Thry
                 ShaderHelper.EnableDisableKeywordsBasedOnTheirFloatValue(Materials, Shader, p.name);
             }
         }
-
+        
 
         //-------------Draw Functions----------------
 
@@ -369,6 +372,7 @@ namespace Thry
             Shader = Materials[0].shader;
 
             RenamedPropertySuffix = ShaderOptimizer.GetRenamedPropertySuffix(Materials[0]);
+            HasCustomRenameSuffix = ShaderOptimizer.HasCustomRenameSuffix(Materials[0]);
 
             IsPresetEditor = Materials.Length == 1 && Presets.ArePreset(Materials);
 
@@ -378,7 +382,7 @@ namespace Thry
             if (ShaderOptimizer.IsShaderUsingThryOptimizer(Shader))
             {
                 ShaderOptimizerProperty = PropertyDictionary[ShaderOptimizer.GetOptimizerPropertyName(Shader)];
-                if (ShaderOptimizerProperty != null) ShaderOptimizerProperty.ExemptFromLockedDisabling = true;
+                if(ShaderOptimizerProperty != null) ShaderOptimizerProperty.ExemptFromLockedDisabling = true;
             }
 
             _renderQueueProperty = new RenderQueueProperty(this);
@@ -445,7 +449,7 @@ namespace Thry
             IsDrawing = true;
             //Init
             bool reloadUI = _isFirstOnGUICall || (_doReloadNextDraw && Event.current.type == EventType.Layout) || (materialEditor.target as Material).shader != Shader;
-            if (reloadUI)
+            if (reloadUI) 
             {
                 InitEditorData(materialEditor);
                 Properties = props;
@@ -476,7 +480,7 @@ namespace Thry
             }
 
             //Render Queue selection
-            if (VRCInterface.IsVRCSDKInstalled()) _vRCFallbackProperty.Draw();
+            if(VRCInterface.IsVRCSDKInstalled()) _vRCFallbackProperty.Draw();
             if (Config.Singleton.showRenderQueue) _renderQueueProperty.Draw();
 
             BetterTooltips.DrawActive();
@@ -492,7 +496,7 @@ namespace Thry
         {
             if (Config.Singleton.showManualReloadButton)
             {
-                if (GUILayout.Button("Manual Reload"))
+                if(GUILayout.Button("Manual Reload"))
                 {
                     this.Reload();
                 }
@@ -505,7 +509,7 @@ namespace Thry
             {
                 Rect r = EditorGUILayout.GetControlRect(false, _hasShaderUpdateUrl ? 30 : 15);
                 EditorGUI.LabelField(r, $"[New Shader Version available] {_shaderVersionLocal} -> {_shaderVersionRemote}" + (_hasShaderUpdateUrl ? "\n    Click here to download." : ""), Styles.redStyle);
-                if (Input.HadMouseDownRepaint && _hasShaderUpdateUrl && GUILayoutUtility.GetLastRect().Contains(Input.mouse_position)) Application.OpenURL(_shaderUpdateUrl);
+                if(Input.HadMouseDownRepaint && _hasShaderUpdateUrl && GUILayoutUtility.GetLastRect().Contains(Input.mouse_position)) Application.OpenURL(_shaderUpdateUrl);
             }
         }
 
@@ -515,7 +519,7 @@ namespace Thry
             if (_shaderHeader != null && _shaderHeader.Options.texture != null) _shaderHeader.Draw();
 
             bool drawAboveToolbar = EditorGUIUtility.wideMode == false;
-            if (drawAboveToolbar) _shaderHeader.Draw(new CRect(EditorGUILayout.GetControlRect()));
+            if(drawAboveToolbar) _shaderHeader.Draw(new CRect(EditorGUILayout.GetControlRect()));
 
             Rect mainHeaderRect = EditorGUILayout.BeginHorizontal();
             //draw editor settings button
@@ -526,9 +530,9 @@ namespace Thry
             if (GuiHelper.ButtonWithCursor(Styles.icon_style_search, "Search", 25, 25))
             {
                 DoShowSearchBar = !DoShowSearchBar;
-                if (!DoShowSearchBar) ClearSearch();
+                if(!DoShowSearchBar) ClearSearch();
             }
-            if (GuiHelper.ButtonWithCursor(Styles.icon_style_presets, "Presets", 25, 25))
+            if (GuiHelper.ButtonWithCursor(Styles.icon_style_presets, "Presets" , 25, 25))
             {
                 Presets.OpenPresetsMenu(GUILayoutUtility.GetLastRect(), this);
             }
@@ -772,10 +776,9 @@ namespace Thry
                 .Where(m => ShaderOptimizer.IsMaterialLocked(m) == false && ShaderHelper.IsShaderUsingThryShaderEditor(m.shader));
             float f = 0;
             int count = materials.Count();
-            foreach (Material m in materials)
+            foreach(Material m in materials)
             {
-                for (int i = 0; i < m.shader.GetPropertyCount(); i++)
-                {
+                for(int i= 0;i< m.shader.GetPropertyCount(); i++){
                     if (m.shader.GetPropertyType(i) == UnityEngine.Rendering.ShaderPropertyType.Float)
                     {
                         ShaderHelper.EnableDisableKeywordsBasedOnTheirFloatValue(new Material[] { m }, m.shader, m.shader.GetPropertyName(i));
@@ -792,7 +795,7 @@ namespace Thry
             Application.OpenURL("https://www.twitter.com/thryrallo");
         }
 
-        [MenuItem("Thry/ShaderUI/Settings", priority = -20)]
+        [MenuItem("Thry/ShaderUI/Settings",priority = -20)]
         static void MenuShaderUISettings()
         {
             EditorWindow.GetWindow<Settings>(false, "Thry Settings", true);

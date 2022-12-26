@@ -37,6 +37,7 @@ MonoBehaviour:
   - Template: {fileID: 6485966747919507968, guid: db6fb035c5b46e941b0b8ad192fa9aef,
       type: 3}
     Keywords:
+    - EARLYZ_PROPERTY_VARIABLES
     - BASE_PROPERTY_VARIABLES
     - ADD_PROPERTY_VARIABLES
     - SHADOW_PROPERTY_VARIABLES

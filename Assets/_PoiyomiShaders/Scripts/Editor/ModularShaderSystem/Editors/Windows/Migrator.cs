@@ -33,7 +33,7 @@ namespace Poiyomi.ModularShaderSystem
         public string path;
         public string content;
     }
-
+    
     [Serializable]
     public class MigratedCollection
     {
@@ -41,7 +41,7 @@ namespace Poiyomi.ModularShaderSystem
         public string path;
         public string content;
     }
-
+    
     [Serializable]
     public class MigratedShaderModule
     {
@@ -60,7 +60,7 @@ namespace Poiyomi.ModularShaderSystem
         public List<MigratedShaderFunction> functions;
         public string additionalSerializedData;
     }
-
+    
     [Serializable]
     public class MigratedModularShader
     {
@@ -85,9 +85,9 @@ namespace Poiyomi.ModularShaderSystem
         public List<Shader> lastGeneratedShaders;
         public string additionalSerializedData;
     }
-
+    
     [Serializable]
-    public class MigratedModuleTemplate
+    public class MigratedModuleTemplate 
     {
         public long templateReference;
         public string collectionSubId;
@@ -95,9 +95,9 @@ namespace Poiyomi.ModularShaderSystem
         public bool needsVariant;
         public int queue;
     }
-
+    
     [Serializable]
-    public class MigratedShaderFunction
+    public class MigratedShaderFunction 
     {
         public string name;
         public string appendAfter;
@@ -123,7 +123,7 @@ namespace Poiyomi.ModularShaderSystem
             }
         }
 
-
+        
         private Migrator _window;
         public T ToggledItem;
         private string _name;
@@ -136,7 +136,7 @@ namespace Poiyomi.ModularShaderSystem
             ToggledItem = toggledItem;
 
             style.flexDirection = FlexDirection.Row;
-
+            
             _toggle = new Toggle();
             _toggle.RegisterValueChangedCallback(evt =>
             {
@@ -147,7 +147,7 @@ namespace Poiyomi.ModularShaderSystem
             Add(new Label(_name));
         }
     }
-
+    
     public class Migrator : EditorWindow
     {
         [MenuItem(MSSConstants.WINDOW_PATH + "/Tools/Migrator", priority = 101)]
@@ -166,77 +166,77 @@ namespace Poiyomi.ModularShaderSystem
         private void CreateGUI()
         {
             VisualElement root = rootVisualElement;
-
+            
             var styleSheet = Resources.Load<StyleSheet>(MSSConstants.RESOURCES_FOLDER + (EditorGUIUtility.isProSkin ? "/MSSUIElements/MigratorDark" : "/MSSUIElements/MigratorLight"));
             root.styleSheets.Add(styleSheet);
-
+            
             var buttonRow = new VisualElement();
             buttonRow.AddToClassList("button-tab-area");
 
             var selectedTab = new VisualElement();
             selectedTab.style.flexGrow = 1;
-
+            
             VisualElement exportRoot = new VisualElement();
             exportRoot.style.flexGrow = 1;
             SetupExport(exportRoot);
-
+            
             VisualElement importRoot = new VisualElement();
             importRoot.style.flexGrow = 1;
             SetupImport(importRoot);
-
+            
             var tabButton = new Button();
             tabButton.text = "Export";
             tabButton.AddToClassList("button-tab");
             tabButton.clicked += () =>
             {
                 foreach (var button in buttonRow.Children())
-                    if (button.ClassListContains("button-tab-selected"))
+                    if(button.ClassListContains("button-tab-selected"))
                         button.RemoveFromClassList("button-tab-selected");
-
+                    
                 tabButton.AddToClassList("button-tab-selected");
-
+                   
                 selectedTab.Clear();
                 selectedTab.Add(exportRoot);
             };
             buttonRow.Add(tabButton);
-
+            
             var secondTabButton = new Button();
             secondTabButton.text = "Import";
             secondTabButton.AddToClassList("button-tab");
             secondTabButton.clicked += () =>
             {
                 foreach (var button in buttonRow.Children())
-                    if (button.ClassListContains("button-tab-selected"))
+                    if(button.ClassListContains("button-tab-selected"))
                         button.RemoveFromClassList("button-tab-selected");
-
+                    
                 secondTabButton.AddToClassList("button-tab-selected");
-
+                   
                 selectedTab.Clear();
                 selectedTab.Add(importRoot);
             };
-
+                
             buttonRow.Add(secondTabButton);
-
+            
             selectedTab.Add(exportRoot);
             tabButton.AddToClassList("button-tab-selected");
             root.Add(buttonRow);
             root.Add(selectedTab);
         }
-
+        
         private void SetupImport(VisualElement importRoot)
         {
             MigratedAssets assets = null;
-
+            
             var scrollView = new ScrollView(ScrollViewMode.Vertical);
             scrollView.style.flexGrow = 1;
-
+            
             var importButton = new Button();
             importButton.text = "Import";
             importButton.style.minHeight = 22;
             importButton.style.height = 22;
             importButton.SetEnabled(false);
             importButton.clicked += () => Import(assets);
-
+            
             var loadButton = new Button();
             loadButton.style.minHeight = 22;
             loadButton.style.height = 22;
@@ -247,39 +247,39 @@ namespace Poiyomi.ModularShaderSystem
                 if (string.IsNullOrWhiteSpace(assetPath)) return;
 
                 assets = JsonUtility.FromJson<MigratedAssets>(File.ReadAllText(assetPath));
-
+                
                 importButton.SetEnabled(true);
 
                 scrollView.Clear();
                 var label = new Label("Modular Shaders");
                 label.AddToClassList("title");
                 scrollView.Add(label);
-
+                
                 foreach (var shader in assets.modularShaders)
                     scrollView.Add(new Label($"{shader.name} ({shader.shaderId})"));
-
+                
                 label = new Label("Shader Modules");
                 label.AddToClassList("title");
                 scrollView.Add(label);
-
+                
                 foreach (var module in assets.shaderModules)
                     scrollView.Add(new Label($"{module.name} ({module.moduleId})"));
-
+                
                 label = new Label("Template Assets");
                 label.AddToClassList("title");
                 scrollView.Add(label);
-
+                
                 foreach (var template in assets.templates)
                     scrollView.Add(new Label($"{Path.GetFileNameWithoutExtension(template.path)}"));
-
+                
                 label = new Label("Template Collection Assets");
                 label.AddToClassList("title");
                 scrollView.Add(label);
-
+                
                 foreach (var collection in assets.templateCollections)
                     scrollView.Add(new Label($"{Path.GetFileNameWithoutExtension(collection.path)}"));
             };
-
+            
             importRoot.Add(loadButton);
             importRoot.Add(scrollView);
             importRoot.Add(importButton);
@@ -291,7 +291,7 @@ namespace Poiyomi.ModularShaderSystem
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(asset.path));
                 File.WriteAllText(Path.ChangeExtension(asset.path, MSSConstants.TEMPLATE_EXTENSION) ?? string.Empty, asset.content);
-                if (File.Exists(asset.path))
+                if(File.Exists(asset.path))
                     File.Delete(asset.path);
             }
 
@@ -299,7 +299,7 @@ namespace Poiyomi.ModularShaderSystem
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(asset.path));
                 File.WriteAllText(Path.ChangeExtension(asset.path, MSSConstants.TEMPLATE_COLLECTION_EXTENSION) ?? string.Empty, asset.content);
-                if (File.Exists(asset.path))
+                if(File.Exists(asset.path))
                     File.Delete(asset.path);
             }
 
@@ -507,7 +507,7 @@ namespace Poiyomi.ModularShaderSystem
                 _collectionElements.ForEach(x => x.IsSelected = true);
             };
             bottomRow.Add(b);
-
+            
             b = new Button();
             b.text = "Unselect all";
             b.clicked += () =>
@@ -525,9 +525,9 @@ namespace Poiyomi.ModularShaderSystem
             b.text = "Save";
             b.clicked += ExportSelected;
             bottomRow.Add(b);
-
-
-
+            
+            
+            
             scrollView.Add(shadersFoldout);
             scrollView.Add(modulesFoldout);
             scrollView.Add(templatesFoldout);
@@ -618,7 +618,7 @@ namespace Poiyomi.ModularShaderSystem
                     useTemplatesForProperties = asset.UseTemplatesForProperties,
                     baseModules = asset.BaseModules.Select(x => idByModule[x]).ToList(),
                     additionalModules = asset.AdditionalModules.Select(x => idByModule[x]).ToList()
-
+                    
                 };
 
                 if (asset.ShaderTemplate == null) shader.shaderTemplateReference = 0;
@@ -631,7 +631,7 @@ namespace Poiyomi.ModularShaderSystem
                     shader.shaderTemplateReference = idByTemplate[asset.ShaderTemplate];
                     shader.shaderCollectionSubId = asset.ShaderTemplate.name;
                 }
-
+                
                 if (asset.ShaderPropertiesTemplate == null) shader.propertiesTemplateReference = 0;
                 else if (idByTemplate.ContainsKey(asset.ShaderPropertiesTemplate))
                 {
@@ -642,18 +642,18 @@ namespace Poiyomi.ModularShaderSystem
                     shader.propertiesTemplateReference = idByTemplate[asset.ShaderPropertiesTemplate];
                     shader.propertiesCollectionSubId = asset.ShaderPropertiesTemplate.name;
                 }
-
+                
                 assets.modularShaders.Add(shader);
-
+                
                 currentId++;
             }
-
+            
             File.WriteAllText(finalPath, JsonUtility.ToJson(assets));
         }
-
-        private static MigratedModuleTemplate FromModuleTemplate(ModuleTemplate original, Dictionary<TemplateAsset, long> idByTemplate, Dictionary<TemplateAsset, long> idByCollection)
+        
+        private static MigratedModuleTemplate FromModuleTemplate(ModuleTemplate original, Dictionary<TemplateAsset, long> idByTemplate,  Dictionary<TemplateAsset, long> idByCollection)
         {
-
+            
             var template = new MigratedModuleTemplate
             {
                 keywords = new List<string>(original.Keywords),
@@ -662,7 +662,7 @@ namespace Poiyomi.ModularShaderSystem
             };
 
             if (original.Template == null) return template;
-
+            
             if (idByTemplate.ContainsKey(original.Template))
             {
                 template.templateReference = idByTemplate[original.Template];
@@ -675,10 +675,10 @@ namespace Poiyomi.ModularShaderSystem
 
             return template;
         }
-
-        private static MigratedShaderFunction FromModuleFunction(ShaderFunction original, Dictionary<TemplateAsset, long> idByTemplate, Dictionary<TemplateAsset, long> idByCollection)
+        
+        private static MigratedShaderFunction FromModuleFunction(ShaderFunction original, Dictionary<TemplateAsset, long> idByTemplate,  Dictionary<TemplateAsset, long> idByCollection)
         {
-
+            
             var template = new MigratedShaderFunction
             {
                 name = original.Name,
@@ -721,22 +721,22 @@ namespace Poiyomi.ModularShaderSystem
                     break;
             }
         }
-
+        
         private void ToggleShaderDependencies(ModularShader shader, bool isToggled)
         {
             if (!isToggled) return;
-
+            
             foreach (var element in _moduleElements.Where(x => shader.BaseModules.Concat(shader.AdditionalModules).Contains(x.ToggledItem)))
             {
                 element.IsSelected = true;
                 ToggleModuleDependencies(element.ToggledItem, true);
             }
-
+            
             foreach (var element in _templateElements.Where(x => shader.ShaderTemplate == x.ToggledItem || shader.ShaderPropertiesTemplate == x.ToggledItem))
             {
                 element.IsSelected = true;
             }
-
+            
             foreach (var element in _collectionElements.Where(x => x.ToggledItem.Templates.Contains(shader.ShaderTemplate) || x.ToggledItem.Templates.Contains(shader.ShaderPropertiesTemplate)))
             {
                 element.IsSelected = true;
@@ -747,13 +747,13 @@ namespace Poiyomi.ModularShaderSystem
         {
             if (isToggled)
             {
-                foreach (var element in _templateElements.Where(x =>
+                foreach (var element in _templateElements.Where(x => 
                              module.Templates.Select(y => y.Template).Concat(module.Functions.Select(z => z.ShaderFunctionCode)).Contains(x.ToggledItem)))
                 {
                     element.IsSelected = true;
                 }
-
-                foreach (var element in _collectionElements.Where(x =>
+                
+                foreach (var element in _collectionElements.Where(x => 
                              module.Templates.Select(y => y.Template).Concat(module.Functions.Select(z => z.ShaderFunctionCode)).Any(y => x.ToggledItem.Templates.Contains(y))))
                 {
                     element.IsSelected = true;
@@ -767,41 +767,41 @@ namespace Poiyomi.ModularShaderSystem
                 }
             }
         }
-
+        
         private void ToggleTemplateDependencies(TemplateAsset template, bool isToggled)
         {
             if (isToggled) return;
-
-            foreach (var element in _moduleElements.Where(x =>
+            
+            foreach (var element in _moduleElements.Where(x => 
                          x.ToggledItem.Templates.Select(y => y.Template).Concat(x.ToggledItem.Functions.Select(z => z.ShaderFunctionCode)).Contains(template)))
             {
                 element.IsSelected = false;
                 ToggleModuleDependencies(element.ToggledItem, false);
             }
-
+            
             foreach (var element in _shaderElements.Where(x => x.ToggledItem.ShaderTemplate == template || x.ToggledItem.ShaderPropertiesTemplate == template))
             {
                 element.IsSelected = false;
             }
         }
-
+        
         private void ToggleCollectionDependencies(TemplateCollectionAsset template, bool isToggled)
         {
             if (isToggled) return;
-
-            foreach (var element in _moduleElements.Where(x =>
+            
+            foreach (var element in _moduleElements.Where(x => 
                          x.ToggledItem.Templates.Select(y => y.Template).Concat(x.ToggledItem.Functions.Select(z => z.ShaderFunctionCode)).Any(y => template.Templates.Contains(y))))
             {
                 element.IsSelected = false;
                 ToggleModuleDependencies(element.ToggledItem, false);
             }
-
-            foreach (var element in _shaderElements.Where(x => template.Templates.Contains(x.ToggledItem.ShaderTemplate) || template.Templates.Contains(x.ToggledItem.ShaderPropertiesTemplate)))
+            
+            foreach (var element in _shaderElements.Where(x => template.Templates.Contains(x.ToggledItem.ShaderTemplate) ||template.Templates.Contains(x.ToggledItem.ShaderPropertiesTemplate)))
             {
                 element.IsSelected = false;
             }
         }
-
+        
         private static T[] FindAssetsByType<T>() where T : Object
         {
             List<T> assets = new List<T>();

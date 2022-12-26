@@ -11,14 +11,18 @@ _MochieReflectionTint ("Reflection Tint--{reference_property:_MochieReflectionTi
 _MochieSpecularTint ("Specular Tint--{reference_property:_MochieSpecularTintThemeIndex}", Color) = (1, 1, 1, 1)
 [HideInInspector][ThryWideEnum(Off, 0, Theme Color 0, 1, Theme Color 1, 2, Theme Color 2, 3, Theme Color 3, 4, ColorChord 0, 5, ColorChord 1, 6, ColorChord 2, 7, ColorChord 3, 8, AL Theme 0, 9, AL Theme 1, 10, AL Theme 2, 11, AL Theme 3, 12)] _MochieSpecularTintThemeIndex ("", Int) = 0
 [Space(8)]
-[sRGBWarning][ThryRGBAPacker(R Metallic Map, G Smoothness Map, B Reflection Mask, A Specular Mask)]_MochieMetallicMaps ("Maps [Expand]--{reference_properties:[_MochieMetallicMapsPan, _MochieMetallicMapsUV, _MochieMetallicMapInvert, _MochieRoughnessMapInvert, _MochieReflectionMaskInvert, _MochieSpecularMaskInvert, _PBRMapsStochastic]}", 2D) = "white" { }
+[sRGBWarning][ThryRGBAPacker(R Metallic Map, G Smoothness Map, B Reflection Mask, A Specular Mask)]_MochieMetallicMaps ("Maps [Expand]--{reference_properties:[_MochieMetallicMapsPan, _MochieMetallicMapsUV, _MochieMetallicMapsMetallicChannel, _MochieMetallicMapsRoughnessChannel, _MochieMetallicMapsReflectionMaskChannel, _MochieMetallicMapsSpecularMaskChannel, _MochieMetallicMapInvert, _MochieRoughnessMapInvert, _MochieReflectionMaskInvert, _MochieSpecularMaskInvert, _MochieMetallicMapsStochastic]}", 2D) = "white" { }
 [HideInInspector][Vector2]_MochieMetallicMapsPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)]_MochieMetallicMapsUV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_MochieMetallicMapsMetallicChannel ("Metallic Channel", Float) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_MochieMetallicMapsRoughnessChannel ("Smoothness Channel", Float) = 1
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_MochieMetallicMapsReflectionMaskChannel ("Reflection Mask Channel", Float) = 2
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_MochieMetallicMapsSpecularMaskChannel ("Specular Mask Channel", Float) = 3
 [HideInInspector][ToggleUI]_MochieMetallicMapInvert ("Invert Metallic", Float) = 0
 [HideInInspector][ToggleUI]_MochieRoughnessMapInvert ("Invert Smoothness", Float) = 0
 [HideInInspector][ToggleUI]_MochieReflectionMaskInvert ("Invert Reflection Mask", Float) = 0
 [HideInInspector][ToggleUI]_MochieSpecularMaskInvert ("Invert Specular Mask", Float) = 0
-[HideInInspector][ToggleUI]_PBRMapsStochastic ("Stochastic Sampling", Float) = 0
+[HideInInspector][ToggleUI]_MochieMetallicMapsStochastic ("Stochastic Sampling", Float) = 0
 [ThryToggleUI(true)]_PBRSplitMaskSample ("<size=13><b>  Split Mask Sampling</b></size>", Float) = 0
 [VectorLabel(tX, tY, oX, oY)]_PBRMaskScaleTiling ("Tiling/Offset--{condition_showS:(_PBRSplitMaskSample==1)}", Vector) = (1, 1, 0, 0)
 [ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)]_MochieMetallicMasksUV ("UV--{condition_showS:(_PBRSplitMaskSample==1)}", Int) = 0
@@ -27,18 +31,32 @@ _MochieSpecularTint ("Specular Tint--{reference_property:_MochieSpecularTintThem
 [ThryToggleUI(true)]_Specular2ndLayer ("<size=13><b>  2nd Specular</b></size>", Float) = 0
 _MochieSpecularStrength2 ("Strength--{condition_showS:(_Specular2ndLayer==1)}", Range(0, 1)) = 1
 _MochieRoughnessMultiplier2 ("Smoothness--{condition_showS:(_Specular2ndLayer==1)}", Range(0, 1)) = 1
-[ThryToggleUI(true)] _BRDFTPSDepthEnabled ("<size=13><b>  TPS Depth Enabled</b></size>", Float) = 0
-_BRDFTPSReflectionMaskStrength ("Reflection Mask Strength--{condition_showS:(_BRDFTPSDepthEnabled==1)}", Range(0, 1)) = 1
-_BRDFTPSSpecularMaskStrength ("Specular Mask Strength--{condition_showS:(_BRDFTPSDepthEnabled==1)}", Range(0, 1)) = 1
-[ToggleUI]_IgnoreCastedShadows ("Ignore Casted Shadows", Float) = 0
-[Space(8)]
+[Space(4)]
 [ThryTexture][NoScaleOffset]_MochieReflCube ("Fallback Cubemap", Cube) = "" { }
 [ToggleUI]_MochieForceFallback ("Force Fallback", Int) = 0
 [ToggleUI]_MochieLitFallback ("Lit Fallback", Float) = 0
+
+[HideInInspector] m_start_brdfadvanced ("Advanced", Float) = 0
+[ToggleUI]_IgnoreCastedShadows ("Ignore Casted Shadows", Float) = 0
+_PBRNormalSelect ("Pixel Normal Mix", Range(0, 1)) = 1
+[PowerSlider(.2)]_RefSpecFresnel ("Fresnel Reflection", Range(0, 1)) = 1
 [ThryToggleUI(true)]_MochieGSAAEnabled ("<size=13><b>  GSAA</b></size>", Float) = 1
 _PoiGSAAVariance ("GSAA Variance", Range(0, 1)) = 0.15
 _PoiGSAAThreshold ("GSAA Threshold", Range(0, 1)) = 0.1
-_RefSpecFresnel ("Fresnel Reflection", Range(0, 1)) = 1
+[HideInInspector] g_start_BRDFTPSMaskGroup ("--{condition_showS:(_TPSPenetratorEnabled==1)}", Float) = 0
+[ThryToggleUI(true)] _BRDFTPSDepthEnabled ("<size=13><b>  TPS Depth Enabled</b></size>", Float) = 0
+_BRDFTPSReflectionMaskStrength ("Reflection Mask Strength--{condition_showS:(_BRDFTPSDepthEnabled==1)}", Range(0, 1)) = 1
+_BRDFTPSSpecularMaskStrength ("Specular Mask Strength--{condition_showS:(_BRDFTPSDepthEnabled==1)}", Range(0, 1)) = 1
+[HideInInspector] g_end_BRDFTPSMaskGroup ("", Float) = 0
+[HideInInspector] m_end_brdfadvanced ("", Float) = 0
+
+[HideInInspector] m_start_brdfglobalmask ("Global Mask", Float) = 0
+[ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _MochieReflectionStrengthGlobalMask ("Reflection Strength--{reference_property:_MochieReflectionStrengthGlobalMaskBlendType}", Int) = 0
+[HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)] _MochieReflectionStrengthGlobalMaskBlendType ("Blending", Int) = 2
+[ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _MochieSpecularStrengthGlobalMask ("Specular Strength--{reference_property:_MochieSpecularStrengthGlobalMaskBlendType}", Int) = 0
+[HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)] _MochieSpecularStrengthGlobalMaskBlendType ("Blending", Int) = 2
+[HideInInspector] m_end_brdfglobalmask ("", Float) = 0
+
 [HideInInspector] m_end_brdf ("", Float) = 0
 //endex
 
@@ -62,16 +80,31 @@ _ClearCoatSpecularTint ("Specular Tint--{reference_property:_ClearCoatSpecularTi
 [HideInInspector][ToggleUI]_ClearCoatReflectionMaskInvert ("Invert Reflection Mask", Float) = 0
 [HideInInspector][ToggleUI]_ClearCoatSpecularMaskInvert ("Invert Specular Mask", Float) = 0
 [HideInInspector][ToggleUI]_ClearCoatMapsStochastic ("Stochastic Sampling", Float) = 0
-[Space(8)]
+[Space(4)]
 [ThryTexture][NoScaleOffset]_ClearCoatFallback ("Fallback Cubemap", Cube) = "" { }
 [ToggleUI]_ClearCoatForceFallback ("Force Fallback", Int) = 0
 [ToggleUI]_ClearCoatLitFallback ("Lit Fallback", Float) = 0
+
+[HideInInspector] m_start_clearcoatadvanced ("Advanced", Float) = 0
 [ToggleUI]_CCIgnoreCastedShadows ("Ignore Casted Shadows", Float) = 0
+_ClearCoatNormalSelect ("Pixel Normal Mix", Range(0, 1)) = 0
+[PowerSlider(.2)]_ClearcoatFresnel ("Fresnel Reflection", Range(0, 1)) = 1
 [ThryToggleUI(true)]_ClearCoatGSAAEnabled ("<size=13><b>  GSAA</b></size>", Float) = 1
 _ClearCoatGSAAVariance ("GSAA Variance", Range(0, 1)) = 0.15
 _ClearCoatGSAAThreshold ("GSAA Threshold", Range(0, 1)) = 0.1
+[HideInInspector] g_start_ClearCoatTPSMaskGroup ("--{condition_showS:(_TPSPenetratorEnabled==1)}", Float) = 0
 [ThryToggleUI(true)] _ClearCoatTPSDepthMaskEnabled ("<size=13><b>  TPS Depth Enabled</b></size>", Float) = 0
 _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthMaskEnabled==1)}", Range(0, 1)) = 1
+[HideInInspector] g_end_ClearCoatTPSMaskGroup ("", Float) = 0
+[HideInInspector] m_end_clearcoatadvanced ("", Float) = 0
+
+[HideInInspector] m_start_clearcoatglobalmask ("Global Mask", Float) = 0
+[ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _ClearCoatReflectionStrengthGlobalMask ("Reflection Strength--{reference_property:_ClearCoatReflectionStrengthGlobalMaskBlendType}", Int) = 0
+[HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)] _ClearCoatReflectionStrengthGlobalMaskBlendType ("Blending", Int) = 2
+[ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _ClearCoatSpecularStrengthGlobalMask ("Specular Strength--{reference_property:_ClearCoatSpecularStrengthGlobalMaskBlendType}", Int) = 0
+[HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)] _ClearCoatSpecularStrengthGlobalMaskBlendType ("Blending", Int) = 2
+[HideInInspector] m_end_clearcoatglobalmask ("", Float) = 0
+
 [HideInInspector] m_end_clearCoat ("", Float) = 0
 //endex
 
@@ -90,13 +123,16 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 		Texture2D _MochieMetallicMaps;
 		float _PBRMapsStochastic;
 	#endif
-	float4 _MochieMetallicMaps_ST;
-	float2 _MochieMetallicMapsPan;
-	float _MochieMetallicMapsUV;
+	POI_DECLARETEX_ST_UV_PAN_STOCHASTIC(_MochieMetallicMaps);
 	float _MochieMetallicMapInvert;
 	float _MochieRoughnessMapInvert;
 	float _MochieReflectionMaskInvert;
 	float _MochieSpecularMaskInvert;
+	float _MochieMetallicMapsMetallicChannel;
+	float _MochieMetallicMapsRoughnessChannel;
+	float _MochieMetallicMapsReflectionMaskChannel;
+	float _MochieMetallicMapsSpecularMaskChannel;
+	float _PBRNormalSelect;
 
 	float _MochieReflectionTintThemeIndex;
 	float _MochieSpecularTintThemeIndex;
@@ -128,6 +164,11 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 	float _BRDFTPSReflectionMaskStrength;
 	float _BRDFTPSSpecularMaskStrength;
 	float _BRDFTPSDepthEnabled;
+
+	float _MochieReflectionStrengthGlobalMask;
+	float _MochieReflectionStrengthGlobalMaskBlendType;
+	float _MochieSpecularStrengthGlobalMask;
+	float _MochieSpecularStrengthGlobalMaskBlendType;
 #endif
 //endex
 
@@ -155,6 +196,7 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 	float _ClearCoatSpecularMaskInvert;
 	float _ClearCoatTPSMaskStrength;
 	float _ClearCoatTPSDepthMaskEnabled;
+	float _ClearCoatNormalSelect;
 	
 	samplerCUBE _ClearCoatFallback;
 	float4 _ClearCoatFallback_HDR;
@@ -164,6 +206,12 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 	float _ClearCoatGSAAEnabled;
 	float _ClearCoatGSAAVariance;
 	float _ClearCoatGSAAThreshold;
+	float _ClearcoatFresnel;
+
+	float _ClearCoatReflectionStrengthGlobalMask;
+	float _ClearCoatReflectionStrengthGlobalMaskBlendType;
+	float _ClearCoatSpecularStrengthGlobalMask;
+	float _ClearCoatSpecularStrengthGlobalMaskBlendType;
 #endif
 //endex
 
@@ -331,17 +379,19 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 		float reflectionMask = 1;
 
 		#if defined(PROP_MOCHIEMETALLICMAPS) || !defined(OPTIMIZER_ENABLED)
-			float4 PBRMaps = POI2D_SAMPLER_PAN_STOCHASTIC_TOGGLE(_MochieMetallicMaps, _MainTex, poiUV(poiMesh.uv[_MochieMetallicMapsUV], _MochieMetallicMaps_ST), _MochieMetallicMapsPan.xy, _PBRMapsStochastic);
+			float4 PBRMaps = POI2D_SAMPLER_PAN_STOCHASTIC(_MochieMetallicMaps, _MainTex, poiUV(poiMesh.uv[_MochieMetallicMapsUV], _MochieMetallicMaps_ST), _MochieMetallicMapsPan, _MochieMetallicMapsStochastic);
 			UNITY_BRANCH
 			if (_PBRSplitMaskSample)
 			{
-				PBRMaps.zw = POI2D_SAMPLER_PAN_STOCHASTIC_TOGGLE(_MochieMetallicMaps, _MainTex, poiUV(poiMesh.uv[_MochieMetallicMasksUV], _PBRMaskScaleTiling), _MochieMetallicMasksPan.xy, _PBRSplitMaskStochastic).zw;
+				float4 PBRSplitMask = POI2D_SAMPLER_PAN_STOCHASTIC(_MochieMetallicMaps, _MainTex, poiUV(poiMesh.uv[_MochieMetallicMasksUV], _PBRMaskScaleTiling), _MochieMetallicMasksPan.xy, _PBRSplitMaskStochastic);
+				assignValueToVectorFromIndex(PBRMaps, _MochieMetallicMapsReflectionMaskChannel, PBRSplitMask[_MochieMetallicMapsReflectionMaskChannel]);
+				assignValueToVectorFromIndex(PBRMaps, _MochieMetallicMapsSpecularMaskChannel, PBRSplitMask[_MochieMetallicMapsSpecularMaskChannel]);
 			}
-			metallic *= PBRMaps.r;
-			smoothness = (smoothness * PBRMaps.g);
-			smoothness2 = (smoothness2 * PBRMaps.g);
-			reflectionMask *= PBRMaps.b;
-			specularMask *= PBRMaps.a;
+			metallic *= PBRMaps[_MochieMetallicMapsMetallicChannel];
+			smoothness = (smoothness * PBRMaps[_MochieMetallicMapsRoughnessChannel]);
+			smoothness2 = (smoothness2 * PBRMaps[_MochieMetallicMapsRoughnessChannel]);
+			reflectionMask *= PBRMaps[_MochieMetallicMapsReflectionMaskChannel];
+			specularMask *= PBRMaps[_MochieMetallicMapsSpecularMaskChannel];
 		#endif
 		
 		reflectionMask *= _MochieReflectionStrength;
@@ -354,6 +404,15 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 		if (_MochieReflectionMaskInvert)
 		{
 			reflectionMask = 1 - reflectionMask;
+		}
+
+		if (_MochieReflectionStrengthGlobalMask > 0)
+		{
+			reflectionMask = customBlend(reflectionMask, poiMods.globalMask[_MochieReflectionStrengthGlobalMask-1], _MochieReflectionStrengthGlobalMaskBlendType);
+		}
+		if (_MochieSpecularStrengthGlobalMask > 0)
+		{
+			specularMask = customBlend(specularMask, poiMods.globalMask[_MochieSpecularStrengthGlobalMask-1], _MochieSpecularStrengthGlobalMaskBlendType);
 		}
 
 		#ifdef TPS_Penetrator
@@ -384,10 +443,10 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 		UNITY_BRANCH
 		if (_MochieGSAAEnabled)
 		{
-			percepRough = GSAA_Filament(poiMesh.normals[1], percepRough, _PoiGSAAVariance, _PoiGSAAThreshold);
+			percepRough = GSAA_Filament(poiMesh.normals[_PBRNormalSelect], percepRough, _PoiGSAAVariance, _PoiGSAAThreshold);
 			if (_Specular2ndLayer == 1 && _MochieSpecularStrength2 > 0)
 			{
-				percepRough2 = GSAA_Filament(poiMesh.normals[1], percepRough2, _PoiGSAAVariance, _PoiGSAAThreshold);
+				percepRough2 = GSAA_Filament(poiMesh.normals[_PBRNormalSelect], percepRough2, _PoiGSAAVariance, _PoiGSAAThreshold);
 			}
 		}
 		float brdfRoughness = percepRough * percepRough;
@@ -405,10 +464,19 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 		float3 environment = 0;
 
 		float attenuation = min(poiLight.nDotLSaturated, lerp(poiLight.attenuation, 1, _IgnoreCastedShadows));
+		#ifdef POI_PASS_ADD
+			attenuation *= lerp(poiLight.additiveShadow, 1, _IgnoreCastedShadows);
+		#endif
 
 		float3 fresnelTerm = 1;
 		float3 specularTerm = 1;
-		GetSpecFresTerm(poiLight.nDotL, poiLight.nDotV, poiLight.nDotH, poiLight.lDotH, specularTerm, fresnelTerm, specCol, brdfRoughness);
+
+		float pbrNDotL = lerp(poiLight.vertexNDotL, poiLight.nDotL, _PBRNormalSelect);
+		float pbrNDotV = lerp(poiLight.vertexNDotV, poiLight.nDotV, _PBRNormalSelect);
+		float pbrNDotH = lerp(poiLight.vertexNDotH, poiLight.nDotH, _PBRNormalSelect);
+		float3 pbrReflectionDir = lerp(poiCam.vertexReflectionDir, poiCam.reflectionDir, _PBRNormalSelect);
+
+		GetSpecFresTerm(pbrNDotL, pbrNDotV, pbrNDotH, poiLight.lDotH, specularTerm, fresnelTerm, specCol, brdfRoughness);
 		specular = poiLight.directColor * specularTerm * fresnelTerm * specularMask * poiThemeColor(poiMods, _MochieSpecularTint, _MochieSpecularTintThemeIndex) * poiLight.occlusion * attenuation;
 
 		#if defined(VERTEXLIGHT_ON) && defined(POI_VERTEXLIGHT_ON)
@@ -416,7 +484,9 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 			{
 				fresnelTerm = 1;
 				specularTerm = 1;
-				GetSpecFresTerm(poiLight.vDotNL[index], poiLight.nDotV, poiLight.vDotNH[index], poiLight.vDotLH[index], specularTerm, fresnelTerm, specCol, brdfRoughness);
+				float pbrVDotNL = lerp(poiLight.vertexVDotNL[index], poiLight.vDotNL[index], _PBRNormalSelect);
+				float pbrVDotNH = lerp(poiLight.vertexVDotNH[index], poiLight.vDotNH[index], _PBRNormalSelect);
+				GetSpecFresTerm(pbrVDotNL, pbrNDotV, pbrVDotNH, poiLight.vDotLH[index], specularTerm, fresnelTerm, specCol, brdfRoughness);
 				vSpecular += poiLight.vColor[index] * specularTerm * fresnelTerm * specularMask * poiThemeColor(poiMods, _MochieSpecularTint, _MochieSpecularTintThemeIndex) * poiLight.occlusion * poiLight.vAttenuation[index];
 			}
 		#endif
@@ -425,7 +495,7 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 		{
 			float3 fresnelTerm = 1;
 			float3 specularTerm = 1;
-			GetSpecFresTerm(poiLight.nDotL, poiLight.nDotV, poiLight.nDotH, poiLight.lDotH, specularTerm, fresnelTerm, specCol, brdfRoughness2);
+			GetSpecFresTerm(pbrNDotL, pbrNDotV, pbrNDotH, poiLight.lDotH, specularTerm, fresnelTerm, specCol, brdfRoughness2);
 			specular2 = poiLight.directColor * specularTerm * fresnelTerm * specularMask * poiThemeColor(poiMods, _MochieSpecularTint, _MochieSpecularTintThemeIndex) * poiLight.occlusion * attenuation * _MochieSpecularStrength2;
 			
 			#if defined(VERTEXLIGHT_ON) && defined(POI_VERTEXLIGHT_ON)
@@ -433,7 +503,9 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 				{
 					fresnelTerm = 1;
 					specularTerm = 1;
-					GetSpecFresTerm(poiLight.vDotNL[index], poiLight.nDotV, poiLight.vDotNH[index], poiLight.vDotLH[index], specularTerm, fresnelTerm, specCol, brdfRoughness2);
+					float pbrVDotNL = lerp(poiLight.vertexVDotNL[index], poiLight.vDotNL[index], _PBRNormalSelect);
+					float pbrVDotNH = lerp(poiLight.vertexVDotNH[index], poiLight.vDotNH[index], _PBRNormalSelect);
+					GetSpecFresTerm(pbrVDotNL, pbrNDotV, pbrVDotNH, poiLight.vDotLH[index], specularTerm, fresnelTerm, specCol, brdfRoughness2);
 					vSpecular2 += poiLight.vColor[index] * specularTerm * fresnelTerm * specularMask * poiThemeColor(poiMods, _MochieSpecularTint, _MochieSpecularTintThemeIndex) * poiLight.occlusion * poiLight.vAttenuation[index] * _MochieSpecularStrength2;
 				}
 			#endif
@@ -441,8 +513,8 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 
 		float surfaceReduction = (1.0 / (brdfRoughness * brdfRoughness + 1.0));
 		float grazingTerm = saturate(smoothness + (1 - omr));
-		float3 reflCol = GetReflections(poiCam, poiLight, poiMesh, roughness, _MochieForceFallback, _MochieLitFallback, _MochieReflCube, _MochieReflCube_HDR, poiCam.reflectionDir);
-		reflections = surfaceReduction * reflCol * lerp(1, FresnelLerp(specCol, grazingTerm, poiLight.nDotV), _RefSpecFresnel);
+		float3 reflCol = GetReflections(poiCam, poiLight, poiMesh, roughness, _MochieForceFallback, _MochieLitFallback, _MochieReflCube, _MochieReflCube_HDR, pbrReflectionDir);
+		reflections = surfaceReduction * reflCol * lerp(1, FresnelLerp(specCol, grazingTerm, pbrNDotV), _RefSpecFresnel);
 		reflections *= poiThemeColor(poiMods, _MochieReflectionTint, _MochieReflectionTintThemeIndex);
 		reflections *= reflectionMask;
 		#ifdef POI_PASS_ADD
@@ -468,18 +540,7 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 		float specularMask = 1;
 
 		#if defined(PROP_CLEARCOATMAPS) || !defined(OPTIMIZER_ENABLED)
-			// float4 PBRMaps = POI2D_SAMPLER_PAN_STOCHASTIC_TOGGLE(_ClearCoatMaps, _MainTex, poiUV(poiMesh.uv[_ClearCoatMapsUV], _ClearCoatMaps_ST), _ClearCoatMapsPan, _ClearCoatMapsStochastic);
-			float4 PBRMaps;
-			if(_ClearCoatMapsStochastic)
-			{
-				// PBRMaps = POI2D_SAMPLER_PAN_STOCHASTIC(_ClearCoatMaps, _DecalTexture, poiUV(poiMesh.uv[_ClearCoatMapsUV], _ClearCoatMaps_ST), _ClearCoatMapsPan);
-				PBRMaps = HextileSampleTexture(_ClearCoatMaps, sampler_MainTex, poiUV(poiMesh.uv[_ClearCoatMapsUV], _ClearCoatMaps_ST) + _Time.x * _ClearCoatMapsPan);
-			}
-			else
-			{
-				PBRMaps = POI2D_SAMPLER_PAN(_ClearCoatMaps, _MainTex, poiUV(poiMesh.uv[_ClearCoatMapsUV], _ClearCoatMaps_ST), _ClearCoatMapsPan);
-			}
-			// float4 PBRMaps = POI2D_SAMPLER_PAN(_ClearCoatMaps, _MainTex, poiUV(poiMesh.uv[_ClearCoatMapsUV], _ClearCoatMaps_ST), _ClearCoatMapsPan);
+			float4 PBRMaps = POI2D_SAMPLER_PAN_STOCHASTIC(_ClearCoatMaps, _MainTex, poiUV(poiMesh.uv[_ClearCoatMapsUV], _ClearCoatMaps_ST), _ClearCoatMapsPan, _ClearCoatMapsStochastic);
 			clearCoatMask *= PBRMaps.r;
 			smoothness *= PBRMaps.g;
 			reflectionMask *= PBRMaps.b;
@@ -513,6 +574,15 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 		{
 			specularMask = 1 - specularMask;
 		}
+
+		if (_ClearCoatReflectionStrengthGlobalMask > 0)
+		{
+			reflectionMask = customBlend(reflectionMask, poiMods.globalMask[_ClearCoatReflectionStrengthGlobalMask-1], _ClearCoatReflectionStrengthGlobalMaskBlendType);
+		}
+		if (_ClearCoatSpecularStrengthGlobalMask > 0)
+		{
+			specularMask = customBlend(specularMask, poiMods.globalMask[_ClearCoatSpecularStrengthGlobalMask-1], _ClearCoatSpecularStrengthGlobalMaskBlendType);
+		}
 		
 		float roughness = GetRoughness(smoothness);
 		float3 specCol = 0.220916301;
@@ -521,7 +591,7 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 		UNITY_BRANCH
 		if (_ClearCoatGSAAEnabled)
 		{
-			percepRough = GSAA_Filament(poiMesh.normals[1], percepRough, _ClearCoatGSAAVariance, _ClearCoatGSAAThreshold);
+			percepRough = GSAA_Filament(poiMesh.normals[_ClearCoatNormalSelect], percepRough, _ClearCoatGSAAVariance, _ClearCoatGSAAThreshold);
 		}
 		float brdfRoughness = percepRough * percepRough;
 		brdfRoughness = max(brdfRoughness, 0.002);
@@ -535,22 +605,30 @@ _ClearCoatTPSMaskStrength ("Mask Strength--{condition_showS:(_ClearCoatTPSDepthM
 
 		float3 fresnelTerm = 1;
 		float3 specularTerm = 1;
-		GetSpecFresTerm(poiLight.vertexNDotL, poiLight.vertexNDotV, poiLight.vertexNDotH, poiLight.lDotH, specularTerm, fresnelTerm, specCol, brdfRoughness);
+
+		float clearcoatNDotL = lerp(poiLight.vertexNDotL, poiLight.nDotL, _ClearCoatNormalSelect);
+		float clearcoatNDotV = lerp(poiLight.vertexNDotV, poiLight.nDotV, _ClearCoatNormalSelect);
+		float clearcoatNDotH = lerp(poiLight.vertexNDotH, poiLight.nDotH, _ClearCoatNormalSelect);
+		float3 clearcoatReflectionDir = lerp(poiCam.vertexReflectionDir, poiCam.reflectionDir, _ClearCoatNormalSelect);
+
+		GetSpecFresTerm(clearcoatNDotL, clearcoatNDotV, clearcoatNDotH, poiLight.lDotH, specularTerm, fresnelTerm, specCol, brdfRoughness);
 		specular = poiLight.directColor * specularTerm * fresnelTerm * specularMask * poiThemeColor(poiMods, _ClearCoatSpecularTint, _ClearCoatSpecularTintThemeIndex) * poiLight.occlusion * attenuation;
 		#if defined(VERTEXLIGHT_ON) && defined(POI_VERTEXLIGHT_ON)
 			for (int index = 0; index < 4; index++)
 			{
 				fresnelTerm = 1;
 				specularTerm = 1;
-				GetSpecFresTerm(poiLight.vertexVDotNL[index], poiLight.vertexNDotV, poiLight.vertexVDotNH[index], poiLight.vDotLH[index], specularTerm, fresnelTerm, specCol, brdfRoughness);
+				float clearcoatVDotNL = lerp(poiLight.vertexVDotNL[index], poiLight.vDotNL[index], _ClearCoatNormalSelect);
+				float clearcoatVDotNH = lerp(poiLight.vertexVDotNH[index], poiLight.vDotNH[index], _ClearCoatNormalSelect);
+				GetSpecFresTerm(clearcoatVDotNL, clearcoatNDotV, clearcoatVDotNH, poiLight.vDotLH[index], specularTerm, fresnelTerm, specCol, brdfRoughness);
 				vSpecular += poiLight.vColor[index] * specularTerm * fresnelTerm * specularMask * poiThemeColor(poiMods, _ClearCoatSpecularTint, _ClearCoatSpecularTintThemeIndex) * poiLight.occlusion * poiLight.vAttenuation[index];
 			}
 		#endif
 
 		float surfaceReduction = (1.0 / (brdfRoughness * brdfRoughness + 1.0));
 		float grazingTerm = saturate(smoothness + (1 - omr));
-		float3 reflCol = GetReflections(poiCam, poiLight, poiMesh, roughness, _ClearCoatForceFallback, _ClearCoatLitFallback, _ClearCoatFallback, _ClearCoatFallback_HDR, poiCam.vertexReflectionDir);
-		reflections = surfaceReduction * reflCol * FresnelLerp(specCol, grazingTerm, poiLight.vertexNDotV);
+		float3 reflCol = GetReflections(poiCam, poiLight, poiMesh, roughness, _ClearCoatForceFallback, _ClearCoatLitFallback, _ClearCoatFallback, _ClearCoatFallback_HDR, clearcoatReflectionDir);
+		reflections = surfaceReduction * reflCol * lerp(1, FresnelLerp(specCol, grazingTerm, clearcoatNDotV), _ClearcoatFresnel);
 		reflections *= poiThemeColor(poiMods, _ClearCoatReflectionTint, _ClearCoatReflectionTintThemeIndex) * reflectionMask;
 		#ifdef POI_PASS_ADD
 			reflections *= poiLight.attenuation;

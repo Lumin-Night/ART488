@@ -36,7 +36,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 59c561ebcc77ee641a7652c6d27885b9, type: 2}
   - {fileID: 11400000, guid: 4ca7dd01d6e441646b7d85807a433978, type: 2}
   - {fileID: 11400000, guid: 960307fac71087b4da10b4dc423d4e3a, type: 2}
-  - {fileID: 11400000, guid: 0c01ee5c0961e3b408a67ac0e67e8f64, type: 2}
+  - {fileID: 11400000, guid: e97334b3aad115346b3730de71f9b94c, type: 2}
   - {fileID: 11400000, guid: cda6385aa13bbb847b8e00f80b822a55, type: 2}
   - {fileID: 11400000, guid: eb7c90cddc3d52e458018ea6af8844a7, type: 2}
   - {fileID: 11400000, guid: ef02ca9f4b55f1b49b322197143b1152, type: 2}
@@ -88,6 +88,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0d6b81a017d50284b9874a8d5da6e81f, type: 2}
   - {fileID: 11400000, guid: 38117acd601e0a04f8526bda9342b594, type: 2}
   - {fileID: 11400000, guid: c4fd319e47cec1c45a221ca15c8291fe, type: 2}
+  - {fileID: 11400000, guid: eef7be30d866ea6488f9d1a3ea96ab7d, type: 2}
+  - {fileID: 11400000, guid: 39a772a68824e5842955ec40afcb7e79, type: 2}
   AdditionalModules: []
   LockBaseModules: 0
   LastGeneratedShaders:

@@ -47,31 +47,26 @@ _LightingCastedShadows ("Receive Casted Shadows", Range(0, 1)) = 0
 _LightingMonochromatic ("Grayscale Lighting", Range(0, 1)) = 0
 // Lighting Additive
 [Space(15)]
-[ThryHeaderLabel(Add Pass Lighting, 13)]
+[ThryHeaderLabel(Add Pass Lighting (Realtime), 13)]
 [Space(4)]
-[ThryToggle(POI_LIGHT_DATA_ADDITIVE_ENABLE)]_LightingAdditiveEnable ("Enable Additive", Float) = 1
+[ThryToggle(POI_VERTEXLIGHT_ON)]_LightingVertexLightingEnabled ("Vertex lights (Non-Important)", Float) = 1
+[ThryToggle(POI_LIGHT_DATA_ADDITIVE_ENABLE)]_LightingAdditiveEnable ("Pixel lights (Important)", Float) = 1
 [ThryToggle(POI_LIGHT_DATA_ADDITIVE_DIRECTIONAL_ENABLE)]_DisableDirectionalInAdd ("Ignore Directional--{condition_showS:(_LightingAdditiveEnable==1)}", Float) = 1
-[ToggleUI]_LightingAdditiveLimited ("Limit Brightness?--{condition_showS:(_LightingAdditiveEnable==1)}", Float) = 0
-_LightingAdditiveLimit ("Max Brightness--{ condition_showS:(_LightingAdditiveLimited==1&&_LightingAdditiveEnable==1)}", Range(0, 10)) = 1
+[ToggleUI]_LightingAdditiveLimited ("Limit Brightness", Float) = 0
+_LightingAdditiveLimit ("Max Brightness--{condition_showS:(_LightingAdditiveLimited==1)}", Range(0, 10)) = 1
 _LightingAdditiveMonochromatic ("Grayscale Lighting", Range(0, 1)) = 0
 _LightingAdditivePassthrough ("Point Light Passthrough--{condition_showS:(_LightingAdditiveEnable==1)}", Range(0, 1)) = .5
-// Vertex Lighting
-[Space(15)]
-[ThryHeaderLabel(Vertex Lighting, 13)]
-[Space(4)]
-[ThryToggle(POI_VERTEXLIGHT_ON)]_LightingVertexLightingEnabled ("Enabled", Float) = 1
 // Lighting Data Debug
 [Space(15)]
 [ThryHeaderLabel(Debug Visualization, 13)]
 [Space(4)]
-[ThryToggle(POI_LIGHT_DATA_DEBUG)]_LightDataDebugEnabled ("Debug", Float) = 0
+[NoAnimate][ThryToggleUI(false)]_LightDataDebugEnabled ("Debug", Float) = 0
 [ThryWideEnum(Direct Color, 0, Indirect Color, 1, Light Map, 2, Attenuation, 3, N Dot L, 4, Half Dir, 5, Direction, 6, Add Color, 7, Add Attenuation, 8, Add Shadow, 9, Add N Dot L, 10)] _LightingDebugVisualize ("Visualize--{condition_showS:(_LightDataDebugEnabled==1)}", Int) = 0
 
 [HideInInspector] m_end_PoiLightData ("Light Data", Float) = 0
 
 
 #T#PoiLightingDataKeywords
-#pragma shader_feature_local POI_LIGHT_DATA_DEBUG
 #pragma shader_feature_local POI_LIGHT_DATA_ADDITIVE_ENABLE
 #pragma shader_feature_local POI_LIGHT_DATA_ADDITIVE_DIRECTIONAL_ENABLE
 #pragma shader_feature_local POI_VERTEXLIGHT_ON
@@ -135,6 +130,7 @@ float _LightingAdditiveLimited;
 float _LightingAdditiveLimit;
 float _LightingAdditivePassthrough;
 // Lighting Data Debug
+float _LightDataDebugEnabled;
 float _LightingDebugVisualize;
 
 
@@ -203,6 +199,7 @@ poiLight.finalLightAdd = 0;
 
 		poiLight.vAttenuationDotNL = saturate(poiLight.vAttenuation * saturate(poiLight.vDotNL));
 		
+		[unroll]
 		for (int index = 0; index < 4; index++)
 		{
 			poiLight.vPosition[index] = float3(unity_4LightPosX0[index], unity_4LightPosY0[index], unity_4LightPosZ0[index]);
@@ -210,7 +207,8 @@ poiLight.finalLightAdd = 0;
 			float3 vertexToLightSource = poiLight.vPosition[index] - poiMesh.worldPos;
 			poiLight.vDirection[index] = normalize(vertexToLightSource);
 			//poiLight.vAttenuationDotNL[index] = 1.0 / (1.0 + unity_4LightAtten0[index] * poiLight.vDotNL[index]);
-			poiLight.vColor[index] = lerp(unity_LightColor[index].rgb, dot(unity_LightColor[index].rgb, float3(0.299, 0.587, 0.114)), _LightingAdditiveMonochromatic);
+			poiLight.vColor[index] = _LightingAdditiveLimited ? min(_LightingAdditiveLimit, unity_LightColor[index].rgb) : unity_LightColor[index].rgb;
+			poiLight.vColor[index] = lerp(poiLight.vColor[index], dot(poiLight.vColor[index], float3(0.299, 0.587, 0.114)), _LightingAdditiveMonochromatic);
 			poiLight.vHalfDir[index] = Unity_SafeNormalize(poiLight.vDirection[index] + poiCam.viewDir);
 			poiLight.vDotNL[index] = dot(poiMesh.normals[1], -poiLight.vDirection[index]);
 			poiLight.vCorrectedDotNL[index] = .5 * (poiLight.vDotNL[index] + 1);
@@ -272,7 +270,7 @@ poiLight.finalLightAdd = 0;
 	if (_LightingColorMode == 3) // OpenLit
 
 	{
-		float3 lightDirectionForSH9 = OpenLitLightingDirection();
+		float3 lightDirectionForSH9 = OpenLitLightingDirectionForSH9();
 		OpenLitShadeSH9ToonDouble(lightDirectionForSH9, poiLight.directColor, poiLight.indirectColor);
 		poiLight.directColor += _LightColor0.rgb;
 		// OpenLit does a few other things by default like clamp direct colour
@@ -381,31 +379,28 @@ poiLight.finalLightAdd = 0;
 		poiLight.lightMap = poiLight.nDotLSaturated * lerp(1, poiLight.attenuation, poiLight.attenuationStrength);
 	}
 
-	poiLight.directColor = max(poiLight.directColor, 0.0001);
+	poiLight.directColor   = max(poiLight.directColor,   0.0001);
 	poiLight.indirectColor = max(poiLight.indirectColor, 0.0001);
 	if (_LightingColorMode == 3)
 	{
+		// OpenLit
 		poiLight.directColor = max(poiLight.directColor, _LightingMinLightBrightness);
-		poiLight.indirectColor = max(poiLight.indirectColor, _LightingMinLightBrightness);
 	}
 	else
 	{
-		poiLight.directColor = max(poiLight.directColor, poiLight.directColor / max(0.0001, (calculateluminance(poiLight.directColor) / _LightingMinLightBrightness)));
-		poiLight.indirectColor = max(poiLight.indirectColor, poiLight.indirectColor / max(0.0001, (calculateluminance(poiLight.indirectColor) / _LightingMinLightBrightness)));
+		poiLight.directColor   = max(poiLight.directColor,   poiLight.directColor   * min(10000, (_LightingMinLightBrightness * rcp(calculateluminance(poiLight.directColor))  )));
+		poiLight.indirectColor = max(poiLight.indirectColor, poiLight.indirectColor * min(10000, (_LightingMinLightBrightness * rcp(calculateluminance(poiLight.indirectColor)))));
 	}
 
-	poiLight.directColor = lerp(poiLight.directColor, dot(poiLight.directColor, float3(0.299, 0.587, 0.114)), _LightingMonochromatic);
+	poiLight.directColor   = lerp(poiLight.directColor,   dot(poiLight.directColor,   float3(0.299, 0.587, 0.114)), _LightingMonochromatic);
 	poiLight.indirectColor = lerp(poiLight.indirectColor, dot(poiLight.indirectColor, float3(0.299, 0.587, 0.114)), _LightingMonochromatic);
-	//UNITY_BRANCH
+
 	if (_LightingCapEnabled)
 	{
-		poiLight.directColor = min(poiLight.directColor, _LightingCap);
+		poiLight.directColor   = min(poiLight.directColor,   _LightingCap);
 		poiLight.indirectColor = min(poiLight.indirectColor, _LightingCap);
 	}
 
-
-
-	//UNITY_BRANCH
 	if (_LightingForceColorEnabled)
 	{
 		poiLight.directColor = poiThemeColor(poiMods, _LightingForcedColor, _LightingForcedColorThemeIndex);
@@ -424,27 +419,22 @@ poiLight.finalLightAdd = 0;
 		return float4(mainTexture.rgb * .0001, 1);
 	#endif
 
+	poiLight.direction = normalize(_WorldSpaceLightPos0.xyz - i.worldPos.xyz * _WorldSpaceLightPos0.w);
 	#if defined(POINT) || defined(SPOT)
-		poiLight.direction = normalize(_WorldSpaceLightPos0.xyz - i.worldPos.xyz);
-		
-
 		#ifdef POINT
-			poiLight.additiveShadow = UNITY_SHADOW_ATTENUATION(i, poiMesh.worldPos);
 			unityShadowCoord3 lightCoord = mul(unity_WorldToLight, unityShadowCoord4(poiMesh.worldPos, 1)).xyz;
 			poiLight.attenuation = tex2D(_LightTexture0, dot(lightCoord, lightCoord).rr).r;
 		#endif
 
 		#ifdef SPOT
-			poiLight.additiveShadow = UNITY_SHADOW_ATTENUATION(i, poiMesh.worldPos);
 			unityShadowCoord4 lightCoord = mul(unity_WorldToLight, unityShadowCoord4(poiMesh.worldPos, 1));
 			poiLight.attenuation = (lightCoord.z > 0) * UnitySpotCookie(lightCoord) * UnitySpotAttenuate(lightCoord.xyz);
 		#endif
 	#else
-		poiLight.direction = _WorldSpaceLightPos0.xyz;
 		UNITY_LIGHT_ATTENUATION(attenuation, i, poiMesh.worldPos)
-		poiLight.additiveShadow == 0;
 		poiLight.attenuation = attenuation;
 	#endif
+	poiLight.additiveShadow = UNITY_SHADOW_ATTENUATION(i, poiMesh.worldPos);
 	poiLight.directColor = _LightingAdditiveLimited ? min(_LightingAdditiveLimit, _LightColor0.rgb) : _LightColor0.rgb;
 
 	#if defined(POINT_COOKIE) || defined(DIRECTIONAL_COOKIE)
@@ -472,9 +462,10 @@ poiLight.finalLightAdd = 0;
 	poiLight.lightMap = 1;
 #endif
 
-#ifdef POI_LIGHT_DATA_DEBUG
-	
-	#ifdef UNITY_PASS_FORWARDBASE
+//ifex _LightDataDebugEnabled==0
+if(_LightDataDebugEnabled)
+{
+    #ifdef UNITY_PASS_FORWARDBASE
 		//UNITY_BRANCH
 		if (_LightingDebugVisualize <= 6)
 		{
@@ -536,4 +527,5 @@ poiLight.finalLightAdd = 0;
 			}
 		}
 	#endif
-#endif
+}
+//endex

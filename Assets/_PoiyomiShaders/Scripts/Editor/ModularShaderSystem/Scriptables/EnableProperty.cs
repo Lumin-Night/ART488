@@ -18,7 +18,7 @@ namespace Poiyomi.ModularShaderSystem
 
             EnableValue = enableValue;
         }
-
+        
         public override Variable ToVariable()
         {
             Variable variable = new Variable();
@@ -27,13 +27,13 @@ namespace Poiyomi.ModularShaderSystem
             return variable;
         }
 
-        public EnableProperty(string name, int enableValue) : this(name, name, enableValue) { }
+        public EnableProperty(string name, int enableValue) : this(name, name, enableValue){}
 
         bool IEquatable<EnableProperty>.Equals(EnableProperty other)
         {
             return Equals(other);
         }
-
+        
         public override bool Equals(object obj)
         {
             if (obj is Property other)
@@ -42,7 +42,7 @@ namespace Poiyomi.ModularShaderSystem
             return false;
         }
 
-        public static bool operator ==(EnableProperty left, EnableProperty right)
+        public static bool operator == (EnableProperty left, EnableProperty right)
         {
             return left?.Equals(right) ?? right is null;
         }

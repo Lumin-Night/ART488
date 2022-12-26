@@ -16,7 +16,7 @@ _AudioLinkDelay ("Delay", Range(0, 1)) = 0
 #K#AUDIOLINK_PROPERTIES
 #T#PoiAudioLinkKeywords
 //ifex _EnableAudioLink==0
-#pragma shader_feature POI_AUDIOLINK
+#pragma shader_feature_local POI_AUDIOLINK
 //endex
 
 #T#PoiAudioLinkMacrosAndDefines
@@ -80,13 +80,6 @@ _AudioLinkDelay ("Delay", Range(0, 1)) = 0
 #define COLORCHORD_NOTE_CLOSEST         3.0
 #define COLORCHORD_NEW_NOTE_GAIN        8.0
 #define COLORCHORD_MAX_NOTES            10
-
-// We use glsl_mod for most calculations because it behaves better
-// on negative numbers, and in some situations actually outperforms
-// HLSL's modf().
-#ifndef glsl_mod
-    #define glsl_mod(x, y) (((x) - (y) * floor((x) / (y))))
-#endif
 
 uniform float4               _AudioTexture_TexelSize;
 

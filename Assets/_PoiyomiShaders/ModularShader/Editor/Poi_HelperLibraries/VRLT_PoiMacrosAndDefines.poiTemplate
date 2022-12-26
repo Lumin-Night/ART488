@@ -13,7 +13,8 @@
 #define POI_SAMPLE_TEX2D(tex, uv) (UNITY_SAMPLE_TEX2D(tex, uv))
 #define POI_SAMPLE_TEX2D_PAN(tex, uv, pan) (UNITY_SAMPLE_TEX2D(tex, POI_PAN_UV(uv, pan)))
 
-#define POI2D_MAINTEX_SAMPLER_PAN_INLINED(tex, poiMesh) (POI2D_SAMPLER_PAN(tex, _MainTex, poiUV(poiMesh.uv[tex##UV], tex##_ST), tex##Pan))
+// When using, properties won't properly lock at optimize time; needs macro evaluation implemented
+// #define POI2D_MAINTEX_SAMPLER_PAN_INLINED(tex, poiMesh) (POI2D_SAMPLER_PAN(tex, _MainTex, poiUV(poiMesh.uv[tex##UV], tex##_ST), tex##Pan))
 
 #define POI_SAFE_RGB0 float4(mainTexture.rgb * .0001, 0)
 #define POI_SAFE_RGB1 float4(mainTexture.rgb * .0001, 1)
@@ -26,6 +27,7 @@
 #endif
 
 #define POI_ERROR(poiMesh, gridSize) lerp(float3(1, 0, 1), float3(0, 0, 0), fmod(floor((poiMesh.worldPos.x) * gridSize) + floor((poiMesh.worldPos.y) * gridSize) + floor((poiMesh.worldPos.z) * gridSize), 2) == 0)
+#define POI_NAN (asfloat(-1))
 
 #define POI_MODE_OPAQUE 0
 #define POI_MODE_CUTOUT 1
@@ -42,10 +44,11 @@ Texture2D ;
 float4 _ST;
 float2 Pan;
 float UV;
+float Stochastic;
 
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7 )]
 */
 
-#ifndef glsl_mod
-    #define glsl_mod(x, y) (((x) - (y) * floor((x) / (y))))
-#endif
+#define POI_DECLARETEX_ST_UV(tex) float4 tex##_ST; float tex##UV;
+#define POI_DECLARETEX_ST_UV_PAN(tex) float4 tex##_ST; float2 tex##Pan; float tex##UV;
+#define POI_DECLARETEX_ST_UV_PAN_STOCHASTIC(tex) float4 tex##_ST; float2 tex##Pan; float tex##UV; float tex##Stochastic;

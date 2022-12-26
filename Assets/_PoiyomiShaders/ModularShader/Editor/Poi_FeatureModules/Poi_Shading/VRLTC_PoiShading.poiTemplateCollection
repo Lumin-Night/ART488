@@ -76,16 +76,19 @@ _SkinThicknessPower ("Thickness Power--{condition_showS:(_LightingMode==3)}", Ra
 _SssBumpBlur ("Bump Blur--{condition_showS:(_LightingMode==3)}", Range(0, 1)) = 0.7
 [HideInInspector][Vector3]_SssTransmissionAbsorption ("Absorption--{condition_showS:(_LightingMode==3)}", Vector) = (-8, -40, -64, 0)
 [HideInInspector][Vector3]_SssColorBleedAoWeights ("AO Color Bleed--{condition_showS:(_LightingMode==3)}", Vector) = (0.4, 0.15, 0.13, 0)
+
+//ifex _LightingMode!=7
 // Cloth
 [NonModifiableTextureData] [NoScaleOffset] _ClothDFG ("MultiScatter Cloth DFG--{condition_showS:(_LightingMode==7)}", 2D) = "black" { }
 [sRGBWarning][ThryRGBAPacker(Metallic Map, Cloth Mask, Reflectance, Smoothness)]_ClothMetallicSmoothnessMap ("Maps (Expand)--{reference_properties:[_ClothMetallicSmoothnessMapPan, _ClothMetallicSmoothnessMapUV, _ClothMetallicSmoothnessMapInvert],condition_showS:(_LightingMode==7)}", 2D) = "white" { }
 [HideInInspector][Vector2] _ClothMetallicSmoothnessMapPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ToggleUI] _ClothMetallicSmoothnessMapInvert ("Invert Smoothness", Float) = 0
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _ClothMetallicSmoothnessMapUV ("UV", Int) = 0
-//[ThryToggle(POI_CLOTHLERP)] _ClothLerp ("Clothmask Lerp--{condition_showS:(_LightingMode==7)}", Float) = 0
+[NoAnimate][ThryToggleUI(false)] _ClothLerp ("Clothmask Lerp--{condition_showS:(_LightingMode==7)}", Float) = 0
 //[Gamma] _ClothMetallic ("Metallic--{condition_showS:(_LightingMode==7)}", Range(0, 1)) = 0
 _ClothReflectance ("Reflectance--{condition_showS:(_LightingMode==7)}", Range(0.35, 1)) = 0.5
 _ClothSmoothness ("Smoothness--{condition_showS:(_LightingMode==7)}", Range(0, 1)) = 0.5
+//endex
 
 // SDF
 [sRGBWarning]_SDFShadingTexture ("SDF--{reference_properties:[_SDFShadingTexturePan, _SDFShadingTextureUV],condition_showS:(_LightingMode==8)}", 2D) = "white" { }
@@ -116,7 +119,6 @@ _LightingAdditiveGradientEnd ("Gradient End--{condition_showS:(_LightingAdditive
 //ifex _ShadingEnabled==0
 #pragma shader_feature_local VIGNETTE_MASKED
 #pragma shader_feature_local _LIGHTINGMODE_TEXTURERAMP _LIGHTINGMODE_MULTILAYER_MATH _LIGHTINGMODE_SHADEMAP _LIGHTINGMODE_REALISTIC _LIGHTINGMODE_WRAPPED _LIGHTINGMODE_SKIN _LIGHTINGMODE_FLAT _LIGHTINGMODE_CLOTH _LIGHTINGMODE_SDF
-#pragma shader_feature_local POI_CLOTHLERP
 //endex
 
 #T#PoiShadingVariables
@@ -220,6 +222,7 @@ float _LightingGradientEndWrap;
 #endif
 
 // Cloth
+//ifex _LightingMode!=7
 #ifdef _LIGHTINGMODE_CLOTH
 	Texture2D_float _ClothDFG;
 	SamplerState sampler_ClothDFG;
@@ -233,11 +236,12 @@ float _LightingGradientEndWrap;
 	float _ClothMetallicSmoothnessMapUV;
 	float _ClothMetallicSmoothnessMapInvert;
 
-
+	float _ClothLerp;
 	float _ClothMetallic;
 	float _ClothReflectance;
 	float _ClothSmoothness;
 #endif
+//endex
 
 #ifdef _LIGHTINGMODE_SDF
 	#if defined(PROP_SDFSHADINGTEXTURE) || !defined(OPTIMIZER_ENABLED)
@@ -263,13 +267,6 @@ float _LightingAdditiveDetailStrength;
 
 	//CLOTH
 	#ifdef _LIGHTINGMODE_CLOTH
-		#define HARD 0
-		#define LERP 1
-		#ifdef POI_CLOTHLERP
-			#define CLOTHMODE LERP
-		#else
-			#define CLOTHMODE HARD
-		#endif
 		float V_SmithGGXCorrelated(float roughness, float NoV, float NoL)
 		{
 			// Heitz 2014, "Understanding the Masking-Shadowing Function in Microfacet-Based BRDFs"
@@ -327,20 +324,24 @@ float _LightingAdditiveDetailStrength;
 
 		float Distribution(float roughness, float NoH, float cloth)
 		{
-			#if CLOTHMODE == LERP
+			//ifex _ClothLerp==0
+			if(_ClothLerp)
+			{
 				return lerp(GGXTerm(roughness, NoH), D_Charlie(roughness, NoH), cloth);
-			#elif CLOTHMODE == HARD
-				return cloth <= 0.5 ? GGXTerm(roughness, NoH) : D_Charlie(roughness, NoH);
-			#endif
+			}
+			//endex
+			return cloth <= 0.5 ? GGXTerm(roughness, NoH) : D_Charlie(roughness, NoH);
 		}
 
 		float Visibility(float roughness, float NoV, float NoL, float cloth)
 		{
-			#if CLOTHMODE == LERP
+			//ifex _ClothLerp==0
+			if(_ClothLerp)
+			{
 				return lerp(V_SmithGGXCorrelated(roughness, NoV, NoL), V_Neubelt(NoV, NoL), cloth);
-			#elif CLOTHMODE == HARD
-				return cloth <= 0.5 ? V_SmithGGXCorrelated(roughness, NoV, NoL) : V_Neubelt(NoV, NoL);
-			#endif
+			}
+			//endex
+			return cloth <= 0.5 ? V_SmithGGXCorrelated(roughness, NoV, NoL) : V_Neubelt(NoV, NoL);
 		}
 
 		float F_Schlick(float3 f0, float f90, float VoH)
@@ -388,30 +389,36 @@ float _LightingAdditiveDetailStrength;
 
 		float3 EnvBRDFMultiscatter(float3 dfg, float3 f0, float cloth)
 		{
-			#if CLOTHMODE == LERP
+			//ifex _ClothLerp==0
+			if(_ClothLerp)
+			{
 				return lerp(lerp(dfg.xxx, dfg.yyy, f0), f0 * dfg.z, cloth);
-			#elif CLOTHMODE == HARD
-				return cloth <= 0.5 ? lerp(dfg.xxx, dfg.yyy, f0) : f0 * dfg.z;
-			#endif
+			}
+			//endex
+			return cloth <= 0.5 ? lerp(dfg.xxx, dfg.yyy, f0) : f0 * dfg.z;
 		}
 
 		float3 EnvBRDFEnergyCompensation(float3 dfg, float3 f0, float cloth)
 		{
-			#if CLOTHMODE == LERP
+			//ifex _ClothLerp==0
+			if(_ClothLerp)
+			{
 				return lerp(1.0 + f0 * (1.0 / dfg.y - 1.0), 1, cloth);
-			#elif CLOTHMODE == HARD
-				return cloth <= 0.5 ? 1.0 + f0 * (1.0 / dfg.y - 1.0) : 1;
-			#endif
+			}
+			//endex
+			return cloth <= 0.5 ? 1.0 + f0 * (1.0 / dfg.y - 1.0) : 1;
 		}
 
 		//
 		float ClothMetallic(float cloth)
 		{
-			#if CLOTHMODE == LERP
+			//ifex _ClothLerp==0
+			if(_ClothLerp)
+			{
 				return cloth;
-			#elif CLOTHMODE == HARD
-				return cloth <= 0.5 ? 1 : 0;
-			#endif
+			}
+			//endex
+			return cloth <= 0.5 ? 1 : 0;
 		}
 
 		float3 Specular(float roughness, PoiLight poiLight, float f0, float3 normal, float cloth)
@@ -477,10 +484,6 @@ float _LightingAdditiveDetailStrength;
 			indirectSpecular *= SpecularAO(poiLight.nDotV, occlusion, roughness);
 			return indirectSpecular;
 		};
-		
-		#undef LERP
-		#undef HARD
-		#undef CLOTHMODE
 	#endif
 	// CLOTH END
 	float _LightingWrappedWrap;
@@ -785,14 +788,16 @@ float _LightingAdditiveDetailStrength;
 				light.dir = poiLight.direction;
 				light.color = saturate(_LightColor0.rgb * lerp(1, poiLight.attenuation, poiLight.attenuationStrength) * poiLight.detailShadow);
 				light.ndotl = poiLight.nDotLSaturated;
+				UnityIndirect indirectLight = CreateIndirectLight(poiMesh, poiCam, poiLight);
+				#K#BASE_REALISTIC_MOD
 				poiLight.rampedLightMap = poiLight.nDotLSaturated;
-				poiLight.finalLighting = max(UNITY_BRDF_PBS(1, 0, 0, 0, poiMesh.normals[1], poiCam.viewDir, light, CreateIndirectLight(poiMesh, poiCam, poiLight)).xyz, _LightingMinLightBrightness);
+				poiLight.finalLighting = max(UNITY_BRDF_PBS(1, 0, 0, 0, poiMesh.normals[1], poiCam.viewDir, light, indirectLight).xyz, _LightingMinLightBrightness);
 			#endif
-			
+			//ifex _LightingMode!=7
 			#ifdef _LIGHTINGMODE_CLOTH
 
-				#if defined(PROP_MOCHIEMETALLICMAP) || !defined(OPTIMIZER_ENABLED)
-					float4 clothmapsample = POI2D_MAINTEX_SAMPLER_PAN_INLINED(_ClothMetallicSmoothnessMap, poiMesh);
+				#if defined(PROP_CLOTHMETALLICSMOOTHNESSMAP) || !defined(OPTIMIZER_ENABLED)
+					float4 clothmapsample = POI2D_SAMPLER_PAN(_ClothMetallicSmoothnessMap, _MainTex, poiUV(poiMesh.uv[_ClothMetallicSmoothnessMapUV], _ClothMetallicSmoothnessMap_ST), _ClothMetallicSmoothnessMapPan);
 					float roughness = 1 - (clothmapsample.a * _ClothSmoothness);
 					float reflectance = _ClothReflectance * clothmapsample.b;
 					float clothmask = clothmapsample.g;
@@ -833,7 +838,7 @@ float _LightingAdditiveDetailStrength;
 
 				poiFragData.baseColor.xyz *= (1 - metallic);
 			#endif
-			
+			//endex
 
 			#ifdef _LIGHTINGMODE_WRAPPED
 				#define GREYSCALE_VECTOR float3(.33333, .33333, .33333)

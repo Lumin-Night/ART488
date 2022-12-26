@@ -2,14 +2,22 @@
 // Copyright (C) 2019 Thryrallo
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.Profiling;
 
 namespace Thry
@@ -18,7 +26,7 @@ namespace Thry
     {
         public static string ReplaceVariables(this string s, params object[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for(int i = 0; i < values.Length;i++)
             {
                 s = s.Replace("{" + i + "}", values[i].ToString());
             }
@@ -273,7 +281,7 @@ namespace Thry
 
     public class FileHelper
     {
-        public static string FindFile(string name, string type = null)
+        public static string FindFile(string name, string type=null)
         {
             string[] guids;
             if (type != null)
@@ -287,7 +295,7 @@ namespace Thry
 
         //-----------------------Value To File Saver----------------------
 
-        private static Dictionary<string, Dictionary<string, string>> s_textFileData = new Dictionary<string, Dictionary<string, string>>();
+        private static Dictionary<string, Dictionary<string,string>> s_textFileData = new Dictionary<string, Dictionary<string, string>>();
 
         public static string LoadValueFromFile(string key, string path)
         {
@@ -302,13 +310,13 @@ namespace Thry
             string data = ReadFileIntoString(path);
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
             MatchCollection matchCollection = Regex.Matches(data, @".*\s*:=.*(?=\r?\n)");
-            foreach (Match m in matchCollection)
+            foreach(Match m in matchCollection)
             {
                 string[] keyvalue = m.Value.Split(new string[] { ":=" }, 2, StringSplitOptions.RemoveEmptyEntries);
-                if (keyvalue.Length > 1)
+                if(keyvalue.Length>1)
                     dictionary[keyvalue[0]] = keyvalue[1];
             }
-            s_textFileData[path] = dictionary;
+            s_textFileData[path] = dictionary; 
         }
 
         public static bool SaveValueToFile(string key, string value, string path)
@@ -324,7 +332,7 @@ namespace Thry
             if (s_textFileData[path].ContainsKey(key)) s_textFileData[path].Remove(key);
         }
 
-        private static bool SaveDictionaryToFile(string path, Dictionary<string, string> dictionary)
+        private static bool SaveDictionaryToFile(string path, Dictionary<string,string> dictionary)
         {
             s_textFileData[path] = dictionary;
             string data = s_textFileData[path].Aggregate("", (d1, d2) => d1 + d2.Key + ":=" + d2.Value + "\n");
@@ -449,9 +457,9 @@ namespace Thry
             {
                 string path = AssetDatabase.GetAssetPath(texture);
                 string gradient_data_string = null;
-                if (path != null) gradient_data_string = FileHelper.LoadValueFromFile(AssetDatabase.AssetPathToGUID(path), PATH.GRADIENT_INFO_FILE);
+                if(path != null) gradient_data_string = FileHelper.LoadValueFromFile(AssetDatabase.AssetPathToGUID(path), PATH.GRADIENT_INFO_FILE);
                 //For Backwards compatibility check old id (name) if guid cant be found
-                if (gradient_data_string == null) gradient_data_string = FileHelper.LoadValueFromFile(texture.name, PATH.GRADIENT_INFO_FILE);
+                if(gradient_data_string == null) gradient_data_string  = FileHelper.LoadValueFromFile(texture.name, PATH.GRADIENT_INFO_FILE);
                 if (gradient_data_string != null)
                 {
                     Debug.Log(texture.name + " Gradient loaded from file.");
@@ -568,23 +576,32 @@ namespace Thry
                 byte ImageDescriptor = r.ReadByte();
                 if (ImageType == 0)
                 {
-                    Debug.Log("Unsupported TGA file! No image data");
+                    EditorUtility.DisplayDialog("Error", "Unsupported TGA file! No image data", "OK");
+                    Debug.LogError("Unsupported TGA file! No image data");
                 }
                 else if (ImageType == 3 | ImageType == 11)
                 {
-                    Debug.Log("Unsupported TGA file! Not truecolor");
+                    EditorUtility.DisplayDialog("Error", "Unsupported TGA file! 8-bit grayscale images are not supported", "OK");
+                    Debug.LogError("Unsupported TGA file! Not truecolor");
                 }
                 else if (ImageType == 9 | ImageType == 10)
                 {
-                    Debug.Log("Unsupported TGA file! Colormapped");
+                    EditorUtility.DisplayDialog("Error", "Unsupported TGA file! Run-length encoded images are not supported", "OK");
+                    Debug.LogError("Unsupported TGA file! Colormapped");
 
                 }
+                bool startsAtTop = (ImageDescriptor & 1 << 5) >> 5 == 1;
+                bool startsAtRight = (ImageDescriptor & 1 << 4) >> 4 == 1;
                 //     MsgBox("Dimensions are "  Width  ","  Height)
                 Texture2D b = new Texture2D(Width, Height, TextureFormat.ARGB32, false);
-                for (int y = 0; y <= b.height - 1; y++)
+                for (int y = 0; y < b.height; y++)
                 {
-                    for (int x = 0; x <= b.width - 1; x++)
+                    for (int x = 0; x < b.width; x++)
                     {
+                        int texX = x;
+                        int texY = y;
+                        if(startsAtRight) texX = b.width - x - 1;
+                        if(startsAtTop) texY = b.height - y - 1;
 
                         if (PixelDepth == 32)
                         {
@@ -598,9 +615,7 @@ namespace Thry
                             blue /= 255;
                             red /= 255;
                             Color cl = new Color(blue, green, red, alpha);
-                            b.SetPixel(x, y, cl);
-
-
+                            b.SetPixel(texX, texY, cl);
                         }
                         else
                         {
@@ -614,9 +629,7 @@ namespace Thry
                             blue = Mathf.Pow(blue / 255, 1 / 2.2f);
                             red = Mathf.Pow(red / 255, 1 / 2.2f);
                             Color cl = new Color(blue, green, red, 1);
-                            b.SetPixel(x, y, cl);
-
-
+                            b.SetPixel(texX, texY, cl);
                         }
 
                     }
@@ -634,16 +647,13 @@ namespace Thry
         { TextureImporterFormat.BC7 , 8 },
         { TextureImporterFormat.DXT5 , 8 },
         { TextureImporterFormat.DXT5Crunched , 8 },
-        { TextureImporterFormat.RGBA64 , 64 },
         { TextureImporterFormat.RGBA32 , 32 },
         { TextureImporterFormat.RGBA16 , 16 },
         { TextureImporterFormat.DXT1 , 4 },
         { TextureImporterFormat.DXT1Crunched , 4 },
-        { TextureImporterFormat.RGB48 , 64 },
         { TextureImporterFormat.RGB24 , 32 },
         { TextureImporterFormat.RGB16 , 16 },
         { TextureImporterFormat.BC5 , 8 },
-        { TextureImporterFormat.RG32 , 32 },
         { TextureImporterFormat.BC4 , 4 },
         { TextureImporterFormat.R8 , 8 },
         { TextureImporterFormat.R16 , 16 },
@@ -658,7 +668,12 @@ namespace Thry
         { TextureImporterFormat.PVRTC_RGB2 , 2 },
         { TextureImporterFormat.PVRTC_RGB4 , 4 },
         { TextureImporterFormat.ARGB32 , 32 },
-        { TextureImporterFormat.ARGB16 , 16 }
+        { TextureImporterFormat.ARGB16 , 16 },
+        #if (UNITY_2020_1_OR_NEWER || UNITY_2019_4_23 || UNITY_2019_4_24 || UNITY_2019_4_25 || UNITY_2019_4_26 || UNITY_2019_4_27 || UNITY_2019_4_28 || UNITY_2019_4_29 || UNITY_2019_4_30 || UNITY_2019_4_31 || UNITY_2019_4_32 || UNITY_2019_4_33 || UNITY_2019_4_34 || UNITY_2019_4_35 || UNITY_2019_4_36 || UNITY_2019_4_37 || UNITY_2019_4_38 || UNITY_2019_4_39 || UNITY_2019_4_40)
+        { TextureImporterFormat.RGBA64 , 64 },
+        { TextureImporterFormat.RGB48 , 64 },
+        { TextureImporterFormat.RG32 , 32 },
+        #endif
     };
 
             static Dictionary<RenderTextureFormat, int> RT_BPP = new Dictionary<RenderTextureFormat, int>()
@@ -668,11 +683,11 @@ namespace Thry
             { RenderTextureFormat.ARGBHalf , 64 },
             { RenderTextureFormat.Shadowmap , 8 }, //guessed bpp
             { RenderTextureFormat.RGB565 , 32 }, //guessed bpp
-            { RenderTextureFormat.ARGB4444 , 16 },
+            { RenderTextureFormat.ARGB4444 , 16 }, 
             { RenderTextureFormat.ARGB1555 , 16 },
-            { RenderTextureFormat.Default , 32 },
+            { RenderTextureFormat.Default , 32 }, 
             { RenderTextureFormat.ARGB2101010 , 32 },
-            { RenderTextureFormat.DefaultHDR , 128 },
+            { RenderTextureFormat.DefaultHDR , 128 }, 
             { RenderTextureFormat.ARGB64 , 64 },
             { RenderTextureFormat.ARGBFloat , 128 },
             { RenderTextureFormat.RGFloat , 64 },
@@ -783,10 +798,10 @@ namespace Thry
         public static void SetMaterialValue(string key, string value)
         {
             Material[] materials = ShaderEditor.Active.Materials;
-            MaterialProperty p = ShaderEditor.Active.GetMaterialProperty(key);
-            if (p != null)
+            if (ShaderEditor.Active.PropertyDictionary.TryGetValue(key, out ShaderProperty p))
             {
-                MaterialHelper.SetMaterialPropertyValue(p, value);
+                MaterialHelper.SetMaterialPropertyValue(p.MaterialProperty, value);
+                p.UpdateKeywordFromValue();
             }
             else if (key == "render_queue")
             {
@@ -795,8 +810,7 @@ namespace Thry
                 {
                     foreach (Material m in materials) m.renderQueue = q;
                 }
-            }
-            else if (key == "render_type")
+            }else if (key == "render_type")
             {
                 foreach (Material m in materials) m.SetOverrideTag("RenderType", value);
             }
@@ -817,7 +831,7 @@ namespace Thry
                 {
                     prev = p.floatValue;
                     p.floatValue = f_value;
-
+                    
                 }
             }
             else if (p.type == MaterialProperty.PropType.Vector)
@@ -1154,7 +1168,7 @@ namespace Thry
 
         //==============Texture Array=================
 
-        [MenuItem("Assets/Thry/Flipbooks/Images 2 TextureArray", false, 303)]
+        [MenuItem("Assets/Thry/Flipbooks/Images 2 TextureArray",false, 303)]
         static void SelectionImagesToTextureArray()
         {
             string[] paths = Selection.assetGUIDs.Select(g => AssetDatabase.GUIDToAssetPath(g)).ToArray();
@@ -1182,7 +1196,7 @@ namespace Thry
             else
             {
 #if SYSTEM_DRAWING
-                Texture2D[] wew = paths.Where(p => AssetDatabase.GetMainAssetTypeAtPath(p).IsAssignableFrom(typeof(Texture2D))).Select(p => AssetDatabase.LoadAssetAtPath<Texture2D>(p)).ToArray();
+                Texture2D[] wew = paths.Where(p=> AssetDatabase.GetMainAssetTypeAtPath(p).IsAssignableFrom(typeof(Texture2D))).Select(p => AssetDatabase.LoadAssetAtPath<Texture2D>(p)).ToArray();
                 Array.Sort(wew, (UnityEngine.Object one, UnityEngine.Object two) => one.name.CompareTo(two.name));
                 Selection.objects = wew;
                 Texture2DArray texture2DArray = new Texture2DArray(wew[0].width, wew[0].height, wew.Length, wew[0].format, true);
@@ -1214,7 +1228,7 @@ namespace Thry
             }
         }
 
-        [MenuItem("Assets/Thry/Flipbooks/Gif 2 TextureArray", false, 303)]
+        [MenuItem("Assets/Thry/Flipbooks/Gif 2 TextureArray",false, 303)]
         static void SelectionGifToTextureArray()
         {
             GifToTextureArray(AssetDatabase.GUIDToAssetPath(Selection.assetGUIDs[0]));
@@ -1695,16 +1709,12 @@ namespace Thry
                 {
                     // if is keyword drawer make sure all materials have the keyworkd enabled / disabled depending on their value
                     string keyword = null;
-                    if (propertyDrawer.GetType() == typeof(ThryToggleDrawer))
-                    {
+                    if (propertyDrawer.GetType() == typeof(ThryToggleDrawer)){
                         keyword = (string)keyWordFieldThry.GetValue(propertyDrawer);
-                    }
-                    else if (propertyDrawer.GetType().ToString() == "UnityEditor.MaterialToggleDrawer")
+                    }else if (propertyDrawer.GetType().ToString() == "UnityEditor.MaterialToggleDrawer")
                     {
                         keyword = (string)keyWordFieldUnityDefault.GetValue(propertyDrawer);
-                    }
-                    if (keyword != null)
-                    {
+                    }                    if(keyword != null) {
                         foreach (Material m in targets)
                         {
                             if (m.GetFloat(propertyName) == 1)
@@ -1865,7 +1875,7 @@ namespace Thry
     //SOFTWARE.
     public class MaterialCleaner
     {
-        public enum CleanPropertyType { Texture, Float, Color }
+        public enum CleanPropertyType { Texture,Float,Color }
 
         private const string PropPath_Tex = "m_SavedProperties.m_TexEnvs";
         private const string PropPath_Float = "m_SavedProperties.m_Floats";
@@ -1878,8 +1888,7 @@ namespace Thry
             return PropPath_Tex;
         }
         public static int CountAllUnusedProperties(params Material[] materials)
-        {
-            ;
+        {;
             return materials.Sum(m =>
             {
                 int count = 0;
@@ -1901,7 +1910,7 @@ namespace Thry
                     string propName = properties.GetArrayElementAtIndex(i).displayName;
                     if (!mat.HasProperty(propName))
                     {
-                        if (list != null) list.Add(propName);
+                        if (list!=null) list.Add(propName);
                         count++;
                     }
                 }
@@ -1912,7 +1921,7 @@ namespace Thry
         {
             List<string> list = new List<string>();
             int count = materials.Sum(m => CountUnusedProperties(m, new SerializedObject(m), type, list));
-            if (count > 0) ShaderEditor.Out($"Unbound properties of type {type}", list.Distinct().Select(s => $"↳{s}"));
+            if(count > 0) ShaderEditor.Out($"Unbound properties of type {type}", list.Distinct().Select(s => $"↳{s}"));
             return count;
         }
         public static int CountUnusedProperties(CleanPropertyType type, params Material[] materials)

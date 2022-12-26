@@ -1,7 +1,7 @@
 #T#PoiGeometryPragma
 #pragma geometry GeometryProgram
 #T#PoiGeometryProgram
-[maxvertexcount(3)]
+[maxvertexcount(4)]
 void GeometryProgram(triangle VertexOut p[3], inout LineStream<VertexOut> triStream)
 {
 	UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(p[0]);
@@ -11,4 +11,5 @@ void GeometryProgram(triangle VertexOut p[3], inout LineStream<VertexOut> triStr
 	triStream.Append(p[0]);
 	triStream.Append(p[1]);
 	triStream.Append(p[2]);
+	triStream.Append(p[0]);
 }

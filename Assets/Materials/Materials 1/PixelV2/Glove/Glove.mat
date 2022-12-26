@@ -2,16 +2,27 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Glove
   m_Shader: {fileID: 4800000, guid: 218277704ed3ac946b35810b25800e99, type: 3}
-  m_ShaderKeywords: DISTORT MOCHIE_PBR POI_LIGHT_DATA_ADDITIVE_DIRECTIONAL_ENABLE
-    POI_LIGHT_DATA_ADDITIVE_ENABLE POI_VERTEXLIGHT_ON POI_VERTEX_GLITCHING VIGNETTE_MASKED
-    _EMISSION _GLOSSYREFLECTIONS_OFF
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - DISTORT
+  - MOCHIE_PBR
+  - POI_LIGHT_DATA_ADDITIVE_DIRECTIONAL_ENABLE
+  - POI_LIGHT_DATA_ADDITIVE_ENABLE
+  - POI_VERTEXLIGHT_ON
+  - POI_VERTEX_GLITCHING
+  - VIGNETTE_MASKED
+  - _EMISSION
+  - _GLOSSYREFLECTIONS_OFF
+  - _LIGHTINGMODE_WRAPPED
+  - _RIMSTYLE_POIYOMI
+  - _STOCHASTICMODE_DELIOT_HEITZ
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -531,6 +542,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - GeometryShader_Enabled: 1
     - Instancing: 0
@@ -1233,7 +1245,7 @@ Material:
     - _GlobalThemeHue1: 0
     - _GlobalThemeHue2: 0
     - _GlobalThemeHue3: 0
-    - _GlobalThemeSaturation0: 0.253
+    - _GlobalThemeSaturation0: 0.002
     - _GlobalThemeSaturation1: 0
     - _GlobalThemeSaturation2: 0
     - _GlobalThemeSaturation3: 0
@@ -2063,7 +2075,7 @@ Material:
     - m_start_FXProximityColor: 0
     - m_start_FlipbookAudioLink: 0
     - m_start_GlobalMask: 0
-    - m_start_GlobalThemeColor0: 1
+    - m_start_GlobalThemeColor0: 0
     - m_start_GlobalThemeColor1: 0
     - m_start_GlobalThemeColor2: 0
     - m_start_GlobalThemeColor3: 0
@@ -2482,3 +2494,4 @@ Material:
     - _WaveSlope: {r: 2, g: 2, b: 2, a: 0}
     - _WaveSpeed: {r: 0.5, g: 0.6, b: 0.7, a: 0}
     - _WaveTexturePan: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

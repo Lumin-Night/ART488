@@ -1,10 +1,10 @@
-using Poiyomi.ModularShaderSystem.CibbiExtensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Poiyomi.ModularShaderSystem.CibbiExtensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,11 +19,11 @@ namespace Poiyomi.ModularShaderSystem
 
         public static void GenerateShader(string path, ModularShader shader, Action<StringBuilder, ShaderContext> postGeneration, bool hideVariants = false)
         {
-
+            
             path = GetPathRelativeToProject(path);
 
             var modules = FindAllModules(shader);
-
+            
             var freshAssets = new Dictionary<TemplateAsset, TemplateAsset>();
 
             freshAssets.AddFreshShaderToList(shader.ShaderTemplate);
@@ -34,12 +34,12 @@ namespace Poiyomi.ModularShaderSystem
 
             foreach (var function in modules.SelectMany(x => x.Functions))
                 freshAssets.AddFreshShaderToList(function.ShaderFunctionCode);
-
-
+            
+            
             var possibleVariants = GetShaderVariants(modules);
             var contexts = new List<ShaderContext>();
             var completePropertiesBlock = GetPropertiesBlock(shader, modules, freshAssets);
-
+            
             foreach (var variant in possibleVariants)
             {
                 contexts.Add(new ShaderContext
@@ -53,12 +53,12 @@ namespace Poiyomi.ModularShaderSystem
                     AreVariantsHidden = hideVariants
                 });
             }
-
+            
             contexts.AsParallel().ForAll(x => x.GenerateShader());
             try
             {
                 AssetDatabase.StartAssetEditing();
-
+                
                 if (shader.LastGeneratedShaders != null)
                 {
                     foreach (Shader generatedShader in shader.LastGeneratedShaders.Where(x => x != null))
@@ -70,7 +70,7 @@ namespace Poiyomi.ModularShaderSystem
                 }
 
                 shader.LastGeneratedShaders = new List<Shader>();
-
+                
                 foreach (var context in contexts)
                 {
                     string filePath = $"{path}/" + context.VariantFileName;
@@ -92,10 +92,10 @@ namespace Poiyomi.ModularShaderSystem
             {
                 AssetDatabase.StopAssetEditing();
             }
-
+            
             AssetDatabase.Refresh();
             ApplyDefaultTextures(contexts);
-
+            
             foreach (var context in contexts)
                 shader.LastGeneratedShaders.Add(AssetDatabase.LoadAssetAtPath<Shader>($"{path}/" + context.VariantFileName));
             AssetDatabase.Refresh();
@@ -109,23 +109,23 @@ namespace Poiyomi.ModularShaderSystem
             if (!path.Contains(Application.dataPath) && !path.StartsWith("Assets"))
                 throw new DirectoryNotFoundException($"The folder \"{path}\" is not part of the unity project");
 
-            if (!path.StartsWith("Assets"))
+            if(!path.StartsWith("Assets"))
                 path = path.Replace(Application.dataPath, "Assets");
-
+            
             return path;
         }
 
         public static void GenerateMinimalShader(string path, ModularShader shader, IEnumerable<Material> materials, Action<StringBuilder, ShaderContext> postGeneration = null)
         {
             path = GetPathRelativeToProject(path);
-
+            
             var modules = FindAllModules(shader);
             var possibleVariants = GetMinimalVariants(modules, materials);
             var contexts = new List<ShaderContext>();
-
+            
             foreach (var (variant, variantMaterials) in possibleVariants)
             {
-                AssetDatabase.TryGetGUIDAndLocalFileIdentifier(variantMaterials[0], out string guid, out long _);
+                AssetDatabase.TryGetGUIDAndLocalFileIdentifier(variantMaterials[0], out string guid, out long  _);
                 contexts.Add(new ShaderContext
                 {
                     Shader = shader,
@@ -144,14 +144,14 @@ namespace Poiyomi.ModularShaderSystem
         public static List<ShaderContext> EnqueueShadersToGenerate(string path, ModularShader shader, IEnumerable<Material> materials, Action<StringBuilder, ShaderContext> postGeneration = null)
         {
             path = GetPathRelativeToProject(path);
-
+            
             var modules = FindAllModules(shader);
             var possibleVariants = GetMinimalVariants(modules, materials);
             var contexts = new List<ShaderContext>();
-
+            
             foreach (var (variant, variantMaterials) in possibleVariants)
             {
-                AssetDatabase.TryGetGUIDAndLocalFileIdentifier(variantMaterials[0], out string guid, out long _);
+                AssetDatabase.TryGetGUIDAndLocalFileIdentifier(variantMaterials[0], out string guid, out long  _);
                 contexts.Add(new ShaderContext
                 {
                     Shader = shader,
@@ -172,17 +172,17 @@ namespace Poiyomi.ModularShaderSystem
             if (contexts == null || contexts.Count == 0) return;
 
             var alreadyDoneShaders = new List<ModularShader>();
-
+            
             var freshAssets = new Dictionary<TemplateAsset, TemplateAsset>();
-
+            
             foreach (var context in contexts)
             {
                 context.FreshAssets = freshAssets;
                 if (alreadyDoneShaders.Contains(context.Shader)) continue;
-
+                
                 var shader = context.Shader;
                 var modules = FindAllModules(shader);
-
+                
                 freshAssets.AddFreshShaderToList(shader.ShaderTemplate);
                 freshAssets.AddFreshShaderToList(shader.ShaderPropertiesTemplate);
 
@@ -191,10 +191,10 @@ namespace Poiyomi.ModularShaderSystem
 
                 foreach (var function in modules.SelectMany(x => x.Functions))
                     freshAssets.AddFreshShaderToList(function.ShaderFunctionCode);
-
+                
                 alreadyDoneShaders.Add(shader);
             }
-
+            
             EditorUtility.DisplayProgressBar("Generating Optimized Shaders", "generating shader files", 1 / (contexts.Count + 3));
             contexts.AsParallel().ForAll(x => x.GenerateShader());
             try
@@ -214,7 +214,7 @@ namespace Poiyomi.ModularShaderSystem
                 AssetDatabase.StopAssetEditing();
                 AssetDatabase.Refresh();
             }
-
+            
             ApplyDefaultTextures(contexts);
 
             EditorUtility.DisplayProgressBar("Generating Optimized Shaders", "applying shaders to materials", contexts.Count - 1 / (contexts.Count + 3));
@@ -226,7 +226,7 @@ namespace Poiyomi.ModularShaderSystem
                     material.shader = shader;
                 }
             }
-
+            
             EditorUtility.ClearProgressBar();
         }
 
@@ -250,16 +250,16 @@ namespace Poiyomi.ModularShaderSystem
 
             var keys = dictionary.Keys.ToList();
 
-            foreach (KeyValuePair<string, List<int>> keyValuePair in dictionary)
-                if (!keyValuePair.Value.Contains(0))
-                    keyValuePair.Value.Insert(0, 0);
+            foreach (KeyValuePair<string,List<int>> keyValuePair in dictionary)
+                if(!keyValuePair.Value.Contains(0))
+                    keyValuePair.Value.Insert(0,0);
 
             var states = new List<Dictionary<string, int>>();
             UnrollVariants(states, new Dictionary<string, int>(), dictionary, keys);
 
             return states;
         }
-
+        
         private static List<(Dictionary<string, int>, List<Material>)> GetMinimalVariants(List<ShaderModule> modules, IEnumerable<Material> materials)
         {
             var enablers = new List<string>();
@@ -292,9 +292,9 @@ namespace Poiyomi.ModularShaderSystem
 
                     return true;
                 }).FirstOrDefault();
-
-                if (equalState == (null, null))
-                    states.Add((state, new List<Material>(new[] { material })));
+                
+                if(equalState == (null, null))
+                    states.Add((state, new List<Material>(new [] {material})));
                 else
                     equalState.Item2.Add(material);
             }
@@ -330,7 +330,7 @@ namespace Poiyomi.ModularShaderSystem
 
             return isAllZeroes ? "" : b.ToString();
         }
-
+        
         private static void AddFreshShaderToList(this Dictionary<TemplateAsset, TemplateAsset> dictionary, TemplateAsset asset)
         {
             if ((object)asset == null) return;
@@ -351,7 +351,7 @@ namespace Poiyomi.ModularShaderSystem
             }
             dictionary.Add(asset, template);
         }
-
+        
         private static TemplateAsset GetTemplate(this Dictionary<TemplateAsset, TemplateAsset> dictionary, TemplateAsset asset)
         {
             if ((object)asset == null) return null;
@@ -389,7 +389,7 @@ namespace Poiyomi.ModularShaderSystem
                 GetLiveUpdateEnablers();
                 ShaderFile = new StringBuilder();
                 VariantName = GetVariantCode(ActiveEnablers);
-                VariantFileName = OptimizedShader ?
+                VariantFileName = OptimizedShader ? 
                     $"{Shader.Name}{(string.IsNullOrEmpty(VariantName) ? "" : $"-g-{Guid}")}.shader" :
                     $"{Shader.Name}{(string.IsNullOrEmpty(VariantName) ? "" : $"-v{VariantName}")}.shader";
 
@@ -401,7 +401,7 @@ namespace Poiyomi.ModularShaderSystem
                     ShaderName = $"Hidden/{Shader.ShaderPath}-v{VariantName}";
                 else
                     ShaderName = $"{Shader.ShaderPath}{VariantName}";
-
+                
                 ShaderFile.AppendLine($"Shader \"{ShaderName}\"");
 
                 ShaderFile.AppendLine("{");
@@ -409,7 +409,7 @@ namespace Poiyomi.ModularShaderSystem
                 ShaderFile.Append(string.IsNullOrEmpty(PropertiesBlock) ? GetPropertiesBlock(Shader, _modules, FreshAssets, false) : PropertiesBlock);
 
                 WriteShaderSkeleton();
-
+                
                 _functions = new List<ShaderFunction>();
                 _reorderedFunctions = new List<ShaderFunction>();
                 _modulesByFunctions = new Dictionary<ShaderFunction, ShaderModule>();
@@ -438,14 +438,14 @@ namespace Poiyomi.ModularShaderSystem
 
                 ShaderFile = CleanupShaderFile(ShaderFile);
             }
-
+            
             private void GetLiveUpdateEnablers()
             {
                 _liveUpdateEnablers = new List<EnableProperty>();
                 var staticEnablers = ActiveEnablers.Keys.ToList();
                 foreach (var property in _modules.SelectMany(x => x.EnableProperties))
                 {
-                    if (property != null && !string.IsNullOrWhiteSpace(property.Name) && !staticEnablers.Contains(property.Name))
+                    if(property != null && !string.IsNullOrWhiteSpace(property.Name) && !staticEnablers.Contains(property.Name))
                         _liveUpdateEnablers.Add(property);
                 }
 
@@ -462,7 +462,7 @@ namespace Poiyomi.ModularShaderSystem
                     WriteFunctionCallSequence(callSequence, startKeyword);
                     var m = Regex.Matches(ShaderFile.ToString(), $@"{startKeyword}(\s|$)", RegexOptions.Multiline);
                     for (int i = m.Count - 1; i >= 0; i--)
-                        ShaderFile.Insert(m[i].Index, callSequence.ToString());
+                        ShaderFile.Insert(m[i].Index, callSequence.ToString()); 
                 }
             }
 
@@ -481,72 +481,72 @@ namespace Poiyomi.ModularShaderSystem
                     foreach (var template in module.Templates)
                         moduleByTemplate.Add(template, module);
 
-                foreach (var template in _modules.SelectMany(x => x.Templates).OrderBy(x => x.Queue))
-                {
-                    var freshTemplate = FreshAssets.GetTemplate(template.Template);
-                    var module = moduleByTemplate[template];
-                    if (freshTemplate == null) continue;
-                    bool hasEnabler = module.EnableProperties.Any(x => x != null && !string.IsNullOrEmpty(x.Name));
-                    bool isFilteredIn = hasEnabler && module.EnableProperties.All(x => (x == null || string.IsNullOrEmpty(x.Name)) || ActiveEnablers.TryGetValue(x.Name, out _));
-                    bool needsIf = hasEnabler && !isFilteredIn && !template.NeedsVariant;
-                    var tmp = new StringBuilder();
-
-                    if (!needsIf)
+                    foreach (var template in _modules.SelectMany(x => x.Templates).OrderBy(x => x.Queue))
                     {
-                        tmp.AppendLine(freshTemplate.Template);
-                    }
+                        var freshTemplate = FreshAssets.GetTemplate(template.Template);
+                        var module = moduleByTemplate[template];
+                        if (freshTemplate == null) continue;
+                        bool hasEnabler = module.EnableProperties.Any(x => x != null && !string.IsNullOrEmpty(x.Name));
+                        bool isFilteredIn = hasEnabler && module.EnableProperties.All(x => (x == null || string.IsNullOrEmpty(x.Name)) || ActiveEnablers.TryGetValue(x.Name, out _));
+                        bool needsIf = hasEnabler && !isFilteredIn && !template.NeedsVariant;
+                        var tmp = new StringBuilder();
 
-                    else
-                    {
-                        string condition = string.Join(" && ", module.EnableProperties
-                            .Where(x => (x != null && !string.IsNullOrEmpty(x.Name)) && !ActiveEnablers.TryGetValue(x.Name, out _))
-                            .Select(x => $"{x.Name} == {x.EnableValue}"));
-                        tmp.AppendLine($"if({condition})");
-                        tmp.AppendLine("{");
-                        tmp.AppendLine(freshTemplate.Template);
-                        tmp.AppendLine("}");
-                    }
-
-                    MatchCollection mki = Regex.Matches(tmp.ToString(), @"#KI#\S*", RegexOptions.Multiline);
-                    for (int i = mki.Count - 1; i >= 0; i--)
-                    {
-                        string newKeyword;
-                        if (convertedKeyword.TryGetValue((module.Id, mki[i].Value), out string replacedKeyword))
+                        if (!needsIf)
                         {
-                            newKeyword = replacedKeyword;
+                            tmp.AppendLine(freshTemplate.Template);
                         }
+
                         else
                         {
-                            newKeyword = $"{mki[i].Value}{instanceCounter++}";
-                            convertedKeyword.Add((module.Id, mki[i].Value), newKeyword);
+                            string condition = string.Join(" && ", module.EnableProperties
+                                .Where(x => (x != null && !string.IsNullOrEmpty(x.Name)) && !ActiveEnablers.TryGetValue(x.Name, out _))
+                                .Select(x => $"{x.Name} == {x.EnableValue}"));
+                            tmp.AppendLine($"if({condition})");
+                            tmp.AppendLine("{");
+                            tmp.AppendLine(freshTemplate.Template);
+                            tmp.AppendLine("}");
                         }
-                        tmp.Replace(mki[i].Value, newKeyword);
-                    }
-
-                    foreach (var keyword in template.Keywords.Count == 0 ? new[] { MSSConstants.DEFAULT_CODE_KEYWORD } : template.Keywords.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray())
-                    {
-                        MatchCollection m = Regex.Matches(ShaderFile.ToString(), $@"#K#{keyword}(\s|$)", RegexOptions.Multiline);
-                        for (int i = m.Count - 1; i >= 0; i--)
-                            ShaderFile.Insert(m[i].Index, tmp.ToString());
-
-                        if (convertedKeyword.TryGetValue((module.Id, $@"#KI#{keyword}"), out string replacedKeyword))
+                        
+                        MatchCollection mki = Regex.Matches(tmp.ToString(), @"#KI#\S*", RegexOptions.Multiline);
+                        for (int i = mki.Count - 1; i >= 0; i--)
                         {
-                            m = Regex.Matches(ShaderFile.ToString(), $@"{replacedKeyword}(\s|$)", RegexOptions.Multiline);
+                            string newKeyword;
+                            if (convertedKeyword.TryGetValue((module.Id, mki[i].Value), out string replacedKeyword))
+                            {
+                                newKeyword = replacedKeyword;
+                            }
+                            else
+                            {
+                                newKeyword = $"{mki[i].Value}{instanceCounter++}";
+                                convertedKeyword.Add((module.Id, mki[i].Value), newKeyword);
+                            }
+                            tmp.Replace(mki[i].Value, newKeyword);
+                        }
+
+                        foreach (var keyword in template.Keywords.Count == 0 ? new[] { MSSConstants.DEFAULT_CODE_KEYWORD } : template.Keywords.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray())
+                        {
+                            MatchCollection m = Regex.Matches(ShaderFile.ToString(), $@"#K#{keyword}(\s|$)", RegexOptions.Multiline);
                             for (int i = m.Count - 1; i >= 0; i--)
                                 ShaderFile.Insert(m[i].Index, tmp.ToString());
+
+                            if (convertedKeyword.TryGetValue((module.Id, $@"#KI#{keyword}"), out string replacedKeyword))
+                            {
+                                m = Regex.Matches(ShaderFile.ToString(), $@"{replacedKeyword}(\s|$)", RegexOptions.Multiline);
+                                for (int i = m.Count - 1; i >= 0; i--)
+                                    ShaderFile.Insert(m[i].Index, tmp.ToString());   
+                            }
                         }
                     }
-                }
-                MatchCollection mkr = Regex.Matches(ShaderFile.ToString(), @"#KI#\S*", RegexOptions.Multiline);
-                for (int i = mkr.Count - 1; i >= 0; i--)
-                    ShaderFile.Remove(mkr[i].Index, mkr[i].Length);
-
+                    MatchCollection mkr = Regex.Matches(ShaderFile.ToString(), @"#KI#\S*", RegexOptions.Multiline);
+                    for (int i = mkr.Count - 1; i >= 0; i--)
+                        ShaderFile.Remove(mkr[i].Index, mkr[i].Length);
+                
                 ShaderFile.AppendLine("}");
             }
-
+            
             private void WriteVariablesToKeywords()
             {
-                var variableDeclarations = new Dictionary<string, List<Variable>>();
+                var variableDeclarations = new Dictionary<string,List<Variable>>();
 
                 foreach (ShaderFunction function in _functions)
                 {
@@ -577,13 +577,13 @@ namespace Poiyomi.ModularShaderSystem
                     var decCode = string.Join("\n", declaration.Value.Distinct().OrderBy(x => x.Type).Select(x => x.GetDefinition())) + "\n\n";
                     MatchCollection m = Regex.Matches(ShaderFile.ToString(), $@"#K#{declaration.Key}\s", RegexOptions.Multiline);
                     for (int i = m.Count - 1; i >= 0; i--)
-                        ShaderFile.Insert(m[i].Index, decCode);
+                        ShaderFile.Insert(m[i].Index, decCode);   
                 }
             }
-
+            
             private void WriteFunctionsToKeywords()
             {
-                var keywordedCode = new Dictionary<string, (StringBuilder, List<TemplateAsset>)>();
+                var keywordedCode = new Dictionary<string,(StringBuilder, List<TemplateAsset>)>();
 
                 foreach (ShaderFunction function in _reorderedFunctions)
                 {
@@ -606,7 +606,7 @@ namespace Poiyomi.ModularShaderSystem
                     {
                         if (!keywordedCode.ContainsKey(MSSConstants.DEFAULT_CODE_KEYWORD))
                             keywordedCode.Add(MSSConstants.DEFAULT_CODE_KEYWORD, (new StringBuilder(), new List<TemplateAsset>()));
-
+                        
                         if (freshAsset == null) continue;
                         (StringBuilder builder, List<TemplateAsset> assets) = keywordedCode[MSSConstants.DEFAULT_CODE_KEYWORD];
                         if (assets.Contains(freshAsset)) continue;
@@ -619,7 +619,7 @@ namespace Poiyomi.ModularShaderSystem
                 {
                     MatchCollection m = Regex.Matches(ShaderFile.ToString(), $@"#K#{code.Key}\s", RegexOptions.Multiline);
                     for (int i = m.Count - 1; i >= 0; i--)
-                        ShaderFile.Insert(m[i].Index, code.Value.Item1.ToString());
+                        ShaderFile.Insert(m[i].Index, code.Value.Item1.ToString());   
                 }
             }
 
@@ -629,7 +629,7 @@ namespace Poiyomi.ModularShaderSystem
                 {
                     _reorderedFunctions.Add(function);
                     ShaderModule module = _modulesByFunctions[function];
-
+                    
                     bool hasEnabler = module.EnableProperties.Any(x => x != null && !string.IsNullOrEmpty(x.Name));
                     bool isFilteredIn = hasEnabler && module.EnableProperties.All(x => (x == null || string.IsNullOrEmpty(x.Name)) || ActiveEnablers.TryGetValue(x.Name, out _));
                     bool needsIf = hasEnabler && !isFilteredIn;
@@ -642,25 +642,25 @@ namespace Poiyomi.ModularShaderSystem
                         callSequence.AppendLine($"if({condition})");
                         callSequence.AppendLine("{");
                     }
-
+                    
                     callSequence.AppendLine($"{function.Name}();");
                     WriteFunctionCallSequence(callSequence, function.Name);
-
+                    
                     if (needsIf)
                         callSequence.AppendLine("}");
                 }
             }
-
+            
             private void RemoveKeywords()
             {
                 int current = 0;
 
                 while (current < ShaderFile.Length)
                 {
-                    if (ShaderFile.Length >= current + 3 && ShaderFile[current] == '#' && ShaderFile[current + 1] == 'K' &&
+                    if (ShaderFile.Length >= current + 3 && ShaderFile[current] == '#' && ShaderFile[current + 1] == 'K' && 
                         ShaderFile[current + 2] == '#')
                     {
-                        int end = current + 3;
+                        int end = current+3;
                         bool stillToRemove = true;
                         while (end < ShaderFile.Length)
                         {
@@ -673,14 +673,14 @@ namespace Poiyomi.ModularShaderSystem
 
                             end++;
                         }
-                        if (stillToRemove)
+                        if(stillToRemove)
                             ShaderFile.Remove(current, end - current);
                     }
-
+                    
                     current++;
                 }
             }
-
+            
             private static bool CheckPropertyBlockLine(StringBuilder builder, StringReader reader, string line, ref int tabs, ref bool deleteEmptyLine)
             {
                 string ln = null;
@@ -708,7 +708,7 @@ namespace Poiyomi.ModularShaderSystem
                     return true;
                 return false;
             }
-
+            
             private static StringBuilder CleanupShaderFile(StringBuilder shaderVariant)
             {
                 var finalFile = new StringBuilder();
@@ -783,7 +783,7 @@ namespace Poiyomi.ModularShaderSystem
                     properties.AddRange(module.Properties.Where(x => !string.IsNullOrWhiteSpace(x.Name) || x.Attributes.Count > 0));
                     if (module.EnableProperties.Count > 0 && includeEnablers)
                         properties.AddRange(module.EnableProperties.Where(x => !string.IsNullOrWhiteSpace(x.Name)));
-
+                    
                 }
 
                 foreach (var prop in properties.Distinct())
@@ -802,7 +802,7 @@ namespace Poiyomi.ModularShaderSystem
             block.AppendLine("}");
             return block.ToString();
         }
-
+        
         private static void ApplyDefaultTextures(List<ShaderContext> contexts)
         {
             foreach (var context in contexts)
@@ -818,7 +818,7 @@ namespace Poiyomi.ModularShaderSystem
                 AssetDatabase.ImportAsset($"{context.FilePath}/" + context.VariantFileName);
             }
         }
-
+        
         public static List<ShaderModule> FindAllModules(ModularShader shader)
         {
             List<ShaderModule> modules = new List<ShaderModule>();
@@ -827,7 +827,7 @@ namespace Poiyomi.ModularShaderSystem
             modules.AddRange(FindModules(shader.AdditionalModules.Where(x => x != null)));
             return modules.Distinct().ToList();
         }
-
+        
         public static List<ShaderModule> FindModules(IEnumerable<ShaderModule> modules)
         {
             List<ShaderModule> output = new List<ShaderModule>();
@@ -835,14 +835,12 @@ namespace Poiyomi.ModularShaderSystem
             {
                 switch (module)
                 {
-                    case ModuleCollection collection:
-                        output.AddRange(collection.Modules.Where(x => x != null));
+                    case ModuleCollection collection: output.AddRange(collection.Modules.Where(x => x != null)); 
                         break;
-                    default:
-                        output.Add(module);
+                    default: output.Add(module);
                         break;
                 }
-            }
+            } 
             return output;
         }
 
@@ -869,7 +867,7 @@ namespace Poiyomi.ModularShaderSystem
 
             return properties.Distinct().ToList();
         }
-
+        
         public static List<ShaderFunction> FindAllFunctions(ModularShader shader)
         {
             var functions = new List<ShaderFunction>();
@@ -881,7 +879,7 @@ namespace Poiyomi.ModularShaderSystem
                 functions.AddRange(module.Functions);
             return functions;
         }
-
+        
         public static List<ShaderModule> FindActiveModules(ModularShader shader, Dictionary<string, int> activeEnablers)
         {
             List<ShaderModule> modules = new List<ShaderModule>();
@@ -928,12 +926,12 @@ namespace Poiyomi.ModularShaderSystem
                 var dependencies = new List<string>(modules[i].ModuleDependencies);
                 for (int j = 0; j < modules.Count; j++)
                 {
-                    if (modules[j].IncompatibleWith.Any(x => x.Equals(modules[i].Id)))
+                    if (modules[j].IncompatibleWith.Any(x => x.Equals(modules[i].Id))) 
                         errors.Add($"Module \"{modules[j].Name}\" is incompatible with module \"{modules[i].name}\".");
-
+                    
                     if (i != j && modules[i].Id.Equals(modules[j].Id))
                         errors.Add($"Module \"{modules[i].Name}\" is duplicate.");
-
+                    
                     if (dependencies.Contains(modules[j].Id))
                         dependencies.Remove(modules[j].Id);
                 }
@@ -942,7 +940,7 @@ namespace Poiyomi.ModularShaderSystem
             }
             return errors;
         }
-
+        
         public static List<string> CheckShaderIssues(List<ShaderModule> modules)
         {
             List<string> errors = new List<string>();
@@ -952,12 +950,12 @@ namespace Poiyomi.ModularShaderSystem
                 var dependencies = new List<string>(modules[i].ModuleDependencies);
                 for (int j = 0; j < modules.Count; j++)
                 {
-                    if (modules[j].IncompatibleWith.Any(x => x.Equals(modules[i].Id)))
+                    if (modules[j].IncompatibleWith.Any(x => x.Equals(modules[i].Id))) 
                         errors.Add($"Module \"{modules[j].Name}\" is incompatible with module \"{modules[i].name}\".");
-
+                    
                     if (i != j && modules[i].Id.Equals(modules[j].Id))
                         errors.Add($"Module \"{modules[i].Name}\" is duplicate.");
-
+                    
                     if (dependencies.Contains(modules[j].Id))
                         dependencies.Remove(modules[j].Id);
                 }

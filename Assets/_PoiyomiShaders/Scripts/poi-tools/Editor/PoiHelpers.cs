@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,7 +22,7 @@ namespace Poi
         {
             localPath = NormalizePathSlashes(localPath);
             const string assets = "Assets/";
-            if (localPath.StartsWith(assets))
+            if(localPath.StartsWith(assets))
             {
                 localPath = localPath.Remove(0, assets.Length);
                 localPath = $"{Application.dataPath}/{localPath}";
@@ -34,7 +37,7 @@ namespace Poi
         /// <returns></returns>
         public static string NormalizePathSlashes(string path)
         {
-            if (!string.IsNullOrEmpty(path))
+            if(!string.IsNullOrEmpty(path))
                 path = path.Replace('\\', '/');
             return path;
         }
@@ -58,9 +61,9 @@ namespace Poi
         {
             bool ignoreSeparatorOnce = string.IsNullOrWhiteSpace(str);
             StringBuilder sb = new StringBuilder(str);
-            foreach (var suff in suffixes)
+            foreach(var suff in suffixes)
             {
-                if (ignoreSeparatorOnce)
+                if(ignoreSeparatorOnce)
                 {
                     sb.Append(suff);
                     ignoreSeparatorOnce = false;
@@ -79,14 +82,14 @@ namespace Poi
         internal static void DrawLine(bool spaceBefore = true, bool spaceAfter = true)
         {
             float spaceHeight = 3f;
-            if (spaceBefore)
+            if(spaceBefore)
                 GUILayout.Space(spaceHeight);
 
             Rect rect = EditorGUILayout.GetControlRect(false, 1);
             rect.height = 1;
             EditorGUI.DrawRect(rect, new Color(0.5f, 0.5f, 0.5f, 1));
 
-            if (spaceAfter)
+            if(spaceAfter)
                 GUILayout.Space(spaceHeight);
         }
 
@@ -96,7 +99,7 @@ namespace Poi
         /// <param name="obj"></param>
         internal static void DestroyAppropriate(UnityEngine.Object obj)
         {
-            if (EditorApplication.isPlaying)
+            if(EditorApplication.isPlaying)
                 UnityEngine.Object.Destroy(obj);
             else
                 UnityEngine.Object.DestroyImmediate(obj);
@@ -109,7 +112,7 @@ namespace Poi
         /// <returns>Path starting with Assets</returns>
         internal static string AbsolutePathToLocalAssetsPath(string path)
         {
-            if (path.StartsWith(Application.dataPath))
+            if(path.StartsWith(Application.dataPath))
                 path = "Assets" + path.Substring(Application.dataPath.Length);
             return path;
         }
@@ -126,7 +129,7 @@ namespace Poi
 
         internal static void DrawWithLabelWidth(float width, Action action)
         {
-            if (action == null)
+            if(action == null)
                 return;
             float old = EditorGUIUtility.labelWidth;
             action.Invoke();
@@ -161,7 +164,7 @@ namespace Poi
             RenderTexture.active = null;
             RenderTexture.ReleaseTemporary(renderTexture);
         }
-
+        
         /// <summary>
         /// Rounds vector to closest power of two. Optionally, if above ceiling, square root down by one power of two
         /// </summary>
@@ -173,9 +176,9 @@ namespace Poi
             int x = Mathf.ClosestPowerOfTwo(vec.x);
             int y = Mathf.ClosestPowerOfTwo(vec.y);
 
-            if (ceiling != null)
+            if(ceiling != null)
             {
-                int ceil = Mathf.ClosestPowerOfTwo((int)ceiling);
+                int ceil = Mathf.ClosestPowerOfTwo((int) ceiling);
 
                 x = Mathf.Clamp(x, x, ceil);
                 y = Mathf.Clamp(y, y, ceil);

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 
 //Made by Dreadrith#3238
 //Server: https://discord.gg/ZsPfrGn
@@ -37,32 +37,32 @@ namespace Poi.TextureUtility
         private static TexRotation rotationType;
 
         private static bool inverting;
-        private static bool maskInvert = true;
+        private static bool maskInvert=true;
         private static bool invertRedS = true, invertGreenS = true, invertBlueS = true, invertAlphaS;
 
-        private static bool unpacking = true, packing;
-        private static bool editingTab = true, packingTab, creatingTab;
+        private static bool unpacking=true,packing;
+        private static bool editingTab=true, packingTab,creatingTab;
 
-
+        
         private static ChannelTexture redChannel = new ChannelTexture("Red", 0);
         private static ChannelTexture greenChannel = new ChannelTexture("Green", 1);
         private static ChannelTexture blueChannel = new ChannelTexture("Blue", 2);
         private static ChannelTexture alphaChannel = new ChannelTexture("Alpha", 0);
-        private static ChannelTexture[] channelTextures = new ChannelTexture[] { redChannel, greenChannel, blueChannel, alphaChannel };
+        private static ChannelTexture[] channelTextures = new ChannelTexture[] {redChannel,greenChannel,blueChannel,alphaChannel };
 
         private static bool hueShifting;
-        private static bool maskHueShift = true;
+        private static bool maskHueShift=true;
         private static float hueShiftFloat;
 
         private static bool saturating;
-        private static bool maskSaturate = true;
+        private static bool maskSaturate=true;
         private static float saturationFloat;
 
         private static bool colorizing;
-        private static bool maskColorize = true;
+        private static bool maskColorize=true;
         private static bool textureColorize;
         private static bool alphaColorize;
-        private static float colorizeFloat = 0.5f;
+        private static float colorizeFloat=0.5f;
         private static Color colorizeColor = Color.black;
         private static Texture2D colorizeTexture;
 
@@ -89,7 +89,7 @@ namespace Poi.TextureUtility
         private static bool creatingCustomSize;
         private static bool creatingReverse;
         private static string creatingPath;
-        private static Color solidColor = Color.black;
+        private static Color solidColor=Color.black;
         private static Gradient gradientColor = new Gradient() { colorKeys = new GradientColorKey[] { new GradientColorKey(Color.white, 0), new GradientColorKey(Color.black, 1) } };
 
         private static TextureCreatingMode creatingMode = TextureCreatingMode.SolidColor;
@@ -171,7 +171,7 @@ namespace Poi.TextureUtility
             Credit();
         }
 
-
+        
         private void DrawEditingTab()
         {
             using (new GUILayout.HorizontalScope())
@@ -488,33 +488,33 @@ namespace Poi.TextureUtility
             EditorGUI.EndDisabledGroup();
         }
 
-        private void DrawDimensionsGUI(bool drawReset = true)
+        private void DrawDimensionsGUI(bool drawReset=true)
         {
             GUIStyle iconStyle = new GUIStyle(GUI.skin.label) { padding = new RectOffset(), margin = new RectOffset(), imagePosition = ImagePosition.ImageOnly };
+            
+                EditorGUI.BeginDisabledGroup(!mainTexture && !creatingTab);
+                if (drawReset)
+                {
+                    if (GUILayout.Button(resetIcon, iconStyle, GUILayout.Height(16), GUILayout.Width(16)))
+                        ResetDimensions();
+                }
+                EditorGUIUtility.labelWidth = 20;
+                texWidth = EditorGUILayout.IntField(new GUIContent("W","Width"), texWidth);
+                texHeight = EditorGUILayout.IntField(new GUIContent("H", "Height"), texHeight);
+                EditorGUIUtility.labelWidth = 0;
 
-            EditorGUI.BeginDisabledGroup(!mainTexture && !creatingTab);
-            if (drawReset)
-            {
-                if (GUILayout.Button(resetIcon, iconStyle, GUILayout.Height(16), GUILayout.Width(16)))
-                    ResetDimensions();
-            }
-            EditorGUIUtility.labelWidth = 20;
-            texWidth = EditorGUILayout.IntField(new GUIContent("W", "Width"), texWidth);
-            texHeight = EditorGUILayout.IntField(new GUIContent("H", "Height"), texHeight);
-            EditorGUIUtility.labelWidth = 0;
-
-            int dummy = -1;
-            EditorGUI.BeginChangeCheck();
-            dummy = EditorGUILayout.Popup(dummy, DimensionPresets, GUILayout.Width(17));
-            if (EditorGUI.EndChangeCheck())
-            {
+                int dummy = -1;
+                EditorGUI.BeginChangeCheck();
+                dummy = EditorGUILayout.Popup(dummy, DimensionPresets,GUILayout.Width(17));
+                if (EditorGUI.EndChangeCheck())
+                {
                 string[] dimensions = ((string)DimensionPresets.GetValue(dummy)).Split('x');
                 texWidth = int.Parse(dimensions[0]);
                 texHeight = int.Parse(dimensions[1]);
-            }
+                }
 
-            EditorGUI.EndDisabledGroup();
-
+                EditorGUI.EndDisabledGroup();
+            
         }
 
         public static Texture2D GetColors(Texture2D texture, out Color[] Colors, bool unloadTempTexture = false)
@@ -522,13 +522,13 @@ namespace Poi.TextureUtility
             return GetColors(texture, texture.width, texture.height, out Colors, unloadTempTexture);
         }
 
-        public static Texture2D GetColors(Texture2D texture, int width, int height, out Color[] Colors, bool unloadTempTexture = false)
+        public static Texture2D GetColors(Texture2D texture, int width, int height, out Color[] Colors,bool unloadTempTexture = false)
         {
             //Thanks to
             //https://gamedev.stackexchange.com/questions/92285/unity3d-resize-texture-without-corruption
             texture.filterMode = FilterMode.Point;
             RenderTexture rt = RenderTexture.GetTemporary(width, height);
-
+            
             rt.filterMode = FilterMode.Point;
             RenderTexture.active = rt;
             Graphics.Blit(texture, rt);
@@ -546,7 +546,7 @@ namespace Poi.TextureUtility
             return newTexture;
         }
 
-        private static void SaveTexture(byte[] textureEncoding, string path, bool refresh = false, bool ping = false)
+        private static void SaveTexture(byte[] textureEncoding, string path, bool refresh=false, bool ping=false)
         {
             System.IO.FileStream stream = System.IO.File.Create(path);
             stream.Write(textureEncoding, 0, textureEncoding.Length);
@@ -585,7 +585,7 @@ namespace Poi.TextureUtility
                 switch (rotationType)
                 {
                     case TexRotation.Clockwise90:
-                        for (int i = texWidth - 1; i >= 0; i--)
+                        for (int i = texWidth-1; i >=0; i--)
                         {
                             rotatedColors.AddRange(newTexture.GetPixels(i, 0, 1, texHeight));
                         }
@@ -622,7 +622,7 @@ namespace Poi.TextureUtility
                         myColors = rotatedColors.ToArray();
                         break;
                 }
-
+                
             }
 
             bool colorInverting = (invertRedS || invertGreenS || invertBlueS || invertAlphaS) && inverting;
@@ -688,7 +688,7 @@ namespace Poi.TextureUtility
 
             string newTexturePath = AssetDatabase.GenerateUniqueAssetPath(destinationPath + "/" + mainTexture.name
                 + (colorInverting ? " Inverted" : "") + ext);
-
+            
             SaveTexture(data, newTexturePath, true, pingTexture);
 
             if (copyImport)
@@ -783,7 +783,7 @@ namespace Poi.TextureUtility
             GetEncoding(newTexture, encoding, out byte[] data, out string ext);
 
             RecreateFolders(creatingPath);
-            SaveTexture(data, AssetDatabase.GenerateUniqueAssetPath(creatingPath + "/Generated Texture" + ext), true, pingTexture);
+            SaveTexture(data, AssetDatabase.GenerateUniqueAssetPath(creatingPath +"/Generated Texture"+ext), true, pingTexture);
         }
 
         private void UnpackTexture()
@@ -913,7 +913,7 @@ namespace Poi.TextureUtility
             PackTexture(channels, AssetDatabase.GetAssetPath(firstChannel.texture), w, h, encoding);
         }
 
-        public static string PackTexture(ChannelTexture[] channels, TexEncoding encodingType, bool refresh = true, bool copyImportSettings = true)
+        public static string PackTexture(ChannelTexture[] channels, TexEncoding encodingType, bool refresh=true, bool copyImportSettings=true)
         {
             int firstIndex = -1;
             for (int i = 3; i >= 0; i--)
@@ -926,10 +926,10 @@ namespace Poi.TextureUtility
             ChannelTexture firstChannel = channels[firstIndex];
             int w = firstChannel.texture.width;
             int h = firstChannel.texture.height;
-            return PackTexture(channels, AssetDatabase.GetAssetPath(firstChannel.texture), w, h, encodingType, refresh, false, copyImportSettings);
+            return PackTexture(channels, AssetDatabase.GetAssetPath(firstChannel.texture), w, h, encodingType,refresh,false,copyImportSettings);
         }
 
-        public static string PackTexture(ChannelTexture[] channels, string destination, int width, int height, TexEncoding encodingType, bool refresh = true, bool overwrite = false, bool copyImportSettings = true)
+        public static string PackTexture(ChannelTexture[] channels, string destination,int width, int height, TexEncoding encodingType, bool refresh=true,bool overwrite=false, bool copyImportSettings=true)
         {
             int firstIndex = -1;
             for (int i = 3; i >= 0; i--)
@@ -942,17 +942,17 @@ namespace Poi.TextureUtility
 
             ChannelTexture firstChannel = channels[firstIndex];
 
-
+            
             Texture2D newTexture = new Texture2D(width, height);
             channels[0].GetChannelColors(width, height, out float[] reds, true);
             channels[1].GetChannelColors(width, height, out float[] greens, true);
             channels[2].GetChannelColors(width, height, out float[] blues, true);
             channels[3].GetChannelColors(width, height, out float[] alphas, true);
-            Color[] finalColors = new Color[width * height];
+            Color[] finalColors = new Color[width*height];
 
-            for (int i = 0; i < finalColors.Length; i++)
+            for (int i=0;i< finalColors.Length;i++)
             {
-                finalColors[i].r = (reds != null) ? reds[i] : 0;
+                finalColors[i].r = (reds!=null) ? reds[i] : 0;
                 finalColors[i].g = (greens != null) ? greens[i] : 0;
                 finalColors[i].b = (blues != null) ? blues[i] : 0;
                 finalColors[i].a = (alphas != null) ? alphas[i] : 1;
@@ -962,14 +962,14 @@ namespace Poi.TextureUtility
 
             GetEncoding(newTexture, encodingType, out byte[] data, out string ext);
 
-            string newTexturePath = GetDestinationFolder(destination) + "/" + System.IO.Path.GetFileNameWithoutExtension(destination) + ext;
+            string newTexturePath = GetDestinationFolder(destination)+"/"+System.IO.Path.GetFileNameWithoutExtension(destination)+ext;
             if (!overwrite)
                 newTexturePath = AssetDatabase.GenerateUniqueAssetPath(newTexturePath);
             SaveTexture(data, newTexturePath);
             DestroyImmediate(newTexture);
             if (refresh)
                 AssetDatabase.Refresh();
-
+            
 
             if (copyImportSettings)
             {
@@ -983,7 +983,7 @@ namespace Poi.TextureUtility
             TextureImporter source = (TextureImporter)AssetImporter.GetAtPath(from);
             TextureImporterSettings sourceSettings = new TextureImporterSettings();
             source.ReadTextureSettings(sourceSettings);
-
+            
             TextureImporter destination = (TextureImporter)AssetImporter.GetAtPath(to);
             destination.SetTextureSettings(sourceSettings);
             destination.maxTextureSize = source.maxTextureSize;
@@ -1024,16 +1024,16 @@ namespace Poi.TextureUtility
             resetIcon = new GUIContent(EditorGUIUtility.IconContent("d_Refresh")) { tooltip = "Reset Dimensions" };
             creatingPath = PlayerPrefs.GetString("TextureUtilityCreatingPath", "Assets/DreadScripts/Texture Utility/Generated Assets");
 
-            for (int i = 0; i < channelTextures.Length; i++)
+            for (int i=0;i<channelTextures.Length;i++)
             {
                 channelTextures[i].SetMode(EditorPrefs.GetInt("TextureUtilityChannel" + channelTextures[i].name, (int)channelTextures[i].mode));
             }
         }
 
-        private static T[] CreateFilledArray<T>(T variable, int length)
+        private static T[] CreateFilledArray<T>(T variable,int length)
         {
             T[] myArray = new T[length];
-            for (int i = 0; i < myArray.Length; i++)
+            for (int i=0;i< myArray.Length;i++)
             {
                 myArray[i] = variable;
             }
@@ -1105,11 +1105,11 @@ namespace Poi.TextureUtility
             using (new GUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button("<b>Made by Dreadrith#3238</b>", creditLabelStyle))
+                if (GUILayout.Button("<b>Made by Dreadrith#3238</b>",creditLabelStyle))
                 {
                     Application.OpenURL("https://github.com/Dreadrith/DreadScripts");
                 }
-
+                
             }
         }
     }
@@ -1239,6 +1239,6 @@ namespace Poi.TextureUtility
             }
         }
 
-
+       
     }
 }

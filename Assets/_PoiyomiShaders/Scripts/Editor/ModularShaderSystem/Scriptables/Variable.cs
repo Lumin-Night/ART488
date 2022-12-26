@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Poiyomi.ModularShaderSystem
 {
@@ -8,7 +9,7 @@ namespace Poiyomi.ModularShaderSystem
     {
         public override int GetHashCode()
         {
-            int hashCode = (Name != null ? Name.GetHashCode() : 0);
+            int hashCode =  (Name != null ? Name.GetHashCode() : 0);
             return hashCode;
         }
 
@@ -82,7 +83,7 @@ namespace Poiyomi.ModularShaderSystem
 
             return "";
         }
-
+        
         public override bool Equals(object obj)
         {
             return Equals(obj as Variable);
@@ -104,7 +105,7 @@ namespace Poiyomi.ModularShaderSystem
             return !(left == right);
         }
     }
-
+    
     public enum VariableType
     {
         Half,

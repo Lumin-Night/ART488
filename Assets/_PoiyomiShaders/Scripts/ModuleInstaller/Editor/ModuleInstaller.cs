@@ -1,11 +1,16 @@
 ﻿#if UNITY_EDITOR
-using Poiyomi.ModularShaderSystem;
+using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
+using System.IO;
+using UnityEngine.UI;
+using System;
+using System.Text;
+using UnityEngine.Assertions;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Poiyomi.ModularShaderSystem;
 
 //using Poiyomi.ModularShaderSystem;
 
@@ -46,9 +51,9 @@ namespace Poiyomi.AngryLabs
         {
             AssetDatabase.Refresh();
             string[] guids;
-            if (searchFolder != null)
+            if(searchFolder != null)
             {
-                guids = AssetDatabase.FindAssets($"t:{typeof(T).ToString().Replace("UnityEngine.", "")}", new string[] { searchFolder });
+                guids  = AssetDatabase.FindAssets($"t:{typeof(T).ToString().Replace("UnityEngine.", "")}", new string[] { searchFolder });
             }
             else
             {
@@ -76,7 +81,7 @@ namespace Poiyomi.AngryLabs
             }
             set
             {
-                if (ActiveShader == value)
+                if(ActiveShader == value)
                 {
                     return;
                 }
@@ -98,7 +103,7 @@ namespace Poiyomi.AngryLabs
 
                 var modules = ActiveShader.BaseModules;
 
-                var hash = new HashSet<string>(ToInstall.Select(x => x?.Name).Where(x => x != null));
+                var hash = new HashSet<string>(ToInstall.Select(x=>x?.Name).Where(x=>x!=null));
 
                 return modules.Any(x => hash.Contains(x?.Name));
             }
@@ -109,7 +114,7 @@ namespace Poiyomi.AngryLabs
             get
             {
                 if (_shaders == null) RefreshShaderList();
-                return !_shaders.Any(x => x.Name == CopyName) && !string.IsNullOrEmpty(CopyName);
+                return !_shaders.Any(x => x.Name == CopyName) && ! string.IsNullOrEmpty(CopyName);
             }
         }
 
@@ -125,7 +130,7 @@ namespace Poiyomi.AngryLabs
                 }
 
                 Regex alreadyExists = new Regex($@".*{NewID}$");
-                return !_compiledShaders.Any(x => alreadyExists.IsMatch(x.name)) && !string.IsNullOrEmpty(NewID);
+                return !_compiledShaders.Any(x => alreadyExists.IsMatch(x.name)) && ! string.IsNullOrEmpty(NewID) ;
             }
         }
 
@@ -156,7 +161,7 @@ namespace Poiyomi.AngryLabs
                         left = 25,
                         right = 25,
                     },
-
+                    
                 };
 
                 if (GUILayout.Button("angriestscv.gumroad.com", sty))
@@ -165,7 +170,7 @@ namespace Poiyomi.AngryLabs
                 }
             }
 
-            using (var sv = new GUILayout.ScrollViewScope(ScrollPosition))
+            using(var sv = new GUILayout.ScrollViewScope(ScrollPosition))
             using (new GUILayout.VerticalScope())
             {
                 ScrollPosition = sv.scrollPosition;
@@ -176,7 +181,7 @@ namespace Poiyomi.AngryLabs
                 }
 
                 EditorGUILayout.LabelField($""); // provides the perfect amount of vertical space
-                ActiveShader = (ModularShader)EditorGUILayout.ObjectField("Shader to install to", ActiveShader, typeof(ModularShader), true);
+                ActiveShader = (ModularShader) EditorGUILayout.ObjectField("Shader to install to", ActiveShader, typeof(ModularShader), true);
 
                 if (ActiveShader == null)
                 {
@@ -198,7 +203,7 @@ namespace Poiyomi.AngryLabs
                 if (GUILayout.Button("Set Output Path"))
                 {
                     string startPath = OutputPath;
-                    if (!Directory.Exists(startPath ?? ""))
+                    if (!Directory.Exists(startPath??""))
                     {
                         startPath = "Assets";
                     }
@@ -212,7 +217,7 @@ namespace Poiyomi.AngryLabs
                         OutputPath = "Assets/";
                     }
 
-                    if (!Directory.Exists(OutputPath))
+                    if(!Directory.Exists(OutputPath))
                     {
                         OutputPath = "Assets/";
                     }
@@ -228,9 +233,9 @@ namespace Poiyomi.AngryLabs
                     {
                         ToInstall.Add(null);
                     }
-                    else if (GUILayout.Button("-"))
+                    else if(GUILayout.Button("-"))
                     {
-                        if (ToInstall.Count != 0)
+                        if(ToInstall.Count != 0)
                         {
                             ToInstall.RemoveAt(ToInstall.Count - 1);
                         }
@@ -241,9 +246,9 @@ namespace Poiyomi.AngryLabs
                     }
                 }
 
-                for (int i = 0; i < ToInstall.Count; i++)
+                for(int i=0; i<ToInstall.Count; i++)
                 {
-                    ToInstall[i] = (ShaderModule)EditorGUILayout.ObjectField("", ToInstall[i], typeof(ShaderModule), true);
+                    ToInstall[i] = (ShaderModule) EditorGUILayout.ObjectField("", ToInstall[i], typeof(ShaderModule), true);
                 }
 
                 GUILayout.Space(20);
@@ -286,11 +291,11 @@ namespace Poiyomi.AngryLabs
                         GUILayout.Label("Valid NewID");
                     }
                 }
-                else if (ToInstall.All(x => x == null))
+                else if(ToInstall.All(x=>x==null))
                 {
                     GUILayout.Label("There are no modules to install");
                 }
-                else if (string.IsNullOrEmpty(OutputPath))
+                else if(string.IsNullOrEmpty(OutputPath))
                 {
                     GUILayout.Label("An output path is required");
                 }
@@ -298,7 +303,7 @@ namespace Poiyomi.AngryLabs
                 {
                     GUILayout.Label("The given output directory does not exist");
                 }
-                else
+                else 
                 {
 
                     if (AlreadyInstalled)
@@ -319,7 +324,7 @@ namespace Poiyomi.AngryLabs
             AssetDatabase.Refresh();
             string[] guids;
             guids = AssetDatabase.FindAssets($"t:{typeof(ModularShader).ToString().Replace("UnityEngine.", "")}");
-
+            
             IEnumerable<string> paths = guids.Select(x => AssetDatabase.GUIDToAssetPath(x)).ToList();
             var assets = paths
                 .Select(path => new { Asset = AssetDatabase.LoadMainAssetAtPath(path) as ModularShader, Path = path })
@@ -332,7 +337,7 @@ namespace Poiyomi.AngryLabs
                 .ToList()
                 ;
 
-            foreach (string path in toDel)
+            foreach(string path in toDel)
             {
                 AssetDatabase.DeleteAsset(path);
             }
@@ -343,7 +348,7 @@ namespace Poiyomi.AngryLabs
             AssetDatabase.Refresh();
             string[] guids;
             guids = AssetDatabase.FindAssets($"t:{typeof(Shader).ToString().Replace("UnityEngine.", "")}");
-
+            
             IEnumerable<string> paths = guids.Select(x => AssetDatabase.GUIDToAssetPath(x)).ToList();
             var assets = paths
                 .Select(path => new { Asset = AssetDatabase.LoadMainAssetAtPath(path) as Shader, Path = path })
@@ -364,7 +369,7 @@ namespace Poiyomi.AngryLabs
         private void Install()
         {
             RefreshShaderList();
-            if (!ValidCopyName || !ValidNewID)
+            if(!ValidCopyName || !ValidNewID)
             {
                 return;
             }
@@ -374,7 +379,7 @@ namespace Poiyomi.AngryLabs
                 AdditionalModules = ActiveShader.AdditionalModules.ToList(),
                 AdditionalSerializedData = ActiveShader.AdditionalSerializedData,
                 Author = ActiveShader.Author,
-                BaseModules = ActiveShader.BaseModules.Where(x => x != null).ToList(),
+                BaseModules = ActiveShader.BaseModules.Where(x=>x!=null).ToList(),
                 CustomEditor = ActiveShader.CustomEditor,
                 Description = ActiveShader.Description,
                 hideFlags = ActiveShader.hideFlags,
@@ -396,7 +401,7 @@ namespace Poiyomi.AngryLabs
 
             var installedNames = new HashSet<string>(shader.BaseModules.Select(x => x.Name).Where(x => x != null));
 
-            foreach (ShaderModule mod in ToInstall)
+            foreach(ShaderModule mod in ToInstall)
             {
                 if (mod == null) continue;
                 if (installedNames.Contains(mod.Name)) continue;
@@ -416,7 +421,7 @@ namespace Poiyomi.AngryLabs
 
             return modules.FirstOrDefault(x => x?.Id == name);
         }
-
+        
 
         private static void RefreshShaderList()
         {

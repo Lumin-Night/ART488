@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Thry.ThryEditor;
 using UnityEditor;
 using UnityEngine;
@@ -69,7 +70,7 @@ namespace Thry
 
         public bool LeftClick_IgnoreUnityUses
         {
-            get { return _MouseLeftClick; }
+            get { return _MouseLeftClick;  }
         }
 
         public bool RightClick_IgnoreUnityUses
@@ -186,7 +187,7 @@ namespace Thry
                         tag = ShaderOptimizer.GetAnimatedTag(MaterialProperty);
                     }
                 }
-
+                
                 this.IsAnimated = IsAnimatable && tag != "";
                 this.IsRenaming = IsAnimatable && tag == "2";
             }
@@ -223,7 +224,7 @@ namespace Thry
             if (DrawingData.IsEnabled && Options.condition_enable != null)
             {
                 hasAddedDisabledGroup = !Options.condition_enable.Test();
-                if (hasAddedDisabledGroup)
+                if(hasAddedDisabledGroup)
                 {
                     DrawingData.IsEnabled = !hasAddedDisabledGroup;
                     EditorGUI.BeginDisabledGroup(true);
@@ -249,8 +250,7 @@ namespace Thry
                 //Context menu
                 //Show context menu, if not open.
                 //If locked material only show menu for animated materials. Only show data retieving options in locked state
-                if ((!ShaderEditor.Active.IsLockedMaterial || IsAnimated))
-                {
+                if ( (!ShaderEditor.Active.IsLockedMaterial || IsAnimated)) {
                     contextMenu = new GenericMenu();
                     if (IsAnimatable && !ShaderEditor.Active.IsLockedMaterial)
                     {
@@ -259,14 +259,14 @@ namespace Thry
                         contextMenu.AddItem(new GUIContent("Locking Explanation"), false, () => { Application.OpenURL("https://www.youtube.com/watch?v=asWeDJb5LAo&ab_channel=poiyomi"); });
                         contextMenu.AddSeparator("");
                     }
-                    if (ShaderEditor.Active.IsPresetEditor)
+                    if (ShaderEditor.Active.IsPresetEditor )
                     {
                         contextMenu.AddItem(new GUIContent("Is part of preset"), IsPreset, ToggleIsPreset);
                         contextMenu.AddSeparator("");
                     }
                     contextMenu.AddItem(new GUIContent("Copy Property Name"), false, () => { EditorGUIUtility.systemCopyBuffer = MaterialProperty.name; });
                     contextMenu.AddItem(new GUIContent("Copy Animated Property Name"), false, () => { EditorGUIUtility.systemCopyBuffer = GetAnimatedPropertyName(); });
-                    contextMenu.AddItem(new GUIContent("Copy Animated Property Path"), false, CopyPropertyPath);
+                    contextMenu.AddItem(new GUIContent("Copy Animated Property Path"), false, CopyPropertyPath );
                     contextMenu.AddItem(new GUIContent("Copy Property as Keyframe"), false, CopyPropertyAsKeyframe);
                     contextMenu.ShowAsContext();
                 }
@@ -276,7 +276,7 @@ namespace Thry
         void ToggleIsPreset()
         {
             IsPreset = !IsPreset;
-            if (MaterialProperty != null) Presets.SetProperty(ActiveShaderEditor.Materials[0], this, IsPreset);
+            if(MaterialProperty != null) Presets.SetProperty(ActiveShaderEditor.Materials[0], this, IsPreset);
             ShaderEditor.RepaintActive();
         }
 
@@ -285,7 +285,7 @@ namespace Thry
             string path = GetAnimatedPropertyName();
             Transform selected = Selection.activeTransform;
             Transform root = selected;
-            while (root != null && root.GetComponent<Animator>() == null)
+            while(root != null && root.GetComponent<Animator>() == null)
                 root = root.parent;
             if (selected != null && root != null && selected != root)
                 path = AnimationUtility.CalculateTransformPath(selected, root) + "/" + path;
@@ -309,7 +309,7 @@ namespace Thry
                 root = root.parent;
             if (selected != null && root != null && selected != root)
                 path = AnimationUtility.CalculateTransformPath(selected, root);
-            if (selected == null && root == null)
+            if(selected == null && root == null)
                 return;
 
             Type rendererType = typeof(Renderer);
@@ -333,7 +333,7 @@ namespace Thry
                 clip.SetCurve(path, rendererType, propertyname, new AnimationCurve(new Keyframe(0, MaterialProperty.floatValue)));
                 keyframeList.Add(ClipToKeyFrame(animationCurveType, clip, path, "", rendererType));
             }
-            else if (MaterialProperty.type == MaterialProperty.PropType.Color)
+            else if(MaterialProperty.type == MaterialProperty.PropType.Color)
             {
                 clip.SetCurve(path, rendererType, propertyname + ".r", new AnimationCurve(new Keyframe(0, MaterialProperty.colorValue.r)));
                 clip.SetCurve(path, rendererType, propertyname + ".g", new AnimationCurve(new Keyframe(0, MaterialProperty.colorValue.g)));
@@ -343,8 +343,7 @@ namespace Thry
                 keyframeList.Add(ClipToKeyFrame(animationCurveType, clip, path, ".g", rendererType));
                 keyframeList.Add(ClipToKeyFrame(animationCurveType, clip, path, ".b", rendererType));
                 keyframeList.Add(ClipToKeyFrame(animationCurveType, clip, path, ".a", rendererType));
-            }
-            else if (MaterialProperty.type == MaterialProperty.PropType.Vector)
+            }else if(MaterialProperty.type == MaterialProperty.PropType.Vector)
             {
                 clip.SetCurve(path, rendererType, propertyname + ".x", new AnimationCurve(new Keyframe(0, MaterialProperty.vectorValue.x)));
                 clip.SetCurve(path, rendererType, propertyname + ".y", new AnimationCurve(new Keyframe(0, MaterialProperty.vectorValue.y)));
@@ -354,8 +353,7 @@ namespace Thry
                 keyframeList.Add(ClipToKeyFrame(animationCurveType, clip, path, ".y", rendererType));
                 keyframeList.Add(ClipToKeyFrame(animationCurveType, clip, path, ".z", rendererType));
                 keyframeList.Add(ClipToKeyFrame(animationCurveType, clip, path, ".w", rendererType));
-            }
-            else if (MaterialProperty.type == MaterialProperty.PropType.Texture)
+            }else if(MaterialProperty.type == MaterialProperty.PropType.Texture)
             {
                 clip.SetCurve(path, rendererType, propertyname + ".x", new AnimationCurve(new Keyframe(0, MaterialProperty.textureScaleAndOffset.x)));
                 clip.SetCurve(path, rendererType, propertyname + ".y", new AnimationCurve(new Keyframe(0, MaterialProperty.textureScaleAndOffset.y)));
@@ -395,7 +393,7 @@ namespace Thry
             EditorGUI.BeginChangeCheck();
             DrawInternal(content, rect, useEditorIndent, isInHeader);
 
-            if (this is TextureProperty == false) DrawingData.TooltipCheckRect = DrawingData.LastGuiObjectRect;
+            if(this is TextureProperty == false) DrawingData.TooltipCheckRect = DrawingData.LastGuiObjectRect;
             DrawingData.TooltipCheckRect.width = EditorGUIUtility.labelWidth;
 
             HandleRightClickToggles(isInHeader);
@@ -407,8 +405,8 @@ namespace Thry
                 //Check if property is being animated
                 if (this is ShaderProperty && ActiveShaderEditor.ActiveRenderer != null && ActiveShaderEditor.IsInAnimationMode && IsAnimatable && !IsAnimated)
                 {
-                    if (MaterialProperty.type == MaterialProperty.PropType.Texture ?
-                        AnimationMode.IsPropertyAnimated(ActiveShaderEditor.ActiveRenderer, "material." + MaterialProperty.name + "_ST.x") :
+                    if (MaterialProperty.type == MaterialProperty.PropType.Texture ? 
+                        AnimationMode.IsPropertyAnimated(ActiveShaderEditor.ActiveRenderer, "material." + MaterialProperty.name + "_ST.x" ) :
                         AnimationMode.IsPropertyAnimated(ActiveShaderEditor.ActiveRenderer, "material." + MaterialProperty.name))
                         SetAnimated(true, false);
                 }
@@ -420,7 +418,7 @@ namespace Thry
             tooltip.ConditionalDraw(DrawingData.TooltipCheckRect);
 
             //Click testing
-            if (Event.current.type == EventType.MouseDown && DrawingData.LastGuiObjectRect.Contains(ShaderEditor.Input.mouse_position))
+            if(Event.current.type == EventType.MouseDown && DrawingData.LastGuiObjectRect.Contains(ShaderEditor.Input.mouse_position))
             {
                 if ((ShaderEditor.Input.is_alt_down && Options.altClick != null)) Options.altClick.Perform(ShaderEditor.Active.Materials);
                 else if (Options.onClick != null) Options.onClick.Perform(ShaderEditor.Active.Materials);
@@ -515,7 +513,7 @@ namespace Thry
             ShaderGroup group = p as ShaderGroup;
             if (Options.reference_property != null && group.Options.reference_property != null)
                 ActiveShaderEditor.PropertyDictionary[Options.reference_property].TransferFromMaterialAndGroup(m, group.ActiveShaderEditor.PropertyDictionary[group.Options.reference_property]);
-            for (int i = 0; i < group.parts.Count && i < parts.Count; i++)
+            for(int i=0;i<group.parts.Count && i < parts.Count; i++)
             {
                 parts[i].TransferFromMaterialAndGroup(m, group.parts[i]);
             }
@@ -545,7 +543,7 @@ namespace Thry
 
         public ShaderHeader(ShaderEditor shaderEditor, MaterialProperty prop, MaterialEditor materialEditor, string displayName, int xOffset, PropertyOptions options) : base(shaderEditor, prop, materialEditor, displayName, xOffset, options)
         {
-            if (DrawingData.LastPropertyDrawerType == DrawerType.Header)
+            if(DrawingData.LastPropertyDrawerType == DrawerType.Header)
             {
                 //new header setup with drawer
                 this.headerDrawer = DrawingData.LastPropertyDrawer as ThryHeaderDrawer;
@@ -645,7 +643,7 @@ namespace Thry
                 this.customHeightOffset = -EditorGUIUtility.singleLineHeight;
             }
 
-            if (DrawingData.LastPropertyDecorators.Count > 0)
+            if(DrawingData.LastPropertyDecorators.Count > 0)
             {
                 _customDecorators = DrawingData.LastPropertyDecorators.ToArray();
                 _customDecoratorRects = new Rect[DrawingData.LastPropertyDecorators.Count];
@@ -659,7 +657,7 @@ namespace Thry
         public override void CopyFromMaterial(Material m, bool isTopCall = false)
         {
             MaterialHelper.CopyPropertyValueFromMaterial(MaterialProperty, m);
-            if (keyword != null) SetKeyword(ActiveShaderEditor.Materials, m.GetFloat(MaterialProperty.name) == 1);
+            if (keyword != null) SetKeyword(ActiveShaderEditor.Materials, m.GetFloat(MaterialProperty.name)==1);
             if (IsAnimatable)
             {
                 ShaderOptimizer.CopyAnimatedTagFromMaterial(m, MaterialProperty);
@@ -696,6 +694,11 @@ namespace Thry
             else m.DisableKeyword(keyword);
         }
 
+        public void UpdateKeywordFromValue()
+        {
+            if (keyword != null) SetKeyword(ActiveShaderEditor.Materials, MaterialProperty.floatValue == 1);
+        }
+
         public override void DrawInternal(GUIContent content, CRect rect = null, bool useEditorIndent = false, bool isInHeader = false)
         {
             PreDraw();
@@ -707,9 +710,9 @@ namespace Thry
             if (!useEditorIndent)
                 EditorGUI.indentLevel = XOffset + 1;
 
-            if (_customDecorators != null && doCustomDrawLogic)
+            if(_customDecorators != null && doCustomDrawLogic)
             {
-                for (int i = 0; i < _customDecorators.Length; i++)
+                for(int i= 0;i<_customDecorators.Length;i++)
                 {
                     _customDecoratorRects[i] = EditorGUILayout.GetControlRect(false, GUILayout.Height(_customDecorators[i].GetPropertyHeight(MaterialProperty, content.text, ActiveShaderEditor.Editor)));
                 }
@@ -736,8 +739,7 @@ namespace Thry
             else if (doForceIntoOneLine)
             {
                 ActiveShaderEditor.Editor.ShaderProperty(GUILayoutUtility.GetRect(content, Styles.vectorPropertyStyle), this.MaterialProperty, content);
-            }
-            else if (doCustomHeightOffset)
+            }else if (doCustomHeightOffset)
             {
                 ActiveShaderEditor.Editor.ShaderProperty(
                     GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, ActiveShaderEditor.Editor.GetPropertyHeight(this.MaterialProperty, content.text) + customHeightOffset)
@@ -752,9 +754,9 @@ namespace Thry
                 ActiveShaderEditor.Editor.ShaderProperty(this.MaterialProperty, content);
             }
 
-            if (_customDecorators != null && doCustomDrawLogic)
+            if(_customDecorators != null && doCustomDrawLogic)
             {
-                for (int i = 0; i < _customDecorators.Length; i++)
+                for(int i= 0;i<_customDecorators.Length;i++)
                 {
                     _customDecorators[i].OnGUI(_customDecoratorRects[i], MaterialProperty, content, ShaderEditor.Active.Editor);
                 }
@@ -921,8 +923,8 @@ namespace Thry
                     content = new GUIContent(Options.texture.loaded_texture, content.tooltip);
                     int height = Options.texture.height;
                     int width = (int)((float)Options.texture.loaded_texture.width / Options.texture.loaded_texture.height * height);
-                    Rect control = EditorGUILayout.GetControlRect(false, height - 18);
-                    Rect r = new Rect((control.width - width) / 2, control.y, width, height);
+                    Rect control = EditorGUILayout.GetControlRect(false, height-18);
+                    Rect r = new Rect((control.width-width)/2,control.y,width, height);
                     GUI.DrawTexture(r, Options.texture.loaded_texture);
                 }
             }
@@ -1071,7 +1073,7 @@ namespace Thry
             bool isMixed = false;
             for (int i = 1; i < ActiveShaderEditor.Materials.Length; i++)
             {
-                if ((ActiveShaderEditor.Materials[i].globalIlluminationFlags & any_em) != giFlags)
+                if((ActiveShaderEditor.Materials[i].globalIlluminationFlags & any_em) != giFlags)
                 {
                     isMixed = true;
                     break;

@@ -9,9 +9,10 @@
 [sRGBWarning(true)][ThryTexture]_ParallaxInternalMap ("Internal Map--{reference_properties:[_ParallaxInternalMapPan]}", 2D) = "black" { }
 [HideInInspector][Vector2]_ParallaxInternalMapPan ("Panning", Vector) = (0, 0, 0, 0)
 
-[sRGBWarning][ThryTexture]_ParallaxInternalMapMask ("Mask--{reference_properties:[_ParallaxInternalMapMaskPan, _ParallaxInternalMapMaskUV]}", 2D) = "white" { }
+[sRGBWarning][ThryTexture]_ParallaxInternalMapMask ("Mask--{reference_properties:[_ParallaxInternalMapMaskPan, _ParallaxInternalMapMaskUV, _ParallaxInternalMapMaskChannel]}", 2D) = "white" { }
 [HideInInspector][Vector2]_ParallaxInternalMapMaskPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][Enum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, distorteduv0, 4)] _ParallaxInternalMapMaskUV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_ParallaxInternalMapMaskChannel ("Channel", Float) = 0
 [IntRange]_ParallaxInternalIterations ("Parallax Internal Iterations", Range(1, 50)) = 4
 _ParallaxInternalMinDepth ("Min Depth", Float) = 0
 _ParallaxInternalMaxDepth ("Max Depth", Float) = 0.1
@@ -52,6 +53,7 @@ _ParallaxInternalHueShiftPerLevel ("Hue Shift Per Level--{condition_showS:(_Para
     float4 _ParallaxInternalMapMask_ST;
     float2 _ParallaxInternalMapMaskPan;
     float _ParallaxInternalMapMaskUV;
+    float _ParallaxInternalMapMaskChannel;
 
     float _ParallaxInternalIterations;
     float _ParallaxInternalMinDepth;
@@ -118,7 +120,7 @@ _ParallaxInternalHueShiftPerLevel ("Hue Shift Per Level--{condition_showS:(_Para
         parallax = hueShift(parallax, frac(_ParallaxInternalHueShift + _ParallaxInternalHueShiftSpeed * _Time.x) * _ParallaxInternalHueShiftEnabled);
         //parallax /= _ParallaxInternalIterations;
         #if defined(PROP_PARALLAXINTERNALMAPMASK) || !defined(OPTIMIZER_ENABLED)
-            poiFragData.baseColor.rgb += parallax * POI2D_SAMPLER_PAN(_ParallaxInternalMapMask, _MainTex, poiMesh.uv[_ParallaxInternalMapMaskUV], _ParallaxInternalMapMaskPan).r;
+            poiFragData.baseColor.rgb += parallax * POI2D_SAMPLER_PAN(_ParallaxInternalMapMask, _MainTex, poiUV(poiMesh.uv[_ParallaxInternalMapMaskUV], _ParallaxInternalMapMask_ST), _ParallaxInternalMapMaskPan)[_ParallaxInternalMapMaskChannel];
         #else
             poiFragData.baseColor.rgb += parallax;
         #endif

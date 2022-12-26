@@ -54,15 +54,17 @@ MonoBehaviour:
     - FRAGMENT_OUTLINE_FUNCTIONS
     NeedsVariant: 0
     Queue: 100
+  - Template: {fileID: 7995263783866781067, guid: bd9672aa4159b794982858e386a7ccdd,
+      type: 3}
+    Keywords:
+    - MAIN_TEXTURE_SAMPLE
+    NeedsVariant: 0
+    Queue: 101
   - Template: {fileID: -4908538323552078938, guid: bd9672aa4159b794982858e386a7ccdd,
       type: 3}
     Keywords:
-    - FRAGMENT_BASE_COLOR
-    - FRAGMENT_ADD_COLOR
-    - FRAGMENT_SHADOW_COLOR
-    - FRAGMENT_META_COLOR
-    - FRAGMENT_OUTLINE_COLOR
+    - BASE_COLOR_MOD
     NeedsVariant: 0
-    Queue: 100
+    Queue: 101
   Functions: []
   AdditionalSerializedData: 

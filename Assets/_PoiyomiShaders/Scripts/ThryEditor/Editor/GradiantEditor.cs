@@ -2,6 +2,8 @@
 // Copyright (C) 2019 Thryrallo
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -12,12 +14,12 @@ namespace Thry
     public class GradientEditor : EditorWindow
     {
 
-        public static void Open(GradientData data, MaterialProperty prop, TextureData predefinedTextureSettings, bool force_texture_options = false, bool show_texture_options = true)
+        public static void Open(GradientData data, MaterialProperty prop, TextureData predefinedTextureSettings, bool force_texture_options = false, bool show_texture_options=true)
         {
             texture_settings_data = LoadTextureSettings(prop, predefinedTextureSettings, force_texture_options);
             data.Gradient = TextureHelper.GetGradient(prop.textureValue);
             GradientEditor window = (GradientEditor)EditorWindow.GetWindow(typeof(GradientEditor));
-            window.titleContent = new GUIContent("Gradient '" + prop.name + "' of '" + prop.targets[0].name + "'");
+            window.titleContent = new GUIContent("Gradient '" +prop.name +"' of '"+ prop.targets[0].name + "'");
             window.privious_preview_texture = prop.textureValue;
             window.prop = prop;
             window.data = data;
@@ -48,7 +50,7 @@ namespace Thry
         {
             if (force_texture_options && predefinedTextureSettings != null)
                 return predefinedTextureSettings;
-            string json_texture_settings = FileHelper.LoadValueFromFile("gradient_texture_options_" + prop.name, PATH.PERSISTENT_DATA);
+            string json_texture_settings = FileHelper.LoadValueFromFile("gradient_texture_options_"+prop.name, PATH.PERSISTENT_DATA);
             if (json_texture_settings != null)
                 return Parser.ParseToObject<TextureData>(json_texture_settings);
             else if (predefinedTextureSettings != null)
@@ -81,7 +83,7 @@ namespace Thry
                 if (data.PreviewTexture.GetType() == typeof(Texture2D))
                 {
                     string file_name = GradientFileName(data.Gradient, prop.targets[0].name);
-                    Texture saved = TextureHelper.SaveTextureAsPNG((Texture2D)data.PreviewTexture, PATH.TEXTURES_DIR + "/Gradients/" + file_name, textureSettings);
+                    Texture saved = TextureHelper.SaveTextureAsPNG((Texture2D)data.PreviewTexture, PATH.TEXTURES_DIR+"/Gradients/" + file_name, textureSettings);
                     file_name = Regex.Replace(file_name, @"\.((png)|(jpg))$", "");
                     FileHelper.SaveValueToFile(AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(saved)), Parser.ObjectToString(data.Gradient), PATH.GRADIENT_INFO_FILE);
                     prop.textureValue = saved;
@@ -163,7 +165,7 @@ namespace Thry
                 InitSomeStuff();
             float gradientEditorHeight = Mathf.Min(position.height, 146);
             float distBetween = 10f;
-            float presetLibraryHeight = Mathf.Min(position.height - gradientEditorHeight - distBetween - 135, 130);
+            float presetLibraryHeight = Mathf.Min(position.height - gradientEditorHeight - distBetween-135,130);
 
             Rect gradientEditorRect = new Rect(10, 10, position.width - 20, gradientEditorHeight - 20);
             Rect gradientLibraryRect = new Rect(0, gradientEditorHeight + distBetween, position.width, presetLibraryHeight);
@@ -178,15 +180,15 @@ namespace Thry
             preset_libary_onGUI.Invoke(preset_libary_editor, new object[] { gradientLibraryRect, data.Gradient });
 
             GUILayout.BeginVertical();
-            GUILayout.Space(gradientEditorHeight + presetLibraryHeight + distBetween);
+            GUILayout.Space(gradientEditorHeight+ presetLibraryHeight+ distBetween);
             GUILayout.EndVertical();
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Discard Changes", GUILayout.ExpandWidth(false)))
+            if(GUILayout.Button("Discard Changes",GUILayout.ExpandWidth(false)))
                 DiscardChanges();
             GUILayout.EndHorizontal();
-            if (show_texture_options)
+            if(show_texture_options)
                 TextureSettingsGUI();
         }
 
@@ -202,8 +204,8 @@ namespace Thry
         {
             EditorGUIUtility.labelWidth = 100;
             EditorGUIUtility.fieldWidth = 150;
-            EditorGUILayout.LabelField("Texture options:", EditorStyles.boldLabel);
-            bool changed = GuiHelper.GUIDataStruct<TextureData>(textureSettings, new string[] { "name" });
+            EditorGUILayout.LabelField("Texture options:",EditorStyles.boldLabel);
+            bool changed = GuiHelper.GUIDataStruct<TextureData>(textureSettings, new string[]{"name"});
             if (changed)
             {
                 FileHelper.SaveValueToFile("gradient_texture_options_" + prop.name, Parser.ObjectToString(textureSettings), PATH.PERSISTENT_DATA);

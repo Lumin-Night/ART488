@@ -42,6 +42,7 @@ MonoBehaviour:
     - SHADOW_PROPERTY_VARIABLES
     - META_PROPERTY_VARIABLES
     - OUTLINE_PROPERTY_VARIABLES
+    - EARLYZ_PROPERTY_VARIABLES
     NeedsVariant: 0
     Queue: 100
   - Template: {fileID: 5616120054643763343, guid: e41ae3a1faaf0fd489a5bc50d7ba83dd,

@@ -5,13 +5,13 @@ namespace Poiyomi.ModularShaderSystem.UI
     public class VariableField : VisualElement
     {
         public Variable Variable { get; set; }
-
+        
         private string _type;
 
         public VariableField(Variable variable)
         {
             Variable = variable;
-            if (variable.Type == VariableType.Custom)
+            if(variable.Type == VariableType.Custom)
                 _type = variable.CustomType;
             else
                 _type = variable.Type.ToString();

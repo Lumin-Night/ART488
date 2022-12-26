@@ -19,7 +19,7 @@ namespace Poi
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(_subTitle))
+                if(string.IsNullOrWhiteSpace(_subTitle))
                     _subTitle = "by Pumkin - v" + version.ToString();
                 return _subTitle;
             }
@@ -72,7 +72,7 @@ namespace Poi
 
             EditorGUI.BeginChangeCheck();
             GameObject obj = EditorGUILayout.ObjectField("Avatar", Selection, typeof(GameObject), true) as GameObject;
-            if (EditorGUI.EndChangeCheck())
+            if(EditorGUI.EndChangeCheck())
                 Selection = obj;
 
             PoiHelpers.DrawLine();
@@ -80,10 +80,10 @@ namespace Poi
             EditorGUI.BeginDisabledGroup(!Selection);
             {
                 EditorGUILayout.HelpBox(hint_bakeAverageNormals, MessageType.Info);
-                if (GUILayout.Button(button_bakeAverageNormals))
+                if(GUILayout.Button(button_bakeAverageNormals))
                 {
                     var meshes = GetAllMeshInfos(Selection);
-                    if (meshes == null || meshes.Length == 0)
+                    if(meshes == null || meshes.Length == 0)
                         Debug.LogWarning(log_prefix + warning_noMeshesDetected);
                     else
                         BakeAveragedNormalsToColors(meshes);
@@ -91,10 +91,10 @@ namespace Poi
 
                 PoiHelpers.DrawLine(true, false);
                 EditorGUILayout.HelpBox(hint_bakeVertexPositions, MessageType.Info);
-                if (GUILayout.Button(button_bakeVertexPositions))
+                if(GUILayout.Button(button_bakeVertexPositions))
                 {
                     var meshes = GetAllMeshInfos(Selection);
-                    if (meshes == null || meshes.Length == 0)
+                    if(meshes == null || meshes.Length == 0)
                         Debug.LogWarning(log_prefix + warning_noMeshesDetected);
                     else
                         BakePositionsToColors(meshes);
@@ -113,7 +113,7 @@ namespace Poi
         {
             string assetPath = AssetDatabase.GetAssetPath(mesh);
 
-            if (string.IsNullOrWhiteSpace(assetPath))
+            if(string.IsNullOrWhiteSpace(assetPath))
             {
                 Debug.LogWarning(log_prefix + "Invalid asset path for " + mesh.name);
                 return null;
@@ -123,13 +123,13 @@ namespace Poi
             string bakesDir = $"{Path.GetDirectoryName(assetPath)}";
 
             //Handle default assets
-            if (bakesDir.StartsWith("Library"))
+            if(bakesDir.StartsWith("Library"))
                 bakesDir = $"Assets\\{defaultUnityAssetBakesFolder}";
 
-            if (!bakesDir.EndsWith(bakesFolderName))
+            if(!bakesDir.EndsWith(bakesFolderName))
                 bakesDir += $"\\{bakesFolderName}";
 
-            if (!assetPath.Contains('.'))
+            if(!assetPath.Contains('.'))
                 assetPath += '\\';
 
             PoiHelpers.EnsurePathExistsInAssets(bakesDir);
@@ -144,7 +144,7 @@ namespace Poi
 
             newMesh = AssetDatabase.LoadAssetAtPath<Mesh>(newPath);
 
-            if (newMesh == null)
+            if(newMesh == null)
             {
                 Debug.Log(log_prefix + "Failed to load saved mesh");
                 return null;
@@ -162,9 +162,9 @@ namespace Poi
         /// <returns></returns>
         static bool SetRendererSharedMesh(Renderer render, Mesh mesh)
         {
-            if (render is SkinnedMeshRenderer smr)
+            if(render is SkinnedMeshRenderer smr)
                 smr.sharedMesh = mesh;
-            else if (render is MeshRenderer mr)
+            else if(render is MeshRenderer mr)
             {
                 var filter = mr.gameObject.GetComponent<MeshFilter>();
                 filter.sharedMesh = mesh;
@@ -184,7 +184,7 @@ namespace Poi
             var infos = renderers?.Select(ren =>
             {
                 MeshInfo info = new MeshInfo();
-                if (ren is SkinnedMeshRenderer smr)
+                if(ren is SkinnedMeshRenderer smr)
                 {
                     Mesh bakedMesh = new Mesh();
                     Transform tr = smr.gameObject.transform;
@@ -203,16 +203,16 @@ namespace Poi
                     info.bakedVertices = bakedMesh?.vertices;
                     info.bakedNormals = bakedMesh?.normals;
                     info.ownerRenderer = smr;
-                    if (!info.sharedMesh)
+                    if(!info.sharedMesh)
                         Debug.LogWarning(log_prefix + $"Skinned Mesh Renderer at <b>{info.ownerRenderer.gameObject.name}</b> doesn't have a valid mesh");
                 }
-                else if (ren is MeshRenderer mr)
+                else if(ren is MeshRenderer mr)
                 {
                     info.sharedMesh = mr.GetComponent<MeshFilter>()?.sharedMesh;
                     info.bakedVertices = info.sharedMesh?.vertices;
                     info.bakedNormals = info.sharedMesh?.normals;
                     info.ownerRenderer = mr;
-                    if (!info.sharedMesh)
+                    if(!info.sharedMesh)
                         Debug.LogWarning(log_prefix + $"Mesh renderer at <b>{info.ownerRenderer.gameObject.name}</b> doesn't have a mesh filter with a valid mesh");
                 }
                 return info;
@@ -227,25 +227,25 @@ namespace Poi
             try
             {
                 AssetDatabase.StartAssetEditing();
-                foreach (var meshInfo in meshInfos)
+                foreach(var meshInfo in meshInfos)
                 {
-                    if (!meshInfo.sharedMesh)
+                    if(!meshInfo.sharedMesh)
                         continue;
 
                     Vector3[] verts = meshInfo.bakedVertices;    //accessing mesh.vertices on every iteration is very slow
                     Color[] colors = new Color[verts.Length];
-                    for (int i = 0; i < verts.Length; i++)
+                    for(int i = 0; i < verts.Length; i++)
                         colors[i] = new Color(verts[i].x, verts[i].y, verts[i].z);
                     meshInfo.sharedMesh.colors = colors;
 
                     //Create new mesh asset and add it to queue
                     string name = PoiHelpers.AddSuffix(meshInfo.ownerRenderer.gameObject.name, bakedSuffix_position);
                     Mesh newMesh = SaveMeshAsset(meshInfo.sharedMesh, name);
-                    if (newMesh)
+                    if(newMesh)
                         queue.Add(meshInfo, newMesh);
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Debug.LogException(ex);
             }
@@ -255,7 +255,7 @@ namespace Poi
             }
 
             //After all meshes are imported assign the meshes
-            foreach (var kv in queue)
+            foreach(var kv in queue)
             {
                 SetRendererSharedMesh(kv.Key.ownerRenderer, kv.Value);
             }
@@ -267,15 +267,15 @@ namespace Poi
             try
             {
                 AssetDatabase.StartAssetEditing();
-                foreach (var meshInfo in infos)
+                foreach(var meshInfo in infos)
                 {
-                    if (!meshInfo.sharedMesh)
+                    if(!meshInfo.sharedMesh)
                         continue;
 
                     Vector3[] verts = meshInfo.bakedVertices;
                     Vector3[] normals = meshInfo.bakedNormals;
                     VertexInfo[] vertInfo = new VertexInfo[verts.Length];
-                    for (int i = 0; i < verts.Length; i++)
+                    for(int i = 0; i < verts.Length; i++)
                     {
                         vertInfo[i] = new VertexInfo()
                         {
@@ -287,14 +287,14 @@ namespace Poi
                     var groups = vertInfo.GroupBy(x => x.vertex);
                     VertexInfo[] processedVertInfo = new VertexInfo[vertInfo.Length];
                     int index = 0;
-                    foreach (IGrouping<Vector3, VertexInfo> group in groups)
+                    foreach(IGrouping<Vector3, VertexInfo> group in groups)
                     {
                         Vector3 avgNormal = Vector3.zero;
-                        foreach (VertexInfo item in group)
+                        foreach(VertexInfo item in group)
                             avgNormal += item.normal;
 
                         avgNormal /= group.Count();
-                        foreach (VertexInfo item in group)
+                        foreach(VertexInfo item in group)
                         {
                             processedVertInfo[index] = new VertexInfo()
                             {
@@ -307,7 +307,7 @@ namespace Poi
                         }
                     }
                     Color[] colors = new Color[verts.Length];
-                    for (int i = 0; i < processedVertInfo.Length; i++)
+                    for(int i = 0; i < processedVertInfo.Length; i++)
                     {
                         VertexInfo info = processedVertInfo[i];
 
@@ -320,11 +320,11 @@ namespace Poi
 
                     string name = PoiHelpers.AddSuffix(meshInfo.ownerRenderer.gameObject.name, bakedSuffix_normals);
                     Mesh newMesh = SaveMeshAsset(meshInfo.sharedMesh, name);
-                    if (newMesh)
+                    if(newMesh)
                         queue.Add(meshInfo, newMesh);
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Debug.LogException(ex);
             }
@@ -334,7 +334,7 @@ namespace Poi
             }
 
             //Assign all new meshes to their renderers
-            foreach (var kv in queue)
+            foreach(var kv in queue)
                 SetRendererSharedMesh(kv.Key.ownerRenderer, kv.Value);
         }
 

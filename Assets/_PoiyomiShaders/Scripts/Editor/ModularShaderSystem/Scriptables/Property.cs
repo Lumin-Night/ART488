@@ -1,7 +1,7 @@
-using Poiyomi.ModularShaderSystem.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Poiyomi.ModularShaderSystem.UI;
 
 namespace Poiyomi.ModularShaderSystem
 {
@@ -18,20 +18,20 @@ namespace Poiyomi.ModularShaderSystem
         CubeArray,
         Texture3D
     }
-
+    
     [Serializable]
     public class Property : IEquatable<Property>
     {
         public string Name;
-
+        
         public string DisplayName;
-
+        
         public string Type;
-
+        
         public string DefaultValue;
 
         public Texture DefaultTextureAsset;
-
+        
         [PropertyAttribute]
         public List<string> Attributes;
 
@@ -40,7 +40,7 @@ namespace Poiyomi.ModularShaderSystem
             var variable = new Variable();
             variable.Name = Name;
 
-            switch (Type)
+            switch(Type)
             {
                 case "Float": variable.Type = VariableType.Float; break;
                 case "Int": variable.Type = VariableType.Float; break;
@@ -64,13 +64,13 @@ namespace Poiyomi.ModularShaderSystem
 
             return false;
         }
-
+        
         bool IEquatable<Property>.Equals(Property other)
         {
             return Equals(other);
         }
 
-        public static bool operator ==(Property left, Property right)
+        public static bool operator == (Property left, Property right)
         {
             return left?.Equals(right) ?? right is null;
         }

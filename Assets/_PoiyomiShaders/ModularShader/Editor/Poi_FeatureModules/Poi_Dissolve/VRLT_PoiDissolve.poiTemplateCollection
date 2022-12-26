@@ -304,7 +304,7 @@ _DissolveAlpha9 ("Dissolve Alpha 9", Range(-1, 1)) = 0
 
 		if(isDiscardedFromDissolve) // Early Return skips rest of vertex shader
 		{
-			return (VertexOut)0;
+			return (VertexOut)POI_NAN;
 		}
 	}
 #endif

@@ -24,7 +24,7 @@ namespace Poiyomi.ModularShaderSystem.UI
             private Label _line;
             public string Text { get; }
 
-            public LineItem() : this(0, "") { }
+            public LineItem() : this(0, "") {}
 
             public LineItem(int number, string text, int digits = 0)
             {
@@ -36,7 +36,7 @@ namespace Poiyomi.ModularShaderSystem.UI
                 _lineNumber.style.unityFont = TextFont;
                 _lineNumber.style.marginRight = 4;
                 _lineNumber.style.marginLeft = 4;
-
+                
                 _line = new Label(text);
                 _line.style.flexGrow = 1;
                 _line.style.unityFont = TextFont;
@@ -54,7 +54,7 @@ namespace Poiyomi.ModularShaderSystem.UI
                 _line.MeasureTextSize(textLine, 0, MeasureMode.Exactly, 0, MeasureMode.Exactly);
             }
         }
-
+        
         public string Text
         {
             get => string.Join("\n", _textLines);
@@ -64,13 +64,13 @@ namespace Poiyomi.ModularShaderSystem.UI
                 _digits = (int)Math.Floor(Math.Log10(_textLines.Length) + 1);
                 _listView.itemsSource = _textLines;
 
-                float width = ((_textLines.Length == 0 ? 0 : _textLines.Max(x => x.Length)) + _digits + 1) * 10;
+                float width =((_textLines.Length == 0 ? 0 : _textLines.Max(x => x.Length)) + _digits + 1) * 10;
                 _listView.contentContainer.style.width = width;
             }
         }
-
+        
         public int LineCount => _textLines.Length;
-
+        
         private Label _templateLabel;
         private string[] _textLines;
         private ListView _listView;
@@ -86,10 +86,10 @@ namespace Poiyomi.ModularShaderSystem.UI
             _listView.AddToClassList("unity-base-field__input");
             _listView.style.flexGrow = 1;
             _listView.contentContainer.style.flexGrow = 1;
-
+            
             Func<VisualElement> makeItem = () => new LineItem();
-            Action<VisualElement, int> bindItem = (e, i) => (e as LineItem).SetText(i + 1, _textLines[i], _digits);
-
+            Action<VisualElement, int> bindItem = (e, i) => (e as LineItem).SetText(i+1, _textLines[i], _digits);
+            
             _listView.makeItem = makeItem;
             _listView.bindItem = bindItem;
             _listView.selectionType = SelectionType.None;

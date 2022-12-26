@@ -121,13 +121,13 @@ public class PlayerController3D : MonoBehaviour
         }
         moveXZ = moveAction.ReadValue<Vector2>();
  
-        if (isSlow == true)
+/*        if (isSlow == true)
         {
             if(multiplier >= .3)
             {
                 multiplier -= .03f;
             }
-        }
+        }*/
 
         if (moveXZ != Vector2.zero && !isDashing)
         {

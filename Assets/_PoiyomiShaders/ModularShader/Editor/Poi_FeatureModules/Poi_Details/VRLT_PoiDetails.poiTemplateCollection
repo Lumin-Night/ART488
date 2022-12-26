@@ -68,7 +68,7 @@ _DetailBrightness ("Detail Brightness:", Range(0, 2)) = 1
     void ApplyDetailColor(inout PoiFragData poiFragData, in PoiMesh poiMesh, in PoiMods poiMods)
     {
         #if defined(PROP_DETAILTEX) || !defined(OPTIMIZER_ENABLED)
-            half3 detailTexture = POI2D_SAMPLER_PAN_STOCHASTIC_TOGGLE(_DetailTex, _MainTex, poiUV(poiMesh.uv[_DetailTexUV], _DetailTex_ST), _DetailTexPan, _DetailTexStochastic).rgb * poiThemeColor(poiMods, _DetailTint, _DetailTintThemeIndex);
+            half3 detailTexture = POI2D_SAMPLER_PAN_STOCHASTIC(_DetailTex, _MainTex, poiUV(poiMesh.uv[_DetailTexUV], _DetailTex_ST), _DetailTexPan, _DetailTexStochastic).rgb * poiThemeColor(poiMods, _DetailTint, _DetailTintThemeIndex);
         #else
             half3 detailTexture = 0.21763764082 * poiThemeColor(poiMods, _DetailTint, _DetailTintThemeIndex);
         #endif
@@ -79,7 +79,7 @@ _DetailBrightness ("Detail Brightness:", Range(0, 2)) = 1
     void ApplyDetailNormal(inout PoiMods poiMods, inout PoiMesh poiMesh)
     {
         #if defined(PROP_DETAILMASK) || !defined(OPTIMIZER_ENABLED)
-            poiMods.detailMask = POI2D_SAMPLER_PAN_STOCHASTIC_TOGGLE(_DetailMask, _MainTex, poiUV(poiMesh.uv[_DetailMaskUV], _DetailMask_ST), _DetailMaskPan, _DetailMaskStochastic).rg;
+            poiMods.detailMask = POI2D_SAMPLER_PAN_STOCHASTIC(_DetailMask, _MainTex, poiUV(poiMesh.uv[_DetailMaskUV], _DetailMask_ST), _DetailMaskPan, _DetailMaskStochastic).rg;
         #else
             poiMods.detailMask = 1;
         #endif
@@ -87,12 +87,12 @@ _DetailBrightness ("Detail Brightness:", Range(0, 2)) = 1
         #ifdef POI_BACKFACE
             if (!poiMesh.isFrontFace)
             {
-                poiMods.detailMask.g *= _BackFaceDetailIntensity;
+                poiMods.detailMask.rg *= _BackFaceDetailIntensity;
             }
         #endif
 
         #if defined(PROP_DETAILNORMALMAP) || !defined(OPTIMIZER_ENABLED)
-            half3 detailNormal = UnpackScaleNormal(POI2D_SAMPLER_PAN_STOCHASTIC_TOGGLE(_DetailNormalMap, _MainTex, poiUV(poiMesh.uv[_DetailNormalMapUV], _DetailNormalMap_ST), _DetailNormalMapPan, _DetailNormalMapStochastic), _DetailNormalMapScale * poiMods.detailMask.g);
+            half3 detailNormal = UnpackScaleNormal(POI2D_SAMPLER_PAN_STOCHASTIC(_DetailNormalMap, _MainTex, poiUV(poiMesh.uv[_DetailNormalMapUV], _DetailNormalMap_ST), _DetailNormalMapPan, _DetailNormalMapStochastic), _DetailNormalMapScale * poiMods.detailMask.g);
             poiMesh.tangentSpaceNormal = BlendNormals(detailNormal, poiMesh.tangentSpaceNormal);
         #endif
     }

@@ -1,4 +1,6 @@
+using System;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Poiyomi.ModularShaderSystem.UI
@@ -13,6 +15,6 @@ namespace Poiyomi.ModularShaderSystem.UI
             element.style.minHeight = 600;
             return element;
         }
-
+        
     }
 }

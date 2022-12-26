@@ -22,7 +22,7 @@ _Cutoff ("Alpha Cutoff", Range(0, 1.001)) = 0.5
 //ifex _MainColorAdjustToggle==0
 [HideInInspector] m_start_MainHueShift ("Color Adjust--{reference_property:_MainColorAdjustToggle,button_help:{text:Tutorial,action:{type:URL,data:https://www.poiyomi.com/color-and-normals/color-adjust},hover:Documentation}}", Float) = 0
 [HideInInspector][ThryToggle(COLOR_GRADING_HDR)] _MainColorAdjustToggle ("Adjust Colors", Float) = 0
-[sRGBWarning][ThryRGBAPacker(R Hue Mask, G Brightness Mask, B Saturation Mask, A Nothing)]_MainColorAdjustTexture ("Mask (Expand)--{reference_properties:[_MainColorAdjustTexturePan, _MainColorAdjustTextureUV]}", 2D) = "white" { }
+[sRGBWarning][ThryRGBAPacker(R Hue Mask, G Brightness Mask, B Saturation Mask)]_MainColorAdjustTexture ("Mask (Expand)--{reference_properties:[_MainColorAdjustTexturePan, _MainColorAdjustTextureUV]}", 2D) = "white" { }
 [HideInInspector][Vector2]_MainColorAdjustTexturePan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _MainColorAdjustTextureUV ("UV", Int) = 0
 _Saturation ("Saturation", Range(-1, 10)) = 0
@@ -37,6 +37,16 @@ _MainHueShiftSpeed ("Hue Shift Speed--{condition_showS:(_MainHueShiftToggle==1)}
 [Enum(Bass, 0, Low Mid, 1, High Mid, 2, Treble, 3)]_MainALHueShiftBand ("Band--{condition_showS:(_MainHueShiftToggle==1 && _EnableAudioLink==1 && _MainHueALCTEnabled==1)}", Int) = 0
 [ThryWideEnum(Motion increases as intensity of band increases, 0, Above but Smooth, 1, Motion moves back and forth as a function of intensity, 2, Above but Smoooth, 3, Fixed speed increase when the band is dark Stationary when light, 4, Above but Smooooth, 5, Fixed speed increase when the band is dark Fixed speed decrease when light, 6, Above but Smoooooth, 7)]_MainALHueShiftCTIndex ("Motion Type--{condition_showS:(_MainHueShiftToggle==1 && _EnableAudioLink==1 && _MainHueALCTEnabled==1)}", Int) = 0
 _MainHueALMotionSpeed ("Motion Speed--{condition_showS:(_MainHueShiftToggle==1 && _EnableAudioLink==1 && _MainHueALCTEnabled==1)}", Float) = 1
+
+[HideInInspector] m_start_MainHueShiftGlobalMask ("Global Mask", Float) = 0
+[ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _MainHueGlobalMask ("Hue--{reference_property:_MainHueGlobalMaskBlendType}", Int) = 0
+[HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)] _MainHueGlobalMaskBlendType ("Blending", Int) = 2
+[ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _MainSaturationGlobalMask ("Saturation--{reference_property:_MainSaturationGlobalMaskBlendType}", Int) = 0
+[HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)] _MainSaturationGlobalMaskBlendType ("Blending", Int) = 2
+[ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _MainBrightnessGlobalMask ("Brightness--{reference_property:_MainBrightnessGlobalMaskBlendType}", Int) = 0
+[HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)] _MainBrightnessGlobalMaskBlendType ("Blending", Int) = 2
+[HideInInspector] m_end_MainHueShiftGlobalMask ("Global Mask", Float) = 0
+
 [HideInInspector] m_end_MainHueShift ("Hue Shift", Float) = 0
 //endex
 
@@ -56,7 +66,9 @@ float2 _MainTexPan;
 float _MainTexUV;
 float4 _MainTex_TexelSize;
 float _MainTexStochastic;
-Texture2D _BumpMap;
+#if defined(PROP_BUMPMAP) || !defined(OPTIMIZER_ENABLED)
+	Texture2D _BumpMap;
+#endif
 float4 _BumpMap_ST;
 float2 _BumpMapPan;
 float _BumpMapUV;
@@ -87,6 +99,13 @@ float _MainHueALCTEnabled;
 float _MainALHueShiftBand;
 float _MainALHueShiftCTIndex;
 float _MainHueALMotionSpeed;
+
+float _MainHueGlobalMask;
+float _MainHueGlobalMaskBlendType;
+float _MainSaturationGlobalMask;
+float _MainSaturationGlobalMaskBlendType;
+float _MainBrightnessGlobalMask;
+float _MainBrightnessGlobalMaskBlendType;
 //endex
 
 SamplerState sampler_linear_clamp;
@@ -100,11 +119,8 @@ if (_MainPixelMode)
 	mainUV = sharpSample(_MainTex_TexelSize, mainUV);
 }
 
-#if defined(POI2D_MAINTEX_SAMPLER_PAN_STOCHASTIC_TOGGLE_INLINED)
-float4 mainTexture = POI2D_MAINTEX_SAMPLER_PAN_STOCHASTIC_TOGGLE_INLINED(_MainTex);
-#else
-float4 mainTexture = POI2D_MAINTEX_SAMPLER_PAN_INLINED(_MainTex);
-#endif
+float4 mainTexture = POI2D_SAMPLER_PAN_STOCHASTIC(_MainTex, _MainTex, poiUV(mainUV, _MainTex_ST), _MainTexPan, _MainTexStochastic);
+
 
 #T#PoiMainImplementation
 poiFragData.baseColor = mainTexture.rgb * poiThemeColor(poiMods, _Color.rgb, _ColorThemeIndex);
@@ -117,6 +133,19 @@ poiFragData.alpha = mainTexture.a * _Color.a;
 	#else
 		float4 hueShiftAlpha = 1;
 	#endif
+
+	if (_MainHueGlobalMask > 0)
+	{
+		hueShiftAlpha.r = customBlend(hueShiftAlpha.r, poiMods.globalMask[_MainHueGlobalMask-1], _MainHueGlobalMaskBlendType);
+	}
+	if (_MainSaturationGlobalMask > 0)
+	{
+		hueShiftAlpha.b = customBlend(hueShiftAlpha.b, poiMods.globalMask[_MainSaturationGlobalMask-1], _MainSaturationGlobalMaskBlendType);
+	}
+	if (_MainBrightnessGlobalMask > 0)
+	{
+		hueShiftAlpha.g = customBlend(hueShiftAlpha.g, poiMods.globalMask[_MainBrightnessGlobalMask-1], _MainBrightnessGlobalMaskBlendType);
+	}
 	
 	if (_MainHueShiftToggle)
 	{
@@ -137,7 +166,7 @@ poiFragData.alpha = mainTexture.a * _Color.a;
 			poiFragData.baseColor = hueShift(poiFragData.baseColor, frac((shift - (1 - hueShiftAlpha.r) + _MainHueShiftSpeed * _Time.x)));
 		}
 	}
-	poiFragData.baseColor = lerp(poiFragData.baseColor, dot(poiFragData.baseColor, float3(0.3, 0.59, 0.11)), -_Saturation * hueShiftAlpha.b);
+	poiFragData.baseColor = lerp(poiFragData.baseColor, dot(poiFragData.baseColor, float3(0.3, 0.59, 0.11)), -(_Saturation) * hueShiftAlpha.b);
 	poiFragData.baseColor = saturate(poiFragData.baseColor + _MainBrightness * hueShiftAlpha.g);
 #endif
 //endex
@@ -148,30 +177,26 @@ poiFragData.alpha = mainTexture.a * _Color.a;
 	{
 		alphaMask = 1 - alphaMask;
 	}
-#else
-	float alphaMask = 1;
-#endif
 
-poiFragData.alpha *= alphaMask;
+	poiFragData.alpha *= alphaMask;
+#endif
 
 #K#BASE_COLOR_MOD
 
 #T#PoiMainNormalImplementation
-float3 mainNormal = UnpackScaleNormal(POI2D_SAMPLER_PAN_STOCHASTIC_TOGGLE(_BumpMap, _MainTex, poiUV(poiMesh.uv[_BumpMapUV], _BumpMap_ST), _BumpMapPan, _BumpMapStochastic), _BumpScale);
-poiMesh.tangentSpaceNormal = mainNormal;
+#if defined(PROP_BUMPMAP) || !defined(OPTIMIZER_ENABLED)
+	poiMesh.tangentSpaceNormal = UnpackScaleNormal(POI2D_SAMPLER_PAN_STOCHASTIC(_BumpMap, _MainTex, poiUV(poiMesh.uv[_BumpMapUV].xy, _BumpMap_ST), _BumpMapPan, _BumpMapStochastic), _BumpScale);
+#else
+	poiMesh.tangentSpaceNormal = UnpackNormal(float4(0.5, 0.5, 1, 1));
+#endif
 
 #K#TANGENT_NORMAL_INJECTION
 
 poiMesh.normals[1] = normalize(
-	poiMesh.tangentSpaceNormal.x * poiMesh.tangent.xyz +
-	poiMesh.tangentSpaceNormal.y * poiMesh.binormal +
+	poiMesh.tangentSpaceNormal.x * poiMesh.tangent[0] +
+	poiMesh.tangentSpaceNormal.y * poiMesh.binormal[0] +
 	poiMesh.tangentSpaceNormal.z * poiMesh.normals[0]
 );
 
-// I'm just testing this because it makes it the same as if there is no normal map in the slot
-float3 fancyNormal = UnpackNormal(float4(0.5, 0.5, 1, 1));
-poiMesh.normals[0] = normalize(
-	fancyNormal.x * poiMesh.tangent.xyz +
-	fancyNormal.y * poiMesh.binormal +
-	fancyNormal.z * poiMesh.normals[0]
-);
+poiMesh.tangent[1] = cross(poiMesh.binormal[0], -poiMesh.normals[1]);
+poiMesh.binormal[1] = cross(-poiMesh.normals[1], poiMesh.tangent[0]);

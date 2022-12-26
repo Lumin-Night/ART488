@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -27,13 +29,23 @@ namespace Thry.ThryEditor
             public string Math;
         }
 
+        public List<PropertyTranslation> GetPropertyTranslations()
+        {
+            if (PropertyTranslations == null)
+            {
+                PropertyTranslations = new List<PropertyTranslation>();
+            }
+
+            return PropertyTranslations;
+        }
+
         public void Apply(ShaderEditor editor)
         {
             Shader originShader = Shader.Find(OriginShader);
             Shader targetShader = Shader.Find(TargetShader);
             SerializedObject serializedMaterial = new SerializedObject(editor.Materials[0]);
 
-            foreach (PropertyTranslation trans in PropertyTranslations)
+            foreach(PropertyTranslation trans in GetPropertyTranslations())
             {
                 if (editor.PropertyDictionary.ContainsKey(trans.Target))
                 {
@@ -63,12 +75,12 @@ namespace Thry.ThryEditor
                             if (p != null)
                             {
                                 SerializedProperty values = p.FindPropertyRelative("second");
-                                editor.PropertyDictionary[trans.Target].MaterialProperty.textureValue =
+                                editor.PropertyDictionary[trans.Target].MaterialProperty.textureValue = 
                                     values.FindPropertyRelative("m_Texture").objectReferenceValue as Texture;
                                 Vector2 scale = values.FindPropertyRelative("m_Scale").vector2Value;
                                 Vector2 offset = values.FindPropertyRelative("m_Offset").vector2Value;
-                                editor.PropertyDictionary[trans.Target].MaterialProperty.textureScaleAndOffset =
-                                    new Vector4(scale.x, scale.y, offset.x, offset.y);
+                                editor.PropertyDictionary[trans.Target].MaterialProperty.textureScaleAndOffset = 
+                                    new Vector4(scale.x, scale.y , offset.x, offset.y);
                             }
                             break;
                     }
@@ -79,7 +91,7 @@ namespace Thry.ThryEditor
         SerializedProperty GetProperty(SerializedObject o, string arrayPath, string propertyName)
         {
             SerializedProperty array = o.FindProperty(arrayPath);
-            for (int i = 0; i < array.arraySize; i++)
+            for(int i = 0; i < array.arraySize; i++)
             {
                 if (array.GetArrayElementAtIndex(i).displayName == propertyName)
                 {
@@ -103,16 +115,16 @@ namespace Thry.ThryEditor
 
         public static ShaderTranslator CheckForExistingTranslationFile(Shader origin, Shader target)
         {
-            return TranslationDefinitions.FirstOrDefault(t =>
+            return TranslationDefinitions.FirstOrDefault(t => 
             t.MatchOriginShaderBasedOnRegex ? (Regex.IsMatch(origin.name, t.OriginShaderRegex)) : (t.OriginShader == origin.name) &&
-            t.MatchTargetShaderBasedOnRegex ? (Regex.IsMatch(target.name, t.TargetShaderRegex)) : (t.TargetShader == target.name));
+            t.MatchTargetShaderBasedOnRegex ? (Regex.IsMatch(target.name, t.TargetShaderRegex)) : (t.TargetShader == target.name) );
         }
 
         public static void SuggestedTranslationButtonGUI(ShaderEditor editor)
         {
-            if (editor.SuggestedTranslationDefinition != null)
+            if(editor.SuggestedTranslationDefinition != null)
             {
-                if (GUILayout.Button("Apply " + editor.SuggestedTranslationDefinition.Name + " shader translation."))
+                if(GUILayout.Button("Apply " + editor.SuggestedTranslationDefinition.Name + " shader translation."))
                 {
                     editor.SuggestedTranslationDefinition.Apply(editor);
                 }
@@ -157,7 +169,7 @@ namespace Thry.ThryEditor
             serializedObject.Update();
             ShaderTranslator translator = serializedObject.targetObject as ShaderTranslator;
 
-            translator.Name = EditorGUILayout.TextField("Translation File Name: ", translator.Name);
+            translator.Name = EditorGUILayout.TextField("Translation File Name: " , translator.Name);
 
             GUILayout.Space(10);
 
@@ -172,7 +184,7 @@ namespace Thry.ThryEditor
             int targetIndex = EditorGUILayout.Popup("To Shader", Array.IndexOf(shaders, translator.TargetShader), shaders);
             if (EditorGUI.EndChangeCheck()) translator.TargetShader = shaders[targetIndex];
 
-            translator.MatchOriginShaderBasedOnRegex = EditorGUILayout.ToggleLeft(new GUIContent("Match Origin Shader Using Regex",
+            translator.MatchOriginShaderBasedOnRegex = EditorGUILayout.ToggleLeft(new GUIContent("Match Origin Shader Using Regex", 
                 "Match the origin shader for suggestions based on a regex definition."), translator.MatchOriginShaderBasedOnRegex);
             if (translator.MatchOriginShaderBasedOnRegex)
                 translator.OriginShaderRegex = EditorGUILayout.TextField("Origin Shader Regex", translator.OriginShaderRegex);
@@ -201,7 +213,7 @@ namespace Thry.ThryEditor
                 GUILayout.Label("Math");
                 GUILayout.EndHorizontal();
                 List<PropertyTranslation> remove = new List<PropertyTranslation>();
-                foreach (PropertyTranslation trans in translator.PropertyTranslations)
+                foreach (PropertyTranslation trans in translator.GetPropertyTranslations())
                 {
                     Rect fullWidth = EditorGUILayout.GetControlRect();
                     Rect r = fullWidth;
@@ -221,12 +233,12 @@ namespace Thry.ThryEditor
                 }
 
                 foreach (PropertyTranslation r in remove)
-                    translator.PropertyTranslations.Remove(r);
+                    translator.GetPropertyTranslations().Remove(r);
 
                 Rect buttonRect = EditorGUILayout.GetControlRect();
                 buttonRect.x = buttonRect.width - 20;
                 buttonRect.width = 20;
-                if (GUI.Button(buttonRect, GUIContent.none, Styles.icon_style_add)) translator.PropertyTranslations.Add(new PropertyTranslation());
+                if (GUI.Button(buttonRect, GUIContent.none, Styles.icon_style_add)) translator.GetPropertyTranslations().Add(new PropertyTranslation());
             }
 
             serializedObject.Update();

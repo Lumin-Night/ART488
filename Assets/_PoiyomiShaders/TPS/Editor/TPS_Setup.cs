@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using static Thry.TPS.BakeToVertexColors;
 using static Thry.TPS.ThryAnimatorFunctions;
+using System.Text.RegularExpressions;
+using static Thry.TPS.BakeToVertexColors;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 #if VRC_SDK_VRCSDK3 && !UDON
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Dynamics.Contact.Components;
@@ -105,7 +107,7 @@ namespace Thry.TPS
                 foreach (Material m in Renderer.sharedMaterials.Where(m => m != null))
                 {
                     m.SetFloat("_TPS_IsSkinnedMeshRenderer", b ? 1 : 0);
-                    if (b) m.EnableKeyword("TPS_IsSkinnedMesh");
+                    if(b) m.EnableKeyword("TPS_IsSkinnedMesh");
                     else m.DisableKeyword("TPS_IsSkinnedMesh");
                 }
             }
@@ -251,7 +253,7 @@ namespace Thry.TPS
         }
 
 
-        #region GUI
+#region GUI
 
         static GUIStyle s_styleRichtText;
         static GUIStyle s_styleRichtTextCentered;
@@ -285,7 +287,7 @@ namespace Thry.TPS
             //EditorGUILayout.HelpBox("Follow this tool to setup TPS on your avatar.", MessageType.None);
             _scrolling = EditorGUILayout.BeginScrollView(_scrolling);
             GUILayout.Space(10);
-            if (Tools.pivotMode != PivotMode.Pivot || !SceneView.lastActiveSceneView.sceneLighting)
+            if(Tools.pivotMode != PivotMode.Pivot || !SceneView.lastActiveSceneView.sceneLighting)
             {
                 Box("<size=20>0. Unity Settings Problems</size>", 25, Color.red, GUI_EditorProblems, null);
                 GUILayout.Space(10);
@@ -401,7 +403,7 @@ namespace Thry.TPS
             EditorGUI.BeginChangeCheck();
             _avatar = (Transform)EditorGUILayout.ObjectField("Avatar", _avatar, typeof(Transform), true);
             if (EditorGUI.EndChangeCheck()) _animator = null;
-            if (_avatar == null)
+            if(_avatar == null)
             {
 #if VRC_SDK_VRCSDK3 && !UDON
                 Scene scene = EditorSceneManager.GetActiveScene();
@@ -479,7 +481,7 @@ namespace Thry.TPS
                 GUI_Orifice(o);
             }
             _orifices.RemoveAll(o => o.Remove);
-            if (_orifices.Any(o => o.AllowTransformEditing))
+            if(_orifices.Any(o => o.AllowTransformEditing))
             {
                 EditorGUILayout.HelpBox("Transform should be where your new orifice is and what direction it should point in. " +
                     "I recommend creating an empty GameObject under your renderer and moving it to the correct spot. (Blue arrow should be pointing outwards from the orifice)", MessageType.Info);
@@ -533,14 +535,14 @@ namespace Thry.TPS
             {
                 GUI.backgroundColor = _backgroundColor;
                 GUILayout.BeginHorizontal();
-
+               
                 EditorGUILayout.ObjectField(p.Transform, typeof(Transform), true, GUILayout.Width(150));
 
                 EditorGUILayout.BeginVertical();
                 p.TransformTip = EditorGUILayout.ObjectField("Tip", p.TransformTip, typeof(Transform), true) as Transform;
                 if (!p.EditMask) if (GUILayout.Button("Edit Mask")) p.EditMask = true;
-                if (p.EditMask) p.Mask = EditorGUILayout.ObjectField("Mask", p.Mask, typeof(Texture2D), false) as Texture2D;
-                if (p.Renderer is MeshRenderer && p.EditMask && GUI.Button(EditorGUILayout.GetControlRect(), "Apply Mask"))
+                if(p.EditMask) p.Mask = EditorGUILayout.ObjectField("Mask", p.Mask, typeof(Texture2D), false) as Texture2D;
+                if (p.Renderer is MeshRenderer && p.EditMask &&GUI.Button(EditorGUILayout.GetControlRect(), "Apply Mask"))
                 {
                     foreach (Material m in p.Renderer?.sharedMaterials.Where(m => m != null))
                         m.SetTexture("_TPS_BakedMesh", p.Mask);
@@ -574,9 +576,9 @@ namespace Thry.TPS
                 {
                     o.Transform = EditorGUILayout.ObjectField(o.Transform, typeof(Transform), true, GUILayout.Width(150)) as Transform;
                 }
-                else
-                {
-                    EditorGUILayout.ObjectField(o.Transform, typeof(Transform), true, GUILayout.Width(150));
+                else 
+                { 
+                    EditorGUILayout.ObjectField(o.Transform, typeof(Transform), true, GUILayout.Width(150)); 
                 }
                 EditorGUILayout.BeginVertical();
                 EditorGUI.BeginChangeCheck();
@@ -610,7 +612,7 @@ namespace Thry.TPS
 #endif
                 EditorGUILayout.EndVertical();
                 GUILayout.EndHorizontal();
-                if (o.AllowTransformEditing && GUILayout.Button("Remove", GUILayout.Width(150))) o.Remove = true;
+                if(o.AllowTransformEditing && GUILayout.Button("Remove", GUILayout.Width(150))) o.Remove = true;
             }
         }
 
@@ -620,7 +622,7 @@ namespace Thry.TPS
             {
                 if (GUILayout.Button("Apply"))
                 {
-                    if (!Directory.Exists(_avatarDirectory + "/TPS_" + _avatar.name)) AssetDatabase.CreateFolder(_avatarDirectory, "TPS_" + _avatar.name);
+                    if (!Directory.Exists(_avatarDirectory + "/TPS_"+_avatar.name)) AssetDatabase.CreateFolder(_avatarDirectory, "TPS_" + _avatar.name);
                     string dir = _avatarDirectory + "/TPS_" + _avatar.name;
                     AssetDatabase.StartAssetEditing();
                     s_debugIndex = 0;
@@ -794,7 +796,7 @@ namespace Thry.TPS
             }
             return null;
         }
-
+        
         Transform GetOrificeRootFromLight(Transform t)
         {
             if (t == null) return null;
@@ -943,7 +945,7 @@ namespace Thry.TPS
             }
         }
 
-        #region Penetrator
+#region Penetrator
 
         const string CONTACT_ORF_ROOT = "TPS_Orf_Root";
         const string CONTACT_ORF_NORM = "TPS_Orf_Norm";
@@ -1263,8 +1265,8 @@ namespace Thry.TPS
 #endif
         }
 
-        #endregion
-        #region Orifice
+#endregion
+#region Orifice
 
         public static void SetupOrifice(Transform avatar, AnimatorController animator, Transform orifice, Renderer renderer, OrificeType type, OrificeConfig config, int index, string directory, bool placeContacts = true, bool instanciateMaterials = true)
         {
@@ -1417,8 +1419,8 @@ namespace Thry.TPS
 #endif
         }
 
-        #endregion
-        #region Animator Functions
+#endregion
+#region Animator Functions
 
         static void CreateTwoParameterComparissionLayer(AnimatorController animator, string layername, string paramName1, string paramName2, string output, string clipNamePrefix, string directory, string fileName)
         {
@@ -2078,10 +2080,10 @@ namespace Thry.TPS
             return curves;
         }
 
-        #endregion
+#endregion
     }
 
-    #region Vertex Color Baker
+#region Vertex Color Baker
 
     public class BakeToVertexColors
     {
@@ -2244,7 +2246,7 @@ namespace Thry.TPS
 
                     Queue<(Quaternion, Vector3)> ogTransformSettings = new Queue<(Quaternion, Vector3)>();
                     Transform tr = smr.transform;
-                    while (tr != null)
+                    while(tr != null)
                     {
                         ogTransformSettings.Enqueue((tr.localRotation, tr.localScale));
                         tr.localRotation = Quaternion.identity;
@@ -2252,7 +2254,7 @@ namespace Thry.TPS
                         tr = tr.parent;
                     }
                     Transform aTransform = GetArmatureTransform(ren as SkinnedMeshRenderer);
-                    if (aTransform != smr.transform)
+                    if(aTransform != smr.transform)
                     {
                         ogTransformSettings.Enqueue((aTransform.localRotation, aTransform.localScale));
                         aTransform.localRotation = Quaternion.identity;
@@ -2376,7 +2378,7 @@ namespace Thry.TPS
 
                 //Create new mesh asset and add it to queue
                 string name = AddSuffix(meshInfo.ownerRenderer.gameObject.name, bakedSuffix_mesh);
-                tex = SaveTextureAsset(meshInfo.sharedMesh, tex, name);
+                tex= SaveTextureAsset(meshInfo.sharedMesh, tex, name);
             }
             catch (Exception ex)
             {
@@ -2405,5 +2407,5 @@ namespace Thry.TPS
         private string _subTitle;
     }
 
-    #endregion
+#endregion
 }

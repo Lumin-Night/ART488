@@ -8,9 +8,10 @@
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)]_HighColor_TexUV ("UV", Int) = 0
 _HighColor ("Tint--{reference_property:_HighColorThemeIndex}", Color) = (1, 1, 1, 1)
 [HideInInspector][ThryWideEnum(Off, 0, Theme Color 0, 1, Theme Color 1, 2, Theme Color 2, 3, Theme Color 3, 4, ColorChord 0, 5, ColorChord 1, 6, ColorChord 2, 7, ColorChord 3, 8, AL Theme 0, 9, AL Theme 1, 10, AL Theme 2, 11, AL Theme 3, 12)] _HighColorThemeIndex ("", Int) = 0
-[sRGBWarning]_Set_HighColorMask ("Mask--{reference_properties:[_Set_HighColorMaskPan, _Set_HighColorMaskUV, _Tweak_HighColorMaskLevel]}", 2D) = "white" { }
+[sRGBWarning]_Set_HighColorMask ("Mask--{reference_properties:[_Set_HighColorMaskPan, _Set_HighColorMaskUV, _Set_HighColorMaskChannel, _Tweak_HighColorMaskLevel]}", 2D) = "white" { }
 [HideInInspector][Vector2]_Set_HighColorMaskPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)]_Set_HighColorMaskUV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_Set_HighColorMaskChannel ("Channel", Float) = 1
 [HideInInspector]_Tweak_HighColorMaskLevel ("Mask Level", Range(-1, 1)) = 0
 [ThryWideEnum(Toon, 0, Realistic, 1)]_Is_SpecularToHighColor ("Specular Mode", Float) = 0
 [ThryWideEnum(Replace, 0, Add, 1)]_Is_BlendAddToHiColor ("Color Blend Mode", Int) = 0
@@ -53,6 +54,7 @@ _Layer2Strength ("Strength", Range(0, 1)) = 0
 	float4 _Set_HighColorMask_ST;
 	float2 _Set_HighColorMaskPan;
 	float _Set_HighColorMaskUV;
+	float _Set_HighColorMaskChannel;
 	float _Tweak_HighColorMaskLevel;
 
 	/*
@@ -118,7 +120,7 @@ _Layer2Strength ("Strength", Range(0, 1)) = 0
 
 
 		#if defined(PROP_SET_HIGHCOLORMASK) || !defined(OPTIMIZER_ENABLED)
-			float specularMask = POI2D_SAMPLER_PAN(_Set_HighColorMask, _MainTex, poiUV(poiMesh.uv[_Set_HighColorMaskUV], _Set_HighColorMask_ST), _Set_HighColorMaskPan).g;
+			float specularMask = POI2D_SAMPLER_PAN(_Set_HighColorMask, _MainTex, poiUV(poiMesh.uv[_Set_HighColorMaskUV], _Set_HighColorMask_ST), _Set_HighColorMaskPan)[_Set_HighColorMaskChannel];
 		#else
 			float specularMask = 1;
 		#endif
@@ -127,6 +129,9 @@ _Layer2Strength ("Strength", Range(0, 1)) = 0
 
 		float specMask = saturate(specMask1 + specMask2) * specularMask * poiLight.rampedLightMap;
 		float attenuation = min(poiLight.nDotLSaturated, lerp(poiLight.attenuation, 1, _SSIgnoreCastedShadows));
+		#ifdef POI_PASS_ADD
+			attenuation *= lerp(poiLight.additiveShadow, 1, _SSIgnoreCastedShadows);
+		#endif
 		if (_Is_BlendAddToHiColor == 1)
 		{
 			poiLight.finalLightAdd += max(0, specularMap * poiThemeColor(poiMods, _HighColor, _HighColorThemeIndex) * lerp(1, poiLight.directColor, _UseLightColor) * specMask * poiLight.occlusion * attenuation * _StylizedSpecularStrength);

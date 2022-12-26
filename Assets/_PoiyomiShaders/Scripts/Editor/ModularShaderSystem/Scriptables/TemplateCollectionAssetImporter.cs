@@ -3,20 +3,24 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-
+#if UNITY_2020_2_OR_NEWER
+using UnityEditor.AssetImporters;
+#else
+using UnityEditor.Experimental.AssetImporters;
+#endif
 using UnityEngine;
 
 namespace Poiyomi.ModularShaderSystem
 {
-    [UnityEditor.AssetImporters.ScriptedImporter(1, MSSConstants.TEMPLATE_COLLECTION_EXTENSION)]
-    public class TemplateColletionAssetImporter : UnityEditor.AssetImporters.ScriptedImporter
+    [ScriptedImporter(1, MSSConstants.TEMPLATE_COLLECTION_EXTENSION)]
+    public class TemplateColletionAssetImporter : ScriptedImporter
     {
-        public override void OnImportAsset(UnityEditor.AssetImporters.AssetImportContext ctx)
+        public override void OnImportAsset(AssetImportContext ctx)
         {
             var subAsset = ScriptableObject.CreateInstance<TemplateCollectionAsset>();
+            
 
-
-
+            
             using (var sr = new StringReader(File.ReadAllText(ctx.assetPath)))
             {
                 var builder = new StringBuilder();
@@ -29,7 +33,7 @@ namespace Poiyomi.ModularShaderSystem
                     {
                         if (builder.Length > 0 && !string.IsNullOrWhiteSpace(name))
                             SaveSubAsset(ctx, subAsset, builder, name);
-
+                        
                         builder = new StringBuilder();
                         name = line.Replace("#T#", "").Trim();
                         continue;
@@ -48,32 +52,32 @@ namespace Poiyomi.ModularShaderSystem
 
                     builder.AppendLine(line);
                 }
-
+                
                 if (builder.Length > 0 && !string.IsNullOrWhiteSpace(name))
                     SaveSubAsset(ctx, subAsset, builder, name);
             }
-
+            
             ctx.AddObjectToAsset("Collection", subAsset);
             ctx.SetMainObject(subAsset);
         }
 
-        private static void SaveSubAsset(UnityEditor.AssetImporters.AssetImportContext ctx, TemplateCollectionAsset asset, StringBuilder builder, string name)
+        private static void SaveSubAsset(AssetImportContext ctx, TemplateCollectionAsset asset, StringBuilder builder, string name)
         {
             var templateAsset = ScriptableObject.CreateInstance<TemplateAsset>();
             templateAsset.Template = builder.ToString();
             templateAsset.name = name;
-
+            
             MatchCollection mk = Regex.Matches(templateAsset.Template, @"#K#\w*", RegexOptions.Multiline);
             MatchCollection mki = Regex.Matches(templateAsset.Template, @"#KI#\w*", RegexOptions.Multiline);
 
-            var mkr = new string[mk.Count + mki.Count];
+            var mkr = new string[mk.Count + mki.Count]; 
             for (var i = 0; i < mk.Count; i++)
                 mkr[i] = mk[i].Value;
             for (var i = 0; i < mki.Count; i++)
                 mkr[mk.Count + i] = mki[i].Value;
 
             templateAsset.Keywords = mkr.Distinct().ToArray();
-
+            
             ctx.AddObjectToAsset(name, templateAsset);
             asset.Templates.Add(templateAsset);
         }

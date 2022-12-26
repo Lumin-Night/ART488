@@ -1,19 +1,19 @@
 #T#PoiStochasticProperties
 [HideInInspector] m_start_Stochastic ("Stochastic Sampling", Float) = 0
-[KeywordEnum(Deliot Heitz, Hextile)] _StochasticMode ("Sampling Mode", Float) = 0
-[HideInInspector] g_start_deliot ("--{condition_show:{type:PROPERTY_BOOL,data:_StochasticMode==0}}", Float) = 0
+[KeywordEnum(Deliot Heitz, Hextile, None)] _StochasticMode ("Sampling Mode", Float) = 0
+[HideInInspector] g_start_deliot ("Deliot Heitz--{condition_show:{type:PROPERTY_BOOL,data:_StochasticMode==0}}", Float) = 0
 	_StochasticDeliotHeitzDensity ("Detiling Density", Range(0.1, 10)) = 1
-[HideInInspector] g_end_deliot ("", Float) = 0
-[HideInInspector] g_start_hextile ("--{condition_show:{type:PROPERTY_BOOL,data:_StochasticMode==1}}", Float) = 0
-	_StochasticHexGridDensity ("Hex Grid Density", Range(0.1,10)) = 1
-	_StochasticHexRotationStrength ("Rotation Strength", Range(0,2)) = 0
-	_StochasticHexFallOffContrast("Falloff Contrast", Range(0.01,0.99)) = 0.6
-	_StochasticHexFallOffPower("Falloff Power", Range(0,20)) = 7
-[HideInInspector] g_end_hextile ("", Float) = 0
+[HideInInspector] g_end_deliot ("Deliot Heitz", Float) = 0
+[HideInInspector] g_start_hextile ("Hextile--{condition_show:{type:PROPERTY_BOOL,data:_StochasticMode==1}}", Float) = 0
+	_StochasticHexGridDensity ("Hex Grid Density", Range(0.1, 10)) = 1
+	_StochasticHexRotationStrength ("Rotation Strength", Range(0, 2)) = 0
+	_StochasticHexFallOffContrast("Falloff Contrast", Range(0.01, 0.99)) = 0.6
+	_StochasticHexFallOffPower("Falloff Power", Range(0, 20)) = 7
+[HideInInspector] g_end_hextile ("Hextile", Float) = 0
 [HideInInspector] m_end_Stochastic ("Stochastic Sampling", Float) = 0
 
 #T#PoiStochasticKeywords
-#pragma shader_feature_local _STOCHASTICMODE_DELIOTHEITZ _STOCHASTICMODE_HEXTILE
+#pragma shader_feature_local _STOCHASTICMODE_DELIOT_HEITZ _STOCHASTICMODE_HEXTILE _STOCHASTICMODE_NONE
 
 #T#PoiStochasticVariables
 float _StochasticDeliotHeitzDensity;
@@ -23,41 +23,46 @@ float _StochasticHexFallOffContrast;
 float _StochasticHexFallOffPower;
 
 #T#PoiStochasticFunction
-#if defined(_STOCHASTICMODE_DELIOTHEITZ)
-	#define POI2D_SAMPLER_STOCHASTIC(tex, texSampler, uv) 						(DeliotHeitzSampleTexture(tex, sampler##texSampler, uv))
-	#define POI2D_SAMPLER_PAN_STOCHASTIC(tex, texSampler, uv, pan) 				(DeliotHeitzSampleTexture(tex, sampler##texSampler, POI_PAN_UV(uv, pan)))
-	#define POI2D_SAMPLER_PANGRAD_STOCHASTIC(tex, texSampler, uv, pan, dx, dy) 	(DeliotHeitzSampleTexture(tex, sampler##texSampler, POI_PAN_UV(uv, pan), dx, dy))
+#if defined(_STOCHASTICMODE_DELIOT_HEITZ)
+	#define POI2D_SAMPLER_STOCHASTIC(tex, texSampler, uv, useStochastic) (useStochastic ? DeliotHeitzSampleTexture(tex, sampler##texSampler, uv) : POI2D_SAMPLER(tex, texSampler, uv))
+	#define POI2D_SAMPLER_PAN_STOCHASTIC(tex, texSampler, uv, pan, useStochastic) (useStochastic ? DeliotHeitzSampleTexture(tex, sampler##texSampler, POI_PAN_UV(uv, pan)) : POI2D_SAMPLER_PAN(tex, texSampler, uv, pan))
+	#define POI2D_SAMPLER_PANGRAD_STOCHASTIC(tex, texSampler, uv, pan, dx, dy, useStochastic) (useStochastic ? DeliotHeitzSampleTexture(tex, sampler##texSampler, POI_PAN_UV(uv, pan), dx, dy) : POI2D_SAMPLER_PANGRAD(tex, texSampler, uv, pan, dx, dy))
 #endif
 #if defined(_STOCHASTICMODE_HEXTILE)
-	#define POI2D_SAMPLER_STOCHASTIC(tex, texSampler, uv) 						(HextileSampleTexture(tex, sampler##texSampler, uv))
-	#define POI2D_SAMPLER_PAN_STOCHASTIC(tex, texSampler, uv, pan) 				(HextileSampleTexture(tex, sampler##texSampler, POI_PAN_UV(uv, pan)))
-	#define POI2D_SAMPLER_PANGRAD_STOCHASTIC(tex, texSampler, uv, pan, dx, dy) 	(HextileSampleTexture(tex, sampler##texSampler, POI_PAN_UV(uv, pan), dx, dy))
-#endif
-#if !defined(_STOCHASTICMODE_DELIOTHEITZ) && !defined(_STOCHASTICMODE_HEXTILE)
-	#define POI2D_SAMPLER_STOCHASTIC(tex, texSampler, uv) 						(POI2D_SAMPLER(tex, texSampler, uv))
-	#define POI2D_SAMPLER_PAN_STOCHASTIC(tex, texSampler, uv, pan) 				(POI2D_SAMPLER_PAN(tex, texSampler, uv, pan))
-	#define POI2D_SAMPLER_PANGRAD_STOCHASTIC(tex, texSampler, uv, pan, dx, dy) 	(POI2D_SAMPLER_PANGRAD(tex, texSampler, uv, pan, dx, dy))
+	#define POI2D_SAMPLER_STOCHASTIC(tex, texSampler, uv, useStochastic) (useStochastic ? HextileSampleTexture(tex, sampler##texSampler, uv, false) : POI2D_SAMPLER(tex, texSampler, uv))
+	#define POI2D_SAMPLER_PAN_STOCHASTIC(tex, texSampler, uv, pan, useStochastic) (useStochastic ? HextileSampleTexture(tex, sampler##texSampler, POI_PAN_UV(uv, pan), false) : POI2D_SAMPLER_PAN(tex, texSampler, uv, pan))
+	#define POI2D_SAMPLER_PANGRAD_STOCHASTIC(tex, texSampler, uv, pan, dx, dy, useStochastic) (useStochastic ? HextileSampleTexture(tex, sampler##texSampler, POI_PAN_UV(uv, pan), false, dx, dy) : POI2D_SAMPLER_PANGRAD(tex, texSampler, uv, pan, dx, dy))
 #endif
 
-#define POI2D_SAMPLER_STOCHASTIC_TOGGLE(tex, texSampler, uv, isStochastic) \
-	(isStochastic ? POI2D_SAMPLER_STOCHASTIC(tex, texSampler, uv) : POI2D_SAMPLER(tex, texSampler, uv))
-#define POI2D_SAMPLER_PAN_STOCHASTIC_TOGGLE(tex, texSampler, uv, pan, isStochastic) \
-	(isStochastic ? POI2D_SAMPLER_PAN_STOCHASTIC(tex, texSampler, uv, pan) : POI2D_SAMPLER_PAN(tex, texSampler, uv, pan))
-#define POI2D_SAMPLER_PANGRAD_STOCHASTIC_TOGGLE(tex, texSampler, uv, pan, dx, dy, isStochastic) \
-	(isStochastic ? POI2D_SAMPLER_PANGRAD_STOCHASTIC(tex, texSampler, uv, pan, dx, dy) : POI2D_SAMPLER_PANGRAD(tex, texSampler, uv, pan, dx, dy))
+#ifndef POI2D_SAMPLER_STOCHASTIC
+	#define POI2D_SAMPLER_STOCHASTIC(tex, texSampler, uv, useStochastic) (POI2D_SAMPLER(tex, texSampler, uv))
+#endif
+#ifndef POI2D_SAMPLER_PAN_STOCHASTIC
+	#define POI2D_SAMPLER_PAN_STOCHASTIC(tex, texSampler, uv, pan, useStochastic) (POI2D_SAMPLER_PAN(tex, texSampler, uv, pan))
+#endif
+#ifndef POI2D_SAMPLER_PANGRAD_STOCHASTIC
+	#define POI2D_SAMPLER_PANGRAD_STOCHASTIC(tex, texSampler, uv, pan, dx, dy, useStochastic) (POI2D_SAMPLER_PANGRAD(tex, texSampler, uv, pan, dx, dy))
+#endif
 
-#define POI2D_MAINTEX_SAMPLER_STOCHASTIC_TOGGLE_INLINED(tex) 	 (POI2D_SAMPLER_STOCHASTIC_TOGGLE(tex, _MainTex, poiUV(poiMesh.uv[tex##UV], tex##_ST), tex##Stochastic))
-#define POI2D_MAINTEX_SAMPLER_PAN_STOCHASTIC_TOGGLE_INLINED(tex) (POI2D_SAMPLER_PAN_STOCHASTIC_TOGGLE(tex, _MainTex, poiUV(poiMesh.uv[tex##UV], tex##_ST), tex##Pan, tex##Stochastic))
+// When using, properties won't properly lock at optimize time; needs macro evaluation implemented
+// #define POI2D_SAMPLER_STOCHASTIC_INLINED(tex, texSampler) (POI2D_SAMPLER_STOCHASTIC(tex, texSampler, poiUV(poiMesh.uv[tex##UV], tex##_ST), tex##Stochastic))
+// #define POI2D_SAMPLER_PAN_STOCHASTIC_INLINED(tex, texSampler) (POI2D_SAMPLER_PAN_STOCHASTIC(tex, texSampler, poiUV(poiMesh.uv[tex##UV], tex##_ST), tex##Pan, tex##Stochastic))
+
+// #define POI2D_MAINTEX_SAMPLER_STOCHASTIC_INLINED(tex) (POI2D_SAMPLER_STOCHASTIC(tex, _MainTex, poiUV(poiMesh.uv[tex##UV], tex##_ST), tex##Stochastic))
+// #define POI2D_MAINTEX_SAMPLER_PAN_STOCHASTIC_INLINED(tex) (POI2D_SAMPLER_PAN_STOCHASTIC(tex, _MainTex, poiUV(poiMesh.uv[tex##UV], tex##_ST), tex##Pan, tex##Stochastic))
 
 // Deliot, Heitz 2019 - Fast, but non-histogram-preserving (ends up looking a bit blurry and lower contrast)
 // https://eheitzresearch.wordpress.com/738-2/
 
 // Classic Magic Numbers fracsin
+#if !defined(_STOCHASTICMODE_NONE)
 float2 StochasticHash2D2D (float2 s)
 {
 	return frac(sin(glsl_mod(float2(dot(s, float2(127.1,311.7)), dot(s, float2(269.5,183.3))), 3.14159)) * 43758.5453);
 }
+#endif
 
+#if defined(_STOCHASTICMODE_DELIOT_HEITZ)
 // UV Offsets and blend weights
 // UVBW[0...2].xy = UV Offsets
 // UVBW[0...2].z = Blend Weights
@@ -104,7 +109,9 @@ float4 DeliotHeitzSampleTexture(Texture2D tex, SamplerState texSampler, float2 u
 	float2 dx = ddx(uv), dy = ddy(uv);
 	return DeliotHeitzSampleTexture(tex, texSampler, uv, dx, dy);
 }
+#endif // defined(_STOCHASTICMODE_DELIOT_HEITZ)
 
+#if defined(_STOCHASTICMODE_HEXTILE)
 // HexTiling: Slower, but histogram-preserving
 // SPDX-License-Idenfitier: MIT
 // Copyright (c) 2022 mmikk
@@ -173,14 +180,14 @@ float4x4 HextileUVBWR(float2 uv)
 	);
 }
 
-float4 HextileSampleTexture(Texture2D tex, SamplerState texSampler, float2 uv, float2 dUVdx, float2 dUVdy)
+float4 HextileSampleTexture(Texture2D tex, SamplerState texSampler, float2 uv, bool isNormalMap, float2 dUVdx, float2 dUVdy)
 {
 	// For some reason doing this instead of just calculating it directly prevents it from \
 	// breaking after a certain number of textures use it. I don't understand why yet
 	float4x4 UVBWR = HextileUVBWR(uv);
 
 	// 2D Rotation Matrices for dUVdx/dy
-	// Not sure if this properly constant fold optimizes when locked at 0 so double check it
+	// Not sure if this constant folds during compiling when rot is locked at 0, so force it
 	float2x2 rot0 = float2x2(1, 0, 0, 1), rot1 = float2x2(1, 0, 0, 1), rot2 = float2x2(1, 0, 0, 1);
 
 	if(_StochasticHexRotationStrength > 0)
@@ -194,26 +201,33 @@ float4 HextileSampleTexture(Texture2D tex, SamplerState texSampler, float2 uv, f
 	float3 W = UVBWR[3].xyz;
 
 	// Sample texture
-	float3x4 c = float3x4(
-		tex.SampleGrad(texSampler, UVBWR[0].xy, mul(dUVdx, rot0), mul(dUVdy, rot0)),
-		tex.SampleGrad(texSampler, UVBWR[1].xy, mul(dUVdx, rot1), mul(dUVdy, rot1)),
-		tex.SampleGrad(texSampler, UVBWR[2].xy, mul(dUVdx, rot2), mul(dUVdy, rot2))
-	);
+	// float3x4 c = float3x4(
+	// 	tex.SampleGrad(texSampler, UVBWR[0].xy, mul(dUVdx, rot0), mul(dUVdy, rot0)),
+	// 	tex.SampleGrad(texSampler, UVBWR[1].xy, mul(dUVdx, rot1), mul(dUVdy, rot1)),
+	// 	tex.SampleGrad(texSampler, UVBWR[2].xy, mul(dUVdx, rot2), mul(dUVdy, rot2))
+	// );
 
-	// Use luminance as weight
+	float4 c0 = tex.SampleGrad(texSampler, UVBWR[0].xy, mul(dUVdx, rot0), mul(dUVdy, rot0));
+	float4 c1 = tex.SampleGrad(texSampler, UVBWR[1].xy, mul(dUVdx, rot1), mul(dUVdy, rot1));
+	float4 c2 = tex.SampleGrad(texSampler, UVBWR[2].xy, mul(dUVdx, rot2), mul(dUVdy, rot2));
+
+	// Blend samples using luminance
+	// This is technically incorrect for normal maps, but produces very similar
+	// results to blending using normal map gradients (steepness)
 	const float3 Lw = float3(0.299, 0.587, 0.114);
-	float3 Dw = float3(dot(c[0].xyz, Lw), dot(c[1].xyz, Lw), dot(c[2].xyz, Lw));
-	Dw = lerp(1.0, Dw, _StochasticHexFallOffContrast);
+	float3 Dw = float3(dot(c0.xyz, Lw), dot(c1.xyz, Lw), dot(c2.xyz, Lw));
 
+	Dw = lerp(1.0, Dw, _StochasticHexFallOffContrast);
 	W = Dw * pow(W, _StochasticHexFallOffPower);
 	// In the original hextiling there's a Gain3 step here, but it seems to slow things down \
 	// and cause the UVs to break, so I've omitted it. Looks fine without
 
 	W /= (W.x + W.y + W.z);
-	return W.x * c[0] + W.y * c[1] + W.z * c[2];
+	return W.x * c0 + W.y * c1 + W.z * c2;
 }
 
-float4 HextileSampleTexture(Texture2D tex, SamplerState texSampler, float2 uv)
+float4 HextileSampleTexture(Texture2D tex, SamplerState texSampler, float2 uv, bool isNormalMap)
 {
-	return HextileSampleTexture(tex, texSampler, uv, ddx(uv), ddy(uv));
+	return HextileSampleTexture(tex, texSampler, uv, isNormalMap, ddx(uv), ddy(uv));
 }
+#endif // defined(_STOCHASTICMODE_HEXTILE)

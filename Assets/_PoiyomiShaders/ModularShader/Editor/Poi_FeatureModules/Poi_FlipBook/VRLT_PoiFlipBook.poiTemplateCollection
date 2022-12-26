@@ -8,9 +8,10 @@
 [TextureArray]_FlipbookTexArray ("Texture Array--{reference_properties:[_FlipbookTexArrayPan, _FlipbookTexArrayUV]}", 2DArray) = "" { }
 [HideInInspector][Vector2]_FlipbookTexArrayPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _FlipbookTexArrayUV ("UV", Int) = 0
-[sRGBWarning]_FlipbookMask ("Mask--{reference_properties:[_FlipbookMaskPan, _FlipbookMaskUV]}", 2D) = "white" { }
+[sRGBWarning]_FlipbookMask ("Mask--{reference_properties:[_FlipbookMaskPan, _FlipbookMaskUV, _FlipbookMaskChannel]}", 2D) = "white" { }
 [HideInInspector][Vector2]_FlipbookMaskPan ("Panning", Vector) = (0, 0, 0, 0)
 [HideInInspector][ThryWideEnum(UV0, 0, UV1, 1, UV2, 2, UV3, 3, Panosphere, 4, World Pos XZ, 5, Polar UV, 6, Distorted UV, 7)] _FlipbookMaskUV ("UV", Int) = 0
+[HideInInspector][Enum(R, 0, G, 1, B, 2, A, 3)]_FlipbookMaskChannel ("Channel", Float) = 0
 [ThryWideEnum(Off, 0, 1R, 1, 1G, 2, 1B, 3, 1A, 4, 2R, 5, 2G, 6, 2B, 7, 2A, 8, 3R, 9, 3G, 10, 3B, 11, 3A, 12, 4R, 13, 4G, 14, 4B, 15, 4A, 16)] _FlipbookMaskGlobalMask ("Global Mask--{reference_property:_FlipbookMaskGlobalMaskBlendType}", Int) = 0
 [HideInInspector][ThryWideEnum(Replace, 0, Darken, 1, Multiply, 2, Color Burn, 3, Linear Burn, 4, Lighten, 5, Screen, 6, Color Dodge, 7, Linear Dodge(Add), 8, Overlay, 9, Soft Lighten, 10, Hard Light, 11, Vivid Light, 12, Linear Light, 13, Pin Light, 14, Hard Mix, 15, Difference, 16, Exclusion, 17, Subtract, 18, Divide, 19)]_FlipbookMaskGlobalMaskBlendType ("Blending", Range(0, 1)) = 2
 _FlipbookColor ("Color & alpha--{reference_property:_FlipbookColorThemeIndex}", Color) = (1, 1, 1, 1)
@@ -105,6 +106,7 @@ _FlipbookChronotensitySpeed ("Chrono Speed--{ condition_showS:_FlipbookChronoten
 	float4 _FlipbookMask_ST;
 	float2 _FlipbookMaskPan;
 	float _FlipbookMaskUV;
+	float _FlipbookMaskChannel;
 	float _FlipbookMaskGlobalMask;
 	float _FlipbookMaskGlobalMaskBlendType;
 
@@ -148,7 +150,7 @@ _FlipbookChronotensitySpeed ("Chrono Speed--{ condition_showS:_FlipbookChronoten
 		#if defined(PROP_FLIPBOOKTEXARRAY) || !defined(OPTIMIZER_ENABLED)
 			float4 flipBookPixel = float4(0, 0, 0, 0);
 			#if defined(PROP_FLIPBOOKMASK) || !defined(OPTIMIZER_ENABLED)
-				float flipBookMask = POI2D_SAMPLER_PAN(_FlipbookMask, _MainTex, poiUV(poiMesh.uv[_FlipbookMaskUV], _FlipbookMask_ST), _FlipbookMaskPan).r;
+				float flipBookMask = POI2D_SAMPLER_PAN(_FlipbookMask, _MainTex, poiUV(poiMesh.uv[_FlipbookMaskUV], _FlipbookMask_ST), _FlipbookMaskPan)[_FlipbookMaskChannel];
 			#else
 				float flipBookMask = 1;
 			#endif
@@ -173,7 +175,7 @@ _FlipbookChronotensitySpeed ("Chrono Speed--{ condition_showS:_FlipbookChronoten
 			float2 spriteCenter = flipbookScaleOffset.zw + .5;
 			// 2d rotation
 			uv = float2((uv.x - spriteCenter.x) * cs - (uv.y - spriteCenter.y) * sn + spriteCenter.x, (uv.x - spriteCenter.x) * sn + (uv.y - spriteCenter.y) * cs + spriteCenter.y);
-			float4 sideOffset = float4(-_FlipbookSideOffset.x, _FlipbookSideOffset.y, -_FlipbookSideOffset.z, _FlipbookSideOffset.w);
+			float4 sideOffset = float4(-(_FlipbookSideOffset.x), _FlipbookSideOffset.y, -(_FlipbookSideOffset.z), _FlipbookSideOffset.w);
 			float2 newUV = remap(uv, float2(0, 0) + flipbookScaleOffset.xy / 2 + flipbookScaleOffset.zw + sideOffset.xz, float2(1, 1) - flipbookScaleOffset.xy / 2 + flipbookScaleOffset.zw + sideOffset.yw, float2(0, 0), float2(1, 1));
 			
 			UNITY_BRANCH
